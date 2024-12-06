@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:monitor_fso/router/routes.dart';
 
-import 'features/invitation_screen/view/invitation_screen.dart';
+//import 'features/invitation_screen/view/invitation_screen.dart';
 
 class MonitorFsoApp extends StatelessWidget {
   const MonitorFsoApp({super.key});
@@ -11,10 +12,11 @@ class MonitorFsoApp extends StatelessWidget {
     return MaterialApp(
       title: 'Monitor FSO',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade100),
         useMaterial3: true,
       ),
-      home: const InvitationScreen(title: 'Мониторинг ФСО'),
+//      home: const InvitationScreen(title: 'Мониторинг ФСО'),
+      routes: routes,
     );
   }
 }
