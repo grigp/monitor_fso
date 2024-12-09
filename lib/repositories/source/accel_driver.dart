@@ -31,7 +31,8 @@ class AccelDriver extends AbstractDriver {
   bool _isCalibratng = false;
   int _timeCalibration = 1;
   bool _isFilter = true;
-  late StreamSubscription<AccelerometerEvent> _stream;
+  late StreamSubscription<AccelerometerEvent> _streamAccel;
+  late StreamSubscription<GyroscopeEvent> _streamGyro;
 
   late Function _sendData;
   late Function _endCalibration;
@@ -43,8 +44,67 @@ class AccelDriver extends AbstractDriver {
 
   AccelDriver(){
     getSettings();
+  }
+
+  @override
+  Future<int> getCounter() async {
+    return 0;
+  }
+
+  @override
+  Future<DataParams> init(Function func) async {
+    _startProcess();
+    _sendData = func;
+    DataParams pi = DataParams(freq: _freq, min: _min, max: _max);
+    return pi;
+  }
+
+  @override
+  Future<void> calibrate(Function func) async {
+    _endCalibration = func;
+    _midAX = 0;
+    _midAY = 0;
+    _midAZ = 0;
+    _midGX = 0;
+    _midGY = 0;
+    _midGZ = 0;
+    _gsx = 0;
+    _gsy = 0;
+    _gsz = 0;
+    _isCalibratng = true;
+  }
+
+  @override
+  Future<void> setMode(ChaningMode md) async {
+  }
+
+  @override
+  Future<void> getSettings() async {
+    const storage =  FlutterSecureStorage();
+    String? stc = await storage.read(key: 'time_calibration');
+    if (stc != null) {
+      _timeCalibration = int.tryParse(stc)!;
+    }
+
+    String? stf = await storage.read(key: 'filtration');
+    if (stf != null) {
+      if (stf == "1") {
+        _isFilter = true;
+      } else {
+        _isFilter = false;
+      }
+    }
+  }
+
+  @override
+  Future<void> stop() async {
+    await _streamAccel.cancel();
+    await _streamGyro.cancel();
+  }
+
+  void _startProcess() {
     Duration sensorInterval = SensorInterval.gameInterval;
-    _stream = accelerometerEventStream(samplingPeriod: sensorInterval).listen((AccelerometerEvent event){
+    _streamAccel = accelerometerEventStream(samplingPeriod: sensorInterval).listen((AccelerometerEvent event){
       _ax = event.x - _midAX;
       _ay = event.y - _midAY;
       _az = event.z - _midAZ;
@@ -109,7 +169,7 @@ class AccelDriver extends AbstractDriver {
       }
     });
 
-    gyroscopeEventStream(samplingPeriod: sensorInterval).listen((GyroscopeEvent event){
+    _streamGyro = gyroscopeEventStream(samplingPeriod: sensorInterval).listen((GyroscopeEvent event){
       _gx = event.x - _midGX;
       _gy = event.y - _midGY;
       _gz = event.z - _midGZ;
@@ -119,61 +179,6 @@ class AccelDriver extends AbstractDriver {
       // _func(_gx, _gy, _gz);
     });
   }
-
-  @override
-  Future<int> getCounter() async {
-    return 0;
-  }
-
-  @override
-  Future<DataParams> init(Function func) async {
-    _sendData = func;
-    DataParams pi = DataParams(freq: _freq, min: _min, max: _max);
-    return pi;
-  }
-
-  @override
-  Future<void> calibrate(Function func) async {
-    _endCalibration = func;
-    _midAX = 0;
-    _midAY = 0;
-    _midAZ = 0;
-    _midGX = 0;
-    _midGY = 0;
-    _midGZ = 0;
-    _gsx = 0;
-    _gsy = 0;
-    _gsz = 0;
-    _isCalibratng = true;
-  }
-
-  @override
-  Future<void> setMode(ChaningMode md) async {
-  }
-
-  @override
-  Future<void> getSettings() async {
-    const storage =  FlutterSecureStorage();
-    String? stc = await storage.read(key: 'time_calibration');
-    if (stc != null) {
-      _timeCalibration = int.tryParse(stc)!;
-    }
-
-    String? stf = await storage.read(key: 'filtration');
-    if (stf != null) {
-      if (stf == "1") {
-        _isFilter = true;
-      } else {
-        _isFilter = false;
-      }
-    }
-  }
-
-  @override
-  Future<void> stop() async {
-    await _stream.cancel();
-  }
-
 
 
 }
