@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../../../assets/colors/colors.dart';
+
 const double LeftBorder = 15;
 const double RightBorder = 1;
 const double TopBorder = 5;
@@ -40,7 +42,8 @@ class Oscilloscope extends CustomPainter {
     ..strokeWidth = 1;
   final Paint _paintAxis = Paint()..color = Colors.black87..strokeWidth = 1;
   final Paint _paintMarker = Paint()..color = Colors.red..strokeWidth = 1;
-  final Paint _paintGraph = Paint()..color = Colors.blue.shade900..strokeWidth = 1;
+  final Paint _paintGraph = Paint()..color = filledAccentButtonColor..strokeWidth = 1;
+//  final Paint _paintGraph = Paint()..color = Colors.blue.shade900..strokeWidth = 1;
 
   Paragraph createText(String text) {
     final builder = ParagraphBuilder(ParagraphStyle(fontSize: 20));

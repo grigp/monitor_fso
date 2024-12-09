@@ -12,7 +12,7 @@ class MonitorFsoApp extends StatelessWidget {
     return MaterialApp(
       title: 'Monitor FSO',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade100),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent.shade100),
         useMaterial3: true,
       ),
 //      home: const InvitationScreen(title: 'Мониторинг ФСО'),

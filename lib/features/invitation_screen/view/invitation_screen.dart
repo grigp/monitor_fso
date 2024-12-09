@@ -24,16 +24,25 @@ class _InvitationScreenState extends State<InvitationScreen> {
       // ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 20, bottom: 20),
+          padding: const EdgeInsets.only(bottom: 20),
           child: Stack(
             children: [
               Column(
                 children: [
-                  const SizedBox(height: 100),
-                  Center(
-                    child: Image.asset('lib/assets/icons/main_icon.png'),
+                  Container(
+                    color: greenBackgroundColor,
+                    width: double.infinity,
+                    height: 400,
+                    child: Center(
+                      child: Image.asset('lib/assets/icons/main_icon.png'),
+                    ),
                   ),
-                  const SizedBox(height: 60),
+                  Container(
+                    color: filledAccentButtonColor,
+                    width: double.infinity,
+                    height: 3,
+                  ),
+                  const SizedBox(height: 50),
                   Text(
                     'Равновесие тела – интегральная характеристика функционального состояния организма',
                     textAlign: TextAlign.center,

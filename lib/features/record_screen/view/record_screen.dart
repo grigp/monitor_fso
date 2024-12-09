@@ -5,7 +5,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/repositories/source/abstract_driver.dart';
 
+import '../../../assets/colors/colors.dart';
 import '../../../repositories/defines.dart';
+import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/painters/oscilloscope.dart';
 import '../bloc/recording_bloc.dart';
 
@@ -67,10 +69,10 @@ class _RecordScreenState extends State<RecordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      //   title: Text(widget.title),
+      // ),
       body: BlocBuilder<ProcessControlBloc, RecordingState>(
         bloc: _pcBloc,
         builder: (context, state) {
@@ -81,42 +83,69 @@ class _RecordScreenState extends State<RecordScreen> {
             _min = state.min;
             _max = state.max;
             return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Stack(
-                  children: <Widget>[
-                    Column(children: [
-                      Row(
+              child: Stack(
+                children: <Widget>[
+                  Column(children: [
+                    Container(
+                      color: greenBackgroundColor,
+                      width: double.infinity,
+                      height: 120,
+                      child: Column(
                         children: [
-                          Text(
-                            'A(x):',
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          SizedBox(
-                            width: 120,
-                            child: Text(
-                              '${num.parse(_ax.toStringAsFixed(4))}',
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
+                          const SizedBox(height: 50),
+                          Row(
+                            children: [
+                              const SizedBox(width: 10),
+                              BackScreenButton(onBack: () {
+                                Navigator.pop(context);
+                              }),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 70,
+                                height: 70,
+                                child: Image.asset(
+                                    'lib/assets/icons/accel_icon.png'),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                'Проведение теста',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.green.shade900,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      Expanded(
-                        child: Row(children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: double.infinity,
-                              child: CustomPaint(
-                                painter: Oscilloscope(_blockView, _min, _max),
+                    ),
+                    Container(
+                      color: filledAccentButtonColor,
+                      width: double.infinity,
+                      height: 2,
+                    ),
+                    Expanded(
+                      child: Row(children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: double.infinity,
+                            child: CustomPaint(
+                              painter: Oscilloscope(_blockView, _min, _max),
+                              child: Text(
+                                /// TODO: Костыль. Но как сделать, чтоб обновлялась картинка...
+                                '${num.parse(_ax.toStringAsFixed(4))}',
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
-                        ]),
-                      ),
-                    ]),
-                    if (_isRecording)
-                      Center(
-                          child: Column(
+                        ),
+                      ]),
+                    ),
+                  ]),
+                  if (_isRecording)
+                    Center(
+                      child: Column(
                         children: [
                           const SizedBox(height: 200),
                           Text(sStage,
@@ -124,9 +153,9 @@ class _RecordScreenState extends State<RecordScreen> {
                           Text(sTimer,
                               style: Theme.of(context).textTheme.displayLarge),
                         ],
-                      ))
-                  ],
-                ),
+                      ),
+                    ),
+                ],
               ),
             );
           }
@@ -153,7 +182,11 @@ class _RecordScreenState extends State<RecordScreen> {
               },
               heroTag: 'Settings',
               tooltip: 'Настройки',
-              child: const Icon(Icons.settings),
+              backgroundColor: filledAccentButtonColor,
+              child: const Icon(
+                Icons.settings,
+                color: greenBackgroundColor,
+              ),
             ),
           const SizedBox(
             width: 60,
@@ -165,7 +198,11 @@ class _RecordScreenState extends State<RecordScreen> {
               },
               heroTag: 'Calibrate',
               tooltip: 'Калибровка',
-              child: const Icon(Icons.center_focus_strong),
+              backgroundColor: filledAccentButtonColor,
+              child: const Icon(
+                Icons.center_focus_strong,
+                color: greenBackgroundColor,
+              ),
             ),
           const SizedBox(
             width: 40,
@@ -174,7 +211,11 @@ class _RecordScreenState extends State<RecordScreen> {
             onPressed: _setRecording,
             heroTag: 'Recording',
             tooltip: 'Запись',
-            child: Icon(_saveIcon), //Icons.save),
+            backgroundColor: filledAccentButtonColor,
+            child: Icon(
+              _saveIcon,
+              color: greenBackgroundColor,
+            ),
           ),
         ],
       ),
@@ -306,7 +347,7 @@ class _RecordScreenState extends State<RecordScreen> {
     return '';
   }
 
-  void _onSettingsAccept()  {
+  void _onSettingsAccept() {
     getSettings();
   }
 }
