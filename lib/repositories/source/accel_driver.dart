@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:monitor_fso/repositories/source/abstract_driver.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -29,6 +31,7 @@ class AccelDriver extends AbstractDriver {
   bool _isCalibratng = false;
   int _timeCalibration = 1;
   bool _isFilter = true;
+  late StreamSubscription<AccelerometerEvent> _stream;
 
   late Function _sendData;
   late Function _endCalibration;
@@ -41,7 +44,7 @@ class AccelDriver extends AbstractDriver {
   AccelDriver(){
     getSettings();
     Duration sensorInterval = SensorInterval.gameInterval;
-    accelerometerEventStream(samplingPeriod: sensorInterval).listen((AccelerometerEvent event){
+    _stream = accelerometerEventStream(samplingPeriod: sensorInterval).listen((AccelerometerEvent event){
       _ax = event.x - _midAX;
       _ay = event.y - _midAY;
       _az = event.z - _midAZ;
@@ -165,5 +168,12 @@ class AccelDriver extends AbstractDriver {
       }
     }
   }
+
+  @override
+  Future<void> stop() async {
+    await _stream.cancel();
+  }
+
+
 
 }

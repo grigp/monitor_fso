@@ -14,5 +14,6 @@ abstract class AbstractDriver{
   Future<void> setMode(ChaningMode md);
   Future<void> getSettings();
 
+  Future<void> stop();
 
 }

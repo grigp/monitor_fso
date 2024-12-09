@@ -34,6 +34,14 @@ class ProcessControlBloc
 
       }
     });
+
+    on<StopEvent>((event, emit) async {
+      try {
+        await process.stop();
+      } catch (e) {
+
+      }
+    });
   }
 
   final AbstractDriver process;

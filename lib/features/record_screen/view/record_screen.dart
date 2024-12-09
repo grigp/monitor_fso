@@ -53,11 +53,16 @@ class _RecordScreenState extends State<RecordScreen> {
 
   @override
   void initState() {
-    super.initState();
     _pcBloc.add(InitSendDataEvent(func: getData));
     getSettings();
+    super.initState();
   }
 
+  @override
+  void dispose() {
+    _pcBloc.add(StopEvent());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

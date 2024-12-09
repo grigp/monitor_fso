@@ -17,3 +17,5 @@ class CalibrationEvent extends RecordingEvent {
 }
 
 class UpdateParamsEvent extends RecordingEvent {}
+
+class StopEvent extends RecordingEvent {}
