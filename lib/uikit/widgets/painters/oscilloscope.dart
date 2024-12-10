@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../assets/colors/colors.dart';
 
-const double LeftBorder = 15;
+const double LeftBorder = 35;
 const double RightBorder = 1;
 const double TopBorder = 5;
 const double BottomBorder = 5;
