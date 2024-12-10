@@ -107,7 +107,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                     'lib/assets/icons/accel_icon.png'),
                               ),
                               const SizedBox(width: 10),
-                              Text(
+                              const Text(
                                 'Проведение теста',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -121,7 +121,7 @@ class _RecordScreenState extends State<RecordScreen> {
                       ),
                     ),
                     Container(
-                      color: filledAccentButtonColor,
+                      color: tealDarkColor,
                       width: double.infinity,
                       height: 2,
                     ),

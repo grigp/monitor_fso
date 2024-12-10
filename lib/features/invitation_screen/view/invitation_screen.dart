@@ -3,9 +3,9 @@ import 'package:monitor_fso/uikit/monfso_button.dart';
 
 import '../../../assets/colors/colors.dart';
 
-
 class InvitationScreen extends StatefulWidget {
   const InvitationScreen({super.key, required this.title});
+
   final String title;
 
   @override
@@ -13,7 +13,6 @@ class InvitationScreen extends StatefulWidget {
 }
 
 class _InvitationScreenState extends State<InvitationScreen> {
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -30,33 +29,38 @@ class _InvitationScreenState extends State<InvitationScreen> {
               Column(
                 children: [
                   Container(
-                    color: greenBackgroundColor,
+                    color: tealBackgroundColor,
                     width: double.infinity,
-                    height: 400,
-                    child: Center(
-                      child: Image.asset('lib/assets/icons/main_icon.png'),
+                    height: 300,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 80),
+                        Center(
+                          child: Image.asset('lib/assets/icons/main_icon.png'),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
-                    color: filledAccentButtonColor,
+                    color: tealDarkColor,
                     width: double.infinity,
                     height: 3,
                   ),
-                  const SizedBox(height: 50),
-                  Text(
+                  const SizedBox(height: 70),
+                  const Text(
                     'Равновесие тела – интегральная характеристика функционального состояния организма',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.green.shade900,
+                      color: tealDarkColor,
                       fontSize: 20,
                     ),
                   ),
-                  const SizedBox(height: 60),
-                  Text(
+                  const SizedBox(height: 70),
+                  const Text(
                     'Мониторинг ФСО – залог Вашего адекватного контроля здоровья',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.green.shade900,
+                      color: tealDarkColor,
                       fontSize: 20,
                     ),
                   ),
@@ -65,50 +69,64 @@ class _InvitationScreenState extends State<InvitationScreen> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Text(''),
                   const Spacer(),
-                  Container(
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Center(
-                            child:
-                            MonfsoButton.accent(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/record');
-                                // MaterialPageRoute route = MaterialPageRoute(
-                                //   builder: (context) => const SelectDeviceScreen(
-                                //     title: 'Мои стимуляторы',
-                                //   ),
-                                //   settings: const RouteSettings(name: '/select'),
-                                // );
-                                // Navigator.of(context).push(route);
-                              },
-                              text: 'Пройти тест',
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/record');
+                          },
+                          child: SizedBox(
+                            width: 140,
+                            height: 140,
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Image.asset('lib/assets/icons/play100.png'),
+                                  const Text(
+                                    'Провести тест',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: tealDarkColor,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 30),
-                          Center(
-                            child:
-                            MonfsoButton.accent(
-                              onPressed: () {
-                                // MaterialPageRoute route = MaterialPageRoute(
-                                //   builder: (context) => const SelectDeviceScreen(
-                                //     title: 'Мои стимуляторы',
-                                //   ),
-                                //   settings: const RouteSettings(name: '/select'),
-                                // );
-                                // Navigator.of(context).push(route);
-                              },
-                              text: 'Результаты',
+                        ),
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () {},
+                          child: SizedBox(
+                            width: 140,
+                            height: 140,
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Image.asset('lib/assets/icons/hist100.png'),
+                                  const Text(
+                                    'Результаты',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: tealDarkColor,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        const Spacer(),
+                      ],
                     ),
                   ),
+                  const SizedBox(height: 50),
                 ],
               ),
             ],
