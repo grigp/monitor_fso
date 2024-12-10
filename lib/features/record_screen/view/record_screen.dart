@@ -87,7 +87,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 children: <Widget>[
                   Column(children: [
                     Container(
-                      color: greenBackgroundColor,
+                      color: tealBackgroundColor,
                       width: double.infinity,
                       height: 120,
                       child: Column(
@@ -111,7 +111,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 'Проведение теста',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Colors.green.shade900,
+                                  color: Colors.white,
                                   fontSize: 20,
                                 ),
                               ),
@@ -182,15 +182,11 @@ class _RecordScreenState extends State<RecordScreen> {
               },
               heroTag: 'Settings',
               tooltip: 'Настройки',
-              backgroundColor: filledAccentButtonColor,
-              child: const Icon(
-                Icons.settings,
-                color: greenBackgroundColor,
-              ),
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              child: Image.asset('lib/assets/icons/settings48.png'),
             ),
-          const SizedBox(
-            width: 60,
-          ),
+          const SizedBox(width: 40),
           if (!_isRecording)
             FloatingActionButton(
               onPressed: () {
@@ -198,24 +194,18 @@ class _RecordScreenState extends State<RecordScreen> {
               },
               heroTag: 'Calibrate',
               tooltip: 'Калибровка',
-              backgroundColor: filledAccentButtonColor,
-              child: const Icon(
-                Icons.center_focus_strong,
-                color: greenBackgroundColor,
-              ),
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              child: Image.asset('lib/assets/icons/zeroing48.png'),
             ),
-          const SizedBox(
-            width: 40,
-          ),
+          const SizedBox(width: 40),
           FloatingActionButton(
             onPressed: _setRecording,
             heroTag: 'Recording',
             tooltip: 'Запись',
-            backgroundColor: filledAccentButtonColor,
-            child: Icon(
-              _saveIcon,
-              color: greenBackgroundColor,
-            ),
+            foregroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            child: Image.asset('lib/assets/icons/save48.png'),
           ),
         ],
       ),

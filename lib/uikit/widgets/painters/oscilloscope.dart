@@ -42,7 +42,7 @@ class Oscilloscope extends CustomPainter {
     ..strokeWidth = 1;
   final Paint _paintAxis = Paint()..color = Colors.black87..strokeWidth = 1;
   final Paint _paintMarker = Paint()..color = Colors.red..strokeWidth = 1;
-  final Paint _paintGraph = Paint()..color = filledAccentButtonColor..strokeWidth = 1;
+  final Paint _paintGraph = Paint()..color = tealDarkColor..strokeWidth = 1;
 //  final Paint _paintGraph = Paint()..color = Colors.blue.shade900..strokeWidth = 1;
 
   Paragraph createText(String text) {

@@ -21,12 +21,12 @@ class BackScreenButton extends StatelessWidget{
         height: 50,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          color: filledAccentButtonColor, //white,
+//          color: filledAccentButtonColor, //white,
         ),
         child: const Center(
           child: Icon(
             Icons.arrow_back,
-            color: greenBackgroundColor,
+            color: Colors.white,
           ),
         ),
       ),
