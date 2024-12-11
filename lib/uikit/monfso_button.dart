@@ -35,7 +35,7 @@ class MonfsoButton extends StatelessWidget {
     this.height,
     this.icon,
   })  : _colorBackground = filledSecondaryButtonColor,
-        _colorText = filledAccentButtonColor;
+        _colorText = tealDarkColor;
 
   /// Конструктор accent.
   const MonfsoButton.accent({
@@ -45,7 +45,7 @@ class MonfsoButton extends StatelessWidget {
     this.width,
     this.height,
     this.icon,
-  })  : _colorBackground = filledAccentButtonColor,
+  })  : _colorBackground = tealDarkColor,
         _colorText = white;
 
   /// Конструктор по умолчанию
@@ -56,7 +56,7 @@ class MonfsoButton extends StatelessWidget {
     this.width,
     this.height,
     this.icon,
-  })  : _colorBackground = filledAccentButtonColor,
+  })  : _colorBackground = tealDarkColor,
         _colorText = white;
 
   /// Калбек по нажатию
