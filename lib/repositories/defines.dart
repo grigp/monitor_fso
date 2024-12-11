@@ -28,3 +28,7 @@ class DataBlock {
   });
 }
 
+///< Раделитель целой и дробной части числа при экспорте сигнала
+///< dsPoint - точка
+///< dsComma - запятая
+enum DecimalSeparator { dsPoint, dsComma }

@@ -172,6 +172,7 @@ class _RecordScreenState extends State<RecordScreen> {
               if (!_isRecording)
                 FloatingActionButton(
                   onPressed: () {
+                    Navigator.of(context).pushNamed('/settings');
 //                Navigator.of(context).pushNamed('/settings');
 //                 MaterialPageRoute route = MaterialPageRoute(
 //                   builder: (context) => SettingsScreen(
