@@ -17,10 +17,6 @@ class _InvitationScreenState extends State<InvitationScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      //   title: Text(widget.title),
-      // ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.only(bottom: 20),
@@ -31,10 +27,26 @@ class _InvitationScreenState extends State<InvitationScreen> {
                   Container(
                     color: tealBackgroundColor,
                     width: double.infinity,
-                    height: 300,
+                    height: 380,
                     child: Column(
                       children: [
                         const SizedBox(height: 80),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                          ),
+                          child: Text(
+                            'Мониторинг функционального состояния организма - ФСО',
+                            textAlign: TextAlign.center,
+                            textScaler: TextScaler.linear(1.0),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                         Center(
                           child: Image.asset('lib/assets/icons/main_icon.png'),
                         ),
@@ -46,19 +58,21 @@ class _InvitationScreenState extends State<InvitationScreen> {
                     width: double.infinity,
                     height: 3,
                   ),
-                  const SizedBox(height: 70),
+                  const SizedBox(height: 40),
                   const Text(
                     'Равновесие тела – интегральная характеристика функционального состояния организма',
                     textAlign: TextAlign.center,
+                    textScaler: TextScaler.linear(1.0),
                     style: TextStyle(
                       color: tealDarkColor,
                       fontSize: 20,
                     ),
                   ),
-                  const SizedBox(height: 70),
+                  const SizedBox(height: 40),
                   const Text(
-                    'Мониторинг ФСО – залог Вашего адекватного контроля здоровья',
+                    'Мониторинг ФСО – залог адекватного контроля здоровья',
                     textAlign: TextAlign.center,
+                    textScaler: TextScaler.linear(1.0),
                     style: TextStyle(
                       color: tealDarkColor,
                       fontSize: 20,
@@ -89,6 +103,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                                   const Text(
                                     'Провести тест',
                                     textAlign: TextAlign.center,
+                                    textScaler: TextScaler.linear(1.0),
                                     style: TextStyle(
                                       color: tealDarkColor,
                                       fontSize: 20,
@@ -112,6 +127,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                                   const Text(
                                     'Результаты',
                                     textAlign: TextAlign.center,
+                                    textScaler: TextScaler.linear(1.0),
                                     style: TextStyle(
                                       color: tealDarkColor,
                                       fontSize: 20,
@@ -126,7 +142,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
                 ],
               ),
             ],
