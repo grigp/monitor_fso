@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:monitor_fso/repositories/database/db_provider.dart';
 import 'package:monitor_fso/repositories/source/abstract_driver.dart';
 import 'package:monitor_fso/uikit/widgets/exit_program_dialog.dart';
 
@@ -307,6 +308,8 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   void _setRecording() async {
+    // var v = GetIt.I<DbProvider>().getValue();
+    // print('>>>>>> v = $v');
     _isRecording = !_isRecording;
     _recCount = 0;
     setState(() {
