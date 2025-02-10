@@ -77,108 +77,110 @@ class _RecordScreenState extends State<RecordScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-        onPopInvoked: (didPop){
-          showExitProgramDialog(context);
-        },
-        child: Scaffold(
-          body: BlocBuilder<ProcessControlBloc, RecordingState>(
-            bloc: _pcBloc,
-            builder: (context, state) {
-              if (state is ProcessGetFreq) {
-                String sTimer = getStageTime();
-                String sStage = getStageComment();
-                _freq = state.freq;
-                _min = state.min;
-                _max = state.max;
-                return Center(
-                  child: Stack(
-                    children: <Widget>[
-                      Column(children: [
-                        Container(
-                          color: tealBackgroundColor,
-                          width: double.infinity,
-                          height: 120,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 50),
-                              Row(
-                                children: [
-                                  // const SizedBox(width: 10),
-                                  // BackScreenButton(onBack: () {
-                                  //   Navigator.pop(context);
-                                  // }),
-                                  const SizedBox(width: 10),
-                                  SizedBox(
-                                    width: 70,
-                                    height: 70,
-                                    child: Image.asset(
-                                        'lib/assets/icons/accel_icon.png'),
+      onPopInvoked: (didPop) {
+        showExitProgramDialog(context);
+      },
+      child: Scaffold(
+        body: BlocBuilder<ProcessControlBloc, RecordingState>(
+          bloc: _pcBloc,
+          builder: (context, state) {
+            if (state is ProcessGetFreq) {
+              String sTimer = getStageTime();
+              String sStage = getStageComment();
+              _freq = state.freq;
+              _min = state.min;
+              _max = state.max;
+              return Center(
+                child: Stack(
+                  children: <Widget>[
+                    Column(children: [
+                      Container(
+                        color: tealBackgroundColor,
+                        width: double.infinity,
+                        height: 120,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 50),
+                            Row(
+                              children: [
+                                // const SizedBox(width: 10),
+                                // BackScreenButton(onBack: () {
+                                //   Navigator.pop(context);
+                                // }),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 70,
+                                  height: 70,
+                                  child: Image.asset(
+                                      'lib/assets/icons/accel_icon.png'),
+                                ),
+                                const SizedBox(width: 10),
+                                const Text(
+                                  'Проведение теста',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
                                   ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    'Проведение теста',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        Container(
-                          color: tealDarkColor,
-                          width: double.infinity,
-                          height: 2,
-                        ),
-                        Expanded(
-                          child: Row(children: [
-                            Expanded(
-                              child: SizedBox(
-                                height: double.infinity,
-                                child: CustomPaint(
-                                  painter: Oscilloscope(_blockView, _min, _max),
-                                  child: Text(
-                                    /// TODO: Костыль. Но как сделать, чтоб обновлялась картинка...
-                                    '${num.parse(_ax.toStringAsFixed(4))}',
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
+                      ),
+                      Container(
+                        color: tealDarkColor,
+                        width: double.infinity,
+                        height: 2,
+                      ),
+                      Expanded(
+                        child: Row(children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: double.infinity,
+                              child: CustomPaint(
+                                painter: Oscilloscope(_blockView, _min, _max),
+                                child: Text(
+                                  /// TODO: Костыль. Но как сделать, чтоб обновлялась картинка...
+                                  '${num.parse(_ax.toStringAsFixed(4))}',
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
-                          ]),
-                        ),
-                      ]),
-                      if (_isRecording)
-                        Center(
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 200),
-                              Text(sStage,
-                                  style: Theme.of(context).textTheme.displaySmall),
-                              Text(sTimer,
-                                  style: Theme.of(context).textTheme.displayLarge),
-                            ],
                           ),
+                        ]),
+                      ),
+                    ]),
+                    if (_isRecording)
+                      Center(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 200),
+                            Text(sStage,
+                                style:
+                                    Theme.of(context).textTheme.displaySmall),
+                            Text(sTimer,
+                                style:
+                                    Theme.of(context).textTheme.displayLarge),
+                          ],
                         ),
-                    ],
-                  ),
-                );
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
+                      ),
+                  ],
+                ),
               );
-            },
-          ),
-          floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (!_isRecording)
-                FloatingActionButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/settings');
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (!_isRecording)
+              FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/settings');
 //                Navigator.of(context).pushNamed('/settings');
 //                 MaterialPageRoute route = MaterialPageRoute(
 //                   builder: (context) => SettingsScreen(
@@ -188,37 +190,37 @@ class _RecordScreenState extends State<RecordScreen> {
 //                   settings: const RouteSettings(name: '/select'),
 //                 );
 //                 Navigator.of(context).push(route);
-                  },
-                  heroTag: 'Settings',
-                  tooltip: 'Настройки',
-                  foregroundColor: Theme.of(context).colorScheme.primary,
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  child: Image.asset('lib/assets/icons/settings48.png'),
-                ),
-              const SizedBox(width: 40),
-              if (!_isRecording)
-                FloatingActionButton(
-                  onPressed: () {
-                    _pcBloc.add(CalibrationEvent(func: onEndCalibration));
-                  },
-                  heroTag: 'Calibrate',
-                  tooltip: 'Калибровка',
-                  foregroundColor: Theme.of(context).colorScheme.primary,
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  child: Image.asset('lib/assets/icons/zeroing48.png'),
-                ),
-              const SizedBox(width: 40),
-              FloatingActionButton(
-                onPressed: _setRecording,
-                heroTag: 'Recording',
-                tooltip: 'Запись',
+                },
+                heroTag: 'Settings',
+                tooltip: 'Настройки',
                 foregroundColor: Theme.of(context).colorScheme.primary,
                 backgroundColor: Theme.of(context).colorScheme.surface,
-                child: Image.asset('lib/assets/icons/save48.png'),
+                child: Image.asset('lib/assets/icons/settings48.png'),
               ),
-            ],
-          ),
+            const SizedBox(width: 40),
+            if (!_isRecording)
+              FloatingActionButton(
+                onPressed: () {
+                  _pcBloc.add(CalibrationEvent(func: onEndCalibration));
+                },
+                heroTag: 'Calibrate',
+                tooltip: 'Калибровка',
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                child: Image.asset('lib/assets/icons/zeroing48.png'),
+              ),
+            const SizedBox(width: 40),
+            FloatingActionButton(
+              onPressed: _setRecording,
+              heroTag: 'Recording',
+              tooltip: 'Запись',
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              child: Image.asset('lib/assets/icons/save48.png'),
+            ),
+          ],
         ),
+      ),
     );
   }
 
@@ -315,15 +317,15 @@ class _RecordScreenState extends State<RecordScreen> {
       }
     });
 
-    //! Остановили запись
-    // if (!_isRecording) {  TODO: открыть
-    //   _stage = RecordStages.stgNone;
-    //   await _database.setParams(_freq);
-    //   Navigator.of(context).pushNamed('/result');
-    // } else {
-    //   _stage = RecordStages.stgWait1;
-    //   _database.clear();
-    // }
+    ///! Остановили запись
+    if (!_isRecording) {
+      _stage = RecordStages.stgNone;
+//      await _database.setParams(_freq);
+      Navigator.of(context).pushNamed('/result');
+    } else {
+      _stage = RecordStages.stgWait1;
+//      _database.clear();
+    }
   }
 
   String getStageTime() {
@@ -332,8 +334,7 @@ class _RecordScreenState extends State<RecordScreen> {
       return '${num.parse((_recCount / _freq).toStringAsFixed(1))} сек';
     } else if (_stage == RecordStages.stgWait1) {
       return '${num.parse((_timeWait - (_recCount / _freq)).toStringAsFixed(1))} сек';
-    }
-    if (_stage == RecordStages.stgWait2) {
+    } else if (_stage == RecordStages.stgWait2) {
       return '${num.parse((1 - (_recCount / _freq)).toStringAsFixed(1))} сек';
     }
     return '';
@@ -346,8 +347,7 @@ class _RecordScreenState extends State<RecordScreen> {
       return 'Калибровка';
     } else if (_stage == RecordStages.stgWait2) {
       return 'До записи';
-    }
-    if (_stage == RecordStages.stgRecording) {
+    } else if (_stage == RecordStages.stgRecording) {
       return 'Запись $_timeRec сек';
     }
     return '';
