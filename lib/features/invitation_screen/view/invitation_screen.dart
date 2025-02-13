@@ -1,7 +1,10 @@
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/uikit/monfso_button.dart';
 
 import '../../../assets/colors/colors.dart';
+import '../../../repositories/database/db_provider.dart';
 
 class InvitationScreen extends StatefulWidget {
   const InvitationScreen({super.key, required this.title});
@@ -116,7 +119,10 @@ class _InvitationScreenState extends State<InvitationScreen> {
                         ),
                         const Spacer(),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: (){
+                            var v = GetIt.I<DbProvider>().getValue();
+                            print('>>>>>> v = $v');
+                          },
                           child: SizedBox(
                             width: 140,
                             height: 140,

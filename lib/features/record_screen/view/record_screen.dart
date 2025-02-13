@@ -308,8 +308,6 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   void _setRecording() async {
-    // var v = GetIt.I<DbProvider>().getValue();
-    // print('>>>>>> v = $v');
     _isRecording = !_isRecording;
     _recCount = 0;
     setState(() {

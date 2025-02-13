@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -15,8 +17,10 @@ void main() {
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   ).then((_) {
+//    FlutterError.onError = (details) => (){};
+    // runZonedGuarded(() => runApp(const MonitorFsoApp()), (e, st) {
+    //
+    // });
     runApp(const MonitorFsoApp());
   });
-
-
 }
