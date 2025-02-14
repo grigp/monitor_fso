@@ -44,7 +44,7 @@ class DbProvider {
       _db = await openDatabase(_dbPath, version: 1,
           onCreate: (Database db, int version) async {
         await _db.execute(
-            'CREATE TABLE Tests (uid STRING PRIMARY KEY, dt STRING, methodicUid STRING, kfr REAL, data BLOB NOT NULL)');
+            'CREATE TABLE Tests (uid STRING PRIMARY KEY, dt STRING, methodicUid STRING, kfr REAL, freq REAL, data BLOB NOT NULL)');
       });
     }
   }
@@ -57,6 +57,7 @@ class DbProvider {
       'dt': rec.dt.toString(),
       'methodicUid': rec.methodicUid,
       'kfr': rec.kfr,
+      'freq': rec.freq,
       'data': _dataEncode(rec.data),
     });
     // await _db.transaction((txn) async {
@@ -78,15 +79,17 @@ class DbProvider {
   Future<List<RecordTest>> getListTests() async {
     await _openDB();
     List<Map> list =
-        await _db.rawQuery('SELECT uid, dt, methodicUid, kfr FROM Tests');
+        await _db.rawQuery('SELECT uid, dt, methodicUid, kfr, freq FROM Tests');
     List<RecordTest> retval = [];
     for (int i = 0; i < list.length; ++i) {
       retval.add(
         RecordTest(
-            uid: list[i]['uid'],
-            dt: DateTime.parse(list[i]['dt']),
-            methodicUid: list[i]['methodicUid'],
-            kfr: list[i]['kfr']),
+          uid: list[i]['uid'],
+          dt: DateTime.parse(list[i]['dt']),
+          methodicUid: list[i]['methodicUid'],
+          kfr: list[i]['kfr'],
+          freq: list[i]['freq'],
+        ),
       );
     }
     return retval;
@@ -106,6 +109,11 @@ class DbProvider {
   Future setKfr(String testUid, double kfr) async {
     await _openDB();
     await _db.rawQuery('UPDATE Tests SET kfr = $kfr WHERE uid = $testUid');
+  }
+
+  Future deleteTest(String testUid) async {
+    await _openDB();
+    await _db.rawQuery('DELETE FROM Tests WHERE uid = $testUid');
   }
 
   String getValue() {

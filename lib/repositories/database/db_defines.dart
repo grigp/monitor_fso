@@ -6,6 +6,7 @@ class RecordTest {
   DateTime dt;
   String methodicUid;
   double kfr;
+  double freq;
   late List<DataBlock> data;
 
   RecordTest({
@@ -13,6 +14,7 @@ class RecordTest {
     required this.dt,
     required this.methodicUid,
     required this.kfr,
+    required this.freq,
   }) {
     data.clear();
   }
@@ -30,3 +32,5 @@ class RecordTest {
     return data[idx];
   }
 }
+
+const String uidMethodicRec = '{8193a154-5302-456c-b5c7-1c8957b36635}';

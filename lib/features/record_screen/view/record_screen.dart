@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
+import 'package:monitor_fso/repositories/database/test_data.dart';
 import 'package:monitor_fso/repositories/source/abstract_driver.dart';
 import 'package:monitor_fso/uikit/widgets/exit_program_dialog.dart';
 
@@ -28,8 +29,6 @@ class RecordScreen extends StatefulWidget {
 class _RecordScreenState extends State<RecordScreen> {
   final _pcBloc = ProcessControlBloc(GetIt.I<AbstractDriver>());
 
-//  final _database = GetIt.I<AbstractDatabaseRepository>();
-
   double _ax = 0;
   double _ay = 0;
   double _az = 0;
@@ -46,6 +45,9 @@ class _RecordScreenState extends State<RecordScreen> {
   int _timeRec = 20;
   RecordStages _stage = RecordStages.stgNone;
 
+//  final _database = GetIt.I<AbstractDatabaseRepository>();
+  late TestData _testData;
+
   List<DataBlock> _block = [];
 
   late AudioPlayer player = AudioPlayer();
@@ -60,6 +62,7 @@ class _RecordScreenState extends State<RecordScreen> {
 
   @override
   void initState() {
+    _testData = TestData.fromRecord(_freq.toDouble());
     _pcBloc.add(InitSendDataEvent(func: getData));
     getSettings();
     player = AudioPlayer();
@@ -259,6 +262,8 @@ class _RecordScreenState extends State<RecordScreen> {
 
     if (_isRecording) {
       if (_stage == RecordStages.stgRecording) {
+        _testData.addValue(
+            DataBlock(ax: ax, ay: ay, az: az, gx: gx, gy: gy, gz: gz));
         // await _database TODO: открыть
         //     .add(DataBlock(ax: ax, ay: ay, az: az, gx: gx, gy: gy, gz: gz));
       }
@@ -325,6 +330,7 @@ class _RecordScreenState extends State<RecordScreen> {
       Navigator.of(context).pushNamed('/result');
     } else {
       _stage = RecordStages.stgWait1;
+      _testData.clear();
 //      _database.clear();
     }
   }
