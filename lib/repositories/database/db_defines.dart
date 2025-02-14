@@ -5,12 +5,14 @@ class RecordTest {
   String uid;
   DateTime dt;
   String methodicUid;
+  double kfr;
   late List<DataBlock> data;
 
   RecordTest({
     required this.uid,
     required this.dt,
     required this.methodicUid,
+    required this.kfr,
   }) {
     data.clear();
   }
