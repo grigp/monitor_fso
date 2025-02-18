@@ -14,9 +14,14 @@ class _ResultsScreenState extends State<ResultsScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) {
+          return;
+        }
         Future.delayed(Duration.zero, () {
-          Navigator.of(context).popUntil(ModalRoute.withName('/'));
+          if (!context.mounted) return;
+          Navigator.of(context).popUntil(ModalRoute.withName('/'),
+          );
         });
       },
       child: Scaffold(

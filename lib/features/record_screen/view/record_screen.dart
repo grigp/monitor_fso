@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:monitor_fso/features/test_result_screen/view/test_result_screen.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
 import 'package:monitor_fso/repositories/database/test_data.dart';
 import 'package:monitor_fso/repositories/source/abstract_driver.dart';
@@ -13,6 +14,7 @@ import '../../../assets/colors/colors.dart';
 import '../../../repositories/defines.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/painters/oscilloscope.dart';
+import '../../settings_screen/view/settings_screen.dart';
 import '../bloc/recording_bloc.dart';
 
 enum RecordStages { stgNone, stgWait1, stgCalibrating, stgWait2, stgRecording }
@@ -81,8 +83,14 @@ class _RecordScreenState extends State<RecordScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
-        showExitProgramDialog(context);
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) {
+          return;
+        }
+        Future.delayed(Duration.zero, () {
+          if (!context.mounted) return;
+          showExitProgramDialog(context);
+        });
       },
       child: Scaffold(
         body: BlocBuilder<ProcessControlBloc, RecordingState>(
@@ -184,16 +192,16 @@ class _RecordScreenState extends State<RecordScreen> {
             if (!_isRecording)
               FloatingActionButton(
                 onPressed: () {
+//                  Navigator.of(context).pushNamed('/settings');
                   Navigator.of(context).pushNamed('/settings');
-//                Navigator.of(context).pushNamed('/settings');
-//                 MaterialPageRoute route = MaterialPageRoute(
-//                   builder: (context) => SettingsScreen(
-//                     title: 'Мои стимуляторы',
-//                     onAccept: _onSettingsAccept,
-//                   ),
-//                   settings: const RouteSettings(name: '/select'),
-//                 );
-//                 Navigator.of(context).push(route);
+                  MaterialPageRoute route = MaterialPageRoute(
+                    builder: (context) => SettingsScreen(
+                      title: 'Настройки',
+                      onAccept: _onSettingsAccept,
+                    ),
+                    settings: const RouteSettings(name: '/select'),
+                  );
+                  Navigator.of(context).push(route);
                 },
                 heroTag: 'Settings',
                 tooltip: 'Настройки',
@@ -286,12 +294,8 @@ class _RecordScreenState extends State<RecordScreen> {
           _recCount = 0;
           _stage = RecordStages.stgNone;
           // await _database.setParams(_freq);  TODO: открыть
-          Navigator.of(context).pushNamed('/result');
+          _finishRecord();
           _playWithOK();
-          // AssetsAudioPlayer.newPlayer().open(
-          //   Audio('sounds/ok.mp3'),
-          //   autoStart: true,
-          // );
           setState(() {
             _saveIcon = Icons.save_outlined;
           });
@@ -327,7 +331,7 @@ class _RecordScreenState extends State<RecordScreen> {
     if (!_isRecording) {
       _stage = RecordStages.stgNone;
 //      await _database.setParams(_freq);
-      Navigator.of(context).pushNamed('/result');
+      _finishRecord();
     } else {
       _stage = RecordStages.stgWait1;
       _testData.clear();
@@ -358,6 +362,20 @@ class _RecordScreenState extends State<RecordScreen> {
       return 'Запись $_timeRec сек';
     }
     return '';
+  }
+
+  void _finishRecord() async {
+    await _testData.finish();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TestResultScreen(
+          title: 'Результаты теста',
+          testData: _testData,
+        ),
+      ),
+    );
+//          Navigator.of(context).pushNamed('/result');
   }
 
   void _onSettingsAccept() {
