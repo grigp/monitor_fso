@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:monitor_fso/repositories/database/db_defines.dart';
+import 'package:monitor_fso/repositories/database/db_provider.dart';
 
+import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/test_data.dart';
+import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/painters/graph.dart';
 import '../../../uikit/widgets/painters/histogram.dart';
 
@@ -35,48 +40,104 @@ class _TestResultScreenState extends State<TestResultScreen> {
         });
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Text(
-                    'КФР = ${num.parse(widget.testData.kfr().toStringAsFixed(0))} %',
-                    style: Theme.of(context).textTheme.headlineMedium),
-                SizedBox(
-                  height: 150,
-                  width: double.infinity,
-                  child: CustomPaint(
-                    painter: Histogram(data: widget.testData.diagram(), max: 100),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: Row(
+        // appBar: AppBar(
+        //   backgroundColor: tealBackgroundColor,
+        //   title: Text(widget.title),
+        // ),
+        body: Column(
+          children: [
+            Container(
+              color: tealBackgroundColor,
+              width: double.infinity,
+              height: 120,
+              child: Column(
+                children: [
+                  const SizedBox(height: 50),
+                  Row(
                     children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: double.infinity,
-                          child: CustomPaint(
-                            painter: Graph(
-                              widget.testData.data(),
-                              widget.testData.freq().toInt(),
-                            ),
-                          ),
+                      const SizedBox(width: 10),
+                      BackScreenButton(onBack: () {
+                        Navigator.pop(context);
+                      }),
+                      // const SizedBox(width: 10),
+                      SizedBox(
+                        width: 70,
+                        height: 70,
+                        child: Image.asset('lib/assets/icons/hist60.png'),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        widget.title,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
                         ),
-                      )
+                      ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+            Text(
+              'КФР = ${num.parse(widget.testData.kfr().toStringAsFixed(0))} %',
+              style: const TextStyle(
+                color: tealDarkColor,
+                fontStyle: FontStyle.italic,
+                fontSize: 44,
+                fontWeight: FontWeight.w700,
+              ),
+//                style: Theme.of(context).textTheme.displaySmall,
+            ),
+            SizedBox(
+              height: 150,
+              width: double.infinity,
+              child: CustomPaint(
+                painter: Histogram(data: widget.testData.diagram(), max: 100),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: SizedBox(
+                height: double.infinity,
+                width: double.infinity,
+                child: CustomPaint(
+                  painter: Graph(
+                    widget.testData.data(),
+                    widget.testData.freq().toInt(),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (!widget.testData.isSaved())
+              FloatingActionButton(
+                onPressed: _onSaveTest,
+                heroTag: 'Save',
+                tooltip: 'Сохранить',
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                child: Image.asset('lib/assets/icons/save48.png'),
+              ),
+          ],
         ),
       ),
     );
+  }
+
+  void _onSaveTest() {
+    var rec = RecordTest(
+        uid: widget.testData.uid(),
+        dt: widget.testData.dateTime(),
+        methodicUid: uidMethodicRec,
+        kfr: widget.testData.kfr(),
+        freq:  widget.testData.freq(),
+    );
+    GetIt.I<DbProvider>().addTest(rec);
+    widget.testData.setSaved();
   }
 }

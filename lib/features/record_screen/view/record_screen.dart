@@ -228,7 +228,9 @@ class _RecordScreenState extends State<RecordScreen> {
               tooltip: 'Запись',
               foregroundColor: Theme.of(context).colorScheme.primary,
               backgroundColor: Theme.of(context).colorScheme.surface,
-              child: Image.asset('lib/assets/icons/save48.png'),
+              child: _isRecording
+                  ? Image.asset('lib/assets/icons/stop48.png')
+                  : Image.asset('lib/assets/icons/play48.png'),
             ),
           ],
         ),
@@ -330,13 +332,11 @@ class _RecordScreenState extends State<RecordScreen> {
     ///! Остановили запись
     if (!_isRecording) {
       _stage = RecordStages.stgNone;
-//      await _database.setParams(_freq);
-      _finishRecord();
+//      _finishRecord();
     } else {
       _stage = RecordStages.stgWait1;
-      _testData.clear();
-//      _database.clear();
     }
+    _testData.clear();
   }
 
   String getStageTime() {

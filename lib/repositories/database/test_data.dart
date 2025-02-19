@@ -14,6 +14,7 @@ class TestData {
 
   late bool _calculated = false;
   late KfrCalculator _calculator;
+  bool _isSaved = false;
 
   // bool _saved = false;
 
@@ -27,6 +28,7 @@ class TestData {
     obj._freq = freq;
     obj._data.clear();
     obj._mode = TestInfoMode.timRecording;
+    obj._isSaved = false;
 
     return obj;
   }
@@ -39,6 +41,7 @@ class TestData {
     obj._freq = rt.freq;
     obj._data = rt.data;
     obj._mode = TestInfoMode.timWorking;
+    obj._isSaved = true;
 
     /// Вызвать расчет показателей для их перерасчета
     /// Надо еще и сохранить новые значения
@@ -105,6 +108,14 @@ class TestData {
   /// Возвращает частоту дискретизации сигналов теста
   double freq() {
     return _freq;
+  }
+
+  bool isSaved () {
+    return _isSaved;
+  }
+
+  void setSaved() {
+    _isSaved = true;
   }
 
   List<DataBlock> data() {

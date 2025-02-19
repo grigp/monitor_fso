@@ -75,6 +75,9 @@ flutter:
     - lib/assets/icons/save48.png
     - lib/assets/icons/settings48.png
     - lib/assets/icons/zeroing48.png
+    - lib/assets/icons/play48.png
+    - lib/assets/icons/stop48.png
+    - lib/assets/icons/hist60.png
     - lib/assets/icons/hist100.png
     - lib/assets/icons/play100.png
 
