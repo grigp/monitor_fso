@@ -7,11 +7,8 @@ import '../../../repositories/defines.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({
-    super.key,
-    required this.title,
-    required this.onAccept
-  });
+  const SettingsScreen(
+      {super.key, required this.title, required this.onAccept});
 
   final String title;
   final Function onAccept;
@@ -37,178 +34,180 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-          children: [
-            Container(
-              color: tealBackgroundColor,
-              width: double.infinity,
-              height: 120,
-              child: Column(
-                children: [
-                  const SizedBox(height: 50),
-                  Row(
-                    children: [
-                      BackScreenButton(onBack: () {
+        children: [
+          Container(
+            color: tealBackgroundColor,
+            width: double.infinity,
+            height: 120,
+            child: Column(
+              children: [
+                const SizedBox(height: 50),
+                Row(
+                  children: [
+                    BackScreenButton(
+                      onBack: () {
                         Navigator.pop(context);
-                      }),
-                      const SizedBox(width: 10),
-                      SizedBox(
-                        width: 70,
-                        height: 70,
-                        child: Image.asset(
-                            'lib/assets/icons/accel_icon.png'),
+                      },
+                      hasBackground: false,
+                    ),
+                    const SizedBox(width: 10),
+                    SizedBox(
+                      width: 70,
+                      height: 70,
+                      child: Image.asset('lib/assets/icons/accel_icon.png'),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Проведение теста',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
                       ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'Проведение теста',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Row(
+            children: [
+              const SizedBox(width: 20),
+              const Text(
+                'Время ожидания, с',
+                style: TextStyle(fontSize: 18),
               ),
-            ),
-            Row(
-              children: [
-                const SizedBox(width: 20),
-                const Text(
-                  'Время ожидания, с',
-                  style: TextStyle(fontSize: 18),
-                ),
-                const Spacer(),
-                if (_isReady)
-                  SizedBox(
-                    width: 100,
-                    child: TextField(
-                      controller: _textTimeWait,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      inputFormatters: [
-                        NumberTextInputFormatter(
-                          integerDigits: 2,
-                          decimalDigits: 0,
-                          maxValue: '20',
-                          allowNegative: false,
-                        )
-                      ],
-                      onChanged: (String value) {
-                        _timeWait = int.tryParse(value)!;
-                      },
-                      keyboardType: TextInputType.number,
-                    ),
+              const Spacer(),
+              if (_isReady)
+                SizedBox(
+                  width: 100,
+                  child: TextField(
+                    controller: _textTimeWait,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    inputFormatters: [
+                      NumberTextInputFormatter(
+                        integerDigits: 2,
+                        decimalDigits: 0,
+                        maxValue: '20',
+                        allowNegative: false,
+                      )
+                    ],
+                    onChanged: (String value) {
+                      _timeWait = int.tryParse(value)!;
+                    },
+                    keyboardType: TextInputType.number,
                   ),
-                const SizedBox(width: 20),
-              ],
-            ),
-            Row(
-              children: [
-                const SizedBox(width: 20),
-                const Text(
-                  'Время калибровки, с',
-                  style: TextStyle(fontSize: 18),
                 ),
-                const Spacer(),
-                if (_isReady)
-                  SizedBox(
-                    width: 100,
-                    child: TextField(
-                      controller: _textTimeCalibr,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      inputFormatters: [
-                        NumberTextInputFormatter(
-                          integerDigits: 2,
-                          decimalDigits: 0,
-                          maxValue: '10',
-                          allowNegative: false,
-                        )
-                      ],
-                      onChanged: (String value) {
-                        _timeCalibr = int.tryParse(value)!;
-                      },
-                      keyboardType: TextInputType.number,
-                    ),
+              const SizedBox(width: 20),
+            ],
+          ),
+          Row(
+            children: [
+              const SizedBox(width: 20),
+              const Text(
+                'Время калибровки, с',
+                style: TextStyle(fontSize: 18),
+              ),
+              const Spacer(),
+              if (_isReady)
+                SizedBox(
+                  width: 100,
+                  child: TextField(
+                    controller: _textTimeCalibr,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    inputFormatters: [
+                      NumberTextInputFormatter(
+                        integerDigits: 2,
+                        decimalDigits: 0,
+                        maxValue: '10',
+                        allowNegative: false,
+                      )
+                    ],
+                    onChanged: (String value) {
+                      _timeCalibr = int.tryParse(value)!;
+                    },
+                    keyboardType: TextInputType.number,
                   ),
-                const SizedBox(width: 20),
-              ],
-            ),
-            Row(
-              children: [
-                const SizedBox(width: 20),
-                const Text(
-                  'Время записи, с',
-                  style: TextStyle(fontSize: 18),
                 ),
-                const Spacer(),
-                if (_isReady)
-                  SizedBox(
-                    width: 100,
-                    child: TextField(
-                      controller: _textTimeRec,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      inputFormatters: [
-                        NumberTextInputFormatter(
-                          integerDigits: 2,
-                          decimalDigits: 0,
-                          maxValue: '60',
-                          allowNegative: false,
-                        )
-                      ],
-                      onChanged: (String value) {
-                        _timeRec = int.tryParse(value)!;
-                      },
-                      keyboardType: TextInputType.number,
-                    ),
+              const SizedBox(width: 20),
+            ],
+          ),
+          Row(
+            children: [
+              const SizedBox(width: 20),
+              const Text(
+                'Время записи, с',
+                style: TextStyle(fontSize: 18),
+              ),
+              const Spacer(),
+              if (_isReady)
+                SizedBox(
+                  width: 100,
+                  child: TextField(
+                    controller: _textTimeRec,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    inputFormatters: [
+                      NumberTextInputFormatter(
+                        integerDigits: 2,
+                        decimalDigits: 0,
+                        maxValue: '60',
+                        allowNegative: false,
+                      )
+                    ],
+                    onChanged: (String value) {
+                      _timeRec = int.tryParse(value)!;
+                    },
+                    keyboardType: TextInputType.number,
                   ),
-                const SizedBox(width: 20),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Разделитель частей числа',
-              style: TextStyle(fontSize: 20),
-            ),
-            SegmentedButton<DecimalSeparator>(
-              segments: const <ButtonSegment<DecimalSeparator>>[
-                ButtonSegment<DecimalSeparator>(
-                  value: DecimalSeparator.dsPoint,
-                  label: Text('Точка'),
                 ),
-                ButtonSegment<DecimalSeparator>(
-                  value: DecimalSeparator.dsComma,
-                  label: Text('Запятая'),
-                ),
-              ],
-              selected: <DecimalSeparator>{_ds},
-              onSelectionChanged: (Set<DecimalSeparator> newSelection) {
-                setState(() {
-                  _ds = newSelection.first;
-                });
-              },
-            ),
-            const Expanded(child: SizedBox(height: double.infinity)),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    await saveValues();
-                    await widget.onAccept();
+              const SizedBox(width: 20),
+            ],
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Разделитель частей числа',
+            style: TextStyle(fontSize: 20),
+          ),
+          SegmentedButton<DecimalSeparator>(
+            segments: const <ButtonSegment<DecimalSeparator>>[
+              ButtonSegment<DecimalSeparator>(
+                value: DecimalSeparator.dsPoint,
+                label: Text('Точка'),
+              ),
+              ButtonSegment<DecimalSeparator>(
+                value: DecimalSeparator.dsComma,
+                label: Text('Запятая'),
+              ),
+            ],
+            selected: <DecimalSeparator>{_ds},
+            onSelectionChanged: (Set<DecimalSeparator> newSelection) {
+              setState(() {
+                _ds = newSelection.first;
+              });
+            },
+          ),
+          const Expanded(child: SizedBox(height: double.infinity)),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  await saveValues();
+                  await widget.onAccept();
+                  Navigator.of(context).pop();
+                },
+                child: Text('Сохранить',
+                    style: Theme.of(context).textTheme.headlineSmall),
+              ),
+              ElevatedButton(
+                  onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('Сохранить',
-                      style: Theme.of(context).textTheme.headlineSmall),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Отмена',
-                        style: Theme.of(context).textTheme.headlineSmall))
-              ],
-            )
-          ],
-        ),
+                  child: Text('Отмена',
+                      style: Theme.of(context).textTheme.headlineSmall))
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -265,5 +264,4 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _textTimeRec.dispose();
     super.dispose();
   }
-
 }

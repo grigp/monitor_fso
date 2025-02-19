@@ -5,6 +5,7 @@ import 'package:monitor_fso/uikit/monfso_button.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_provider.dart';
+import '../../results_screen/view/results_screen.dart';
 
 class InvitationScreen extends StatefulWidget {
   const InvitationScreen({super.key, required this.title});
@@ -120,8 +121,14 @@ class _InvitationScreenState extends State<InvitationScreen> {
                         const Spacer(),
                         GestureDetector(
                           onTap: (){
-                            var v = GetIt.I<DbProvider>().getValue();
-                            print('>>>>>> v = $v');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ResultsScreen(
+                                  title: 'Результаты тестов',
+                                ),
+                              ),
+                            );
                           },
                           child: SizedBox(
                             width: 140,

@@ -72,6 +72,7 @@ flutter:
   assets:
     - lib/assets/icons/main_icon.png
     - lib/assets/icons/accel_icon.png
+    - lib/assets/icons/res_test.png
     - lib/assets/icons/save48.png
     - lib/assets/icons/settings48.png
     - lib/assets/icons/zeroing48.png

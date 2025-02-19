@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:monitor_fso/features/results_screen/view/results_screen.dart';
 import 'package:monitor_fso/repositories/database/db_defines.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
 
@@ -34,9 +35,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
         }
         Future.delayed(Duration.zero, () {
           if (!context.mounted) return;
-          Navigator.of(context).popUntil(
-            ModalRoute.withName('/'),
-          );
+          _closeScreen();
         });
       },
       child: Scaffold(
@@ -56,14 +55,17 @@ class _TestResultScreenState extends State<TestResultScreen> {
                   Row(
                     children: [
                       const SizedBox(width: 10),
-                      BackScreenButton(onBack: () {
-                        Navigator.pop(context);
-                      }),
+                      BackScreenButton(
+                        onBack: () {
+                          _closeScreen();
+                        },
+                        hasBackground: false,
+                      ),
                       // const SizedBox(width: 10),
                       SizedBox(
                         width: 70,
                         height: 70,
-                        child: Image.asset('lib/assets/icons/hist60.png'),
+                        child: Image.asset('lib/assets/icons/res_test.png'),
                       ),
                       const SizedBox(width: 10),
                       Text(
@@ -131,13 +133,24 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   void _onSaveTest() {
     var rec = RecordTest(
-        uid: widget.testData.uid(),
-        dt: widget.testData.dateTime(),
-        methodicUid: uidMethodicRec,
-        kfr: widget.testData.kfr(),
-        freq:  widget.testData.freq(),
+      uid: widget.testData.uid(),
+      dt: widget.testData.dateTime(),
+      methodicUid: uidMethodicRec,
+      kfr: widget.testData.kfr(),
+      freq: widget.testData.freq(),
     );
     GetIt.I<DbProvider>().addTest(rec);
     widget.testData.setSaved();
+  }
+
+  void _closeScreen() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ResultsScreen(
+          title: 'Результаты тестов',
+        ),
+      ),
+    );
   }
 }

@@ -116,9 +116,13 @@ class _RecordScreenState extends State<RecordScreen> {
                             Row(
                               children: [
                                 // const SizedBox(width: 10),
-                                // BackScreenButton(onBack: () {
-                                //   Navigator.pop(context);
-                                // }),
+                                BackScreenButton(
+                                  onBack: () {
+                                    showExitProgramDialog(context);
+                                  },
+                                  hasBackground: false,
+                                  isClose: true,
+                                ),
                                 const SizedBox(width: 10),
                                 SizedBox(
                                   width: 70,
