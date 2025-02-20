@@ -139,8 +139,12 @@ class _TestResultScreenState extends State<TestResultScreen> {
       kfr: widget.testData.kfr(),
       freq: widget.testData.freq(),
     );
+    rec.data = widget.testData.data();
+
     GetIt.I<DbProvider>().addTest(rec);
-    widget.testData.setSaved();
+    setState(() {
+      widget.testData.setSaved();
+    });
   }
 
   void _closeScreen() async {

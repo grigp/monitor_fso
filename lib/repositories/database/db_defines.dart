@@ -7,7 +7,7 @@ class RecordTest {
   String methodicUid;
   double kfr;
   double freq;
-  late List<DataBlock> data;
+  late List<DataBlock> data = [];
 
   RecordTest({
     required this.uid,
@@ -33,4 +33,4 @@ class RecordTest {
   }
 }
 
-const String uidMethodicRec = '{8193a154-5302-456c-b5c7-1c8957b36635}';
+const String uidMethodicRec = '8193a154-5302-456c-b5c7-1c8957b36635';

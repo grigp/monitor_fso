@@ -43,7 +43,7 @@ class DbProvider {
       _dbPath = '${await getDatabasesPath()}/data/database.db';
       _db = await openDatabase(_dbPath, version: 1,
           onCreate: (Database db, int version) async {
-        await _db.execute(
+        await db.execute(
             'CREATE TABLE Tests (uid STRING PRIMARY KEY, dt STRING, methodicUid STRING, kfr REAL, freq REAL, data BLOB NOT NULL)');
       });
     }
