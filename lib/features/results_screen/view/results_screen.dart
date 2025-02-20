@@ -5,8 +5,10 @@ import 'package:monitor_fso/repositories/database/db_provider.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_defines.dart';
+import '../../../repositories/database/test_data.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/exit_program_dialog.dart';
+import '../../test_result_screen/view/test_result_screen.dart';
 
 class ResultsScreen extends StatefulWidget {
   const ResultsScreen({super.key, required this.title});
@@ -140,7 +142,9 @@ class _ResultsScreenState extends State<ResultsScreen> {
           (test, index) => TestTitle(
             test: test,
             isLast: index == _tests.length - 1,
-            onTap: () async {},
+            onTap: (RecordTest test) async {
+              _openTest(context, test);
+            },
           ),
         )
         .toList();
@@ -158,6 +162,23 @@ class _ResultsScreenState extends State<ResultsScreen> {
   void _onDeleteTest() {}
 
   void _onOpenTest() {}
+
+  void _openTest(BuildContext context, RecordTest test) async {
+    test.data = await GetIt.I<DbProvider>().getTestData(test.uid);
+    var testData = TestData.fromDb(test);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TestResultScreen(
+          title: 'Результаты теста',
+          testData: testData,
+        ),
+      ),
+    );
+//          Navigator.of(context).pushNamed('/result');
+  }
+
 }
 
 extension ExtendedIterable<E> on Iterable<E> {

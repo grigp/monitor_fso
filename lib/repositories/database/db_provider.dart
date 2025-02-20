@@ -99,10 +99,11 @@ class DbProvider {
   Future<List<DataBlock>> getTestData(String testUid) async {
     await _openDB();
     List<Map<String, dynamic>> testData =
-        await _db.query('Tests', where: "uid LIKE '%$testUid%'");
-    assert(testData.length != 1, 'Тест не найден. test uid: $testUid');
+        await _db.rawQuery('SELECT * FROM Tests WHERE uid = \'$testUid\'');
+    assert(testData.length == 1, 'Тест не найден. test uid: $testUid');
     Uint8List data = testData[0]['data'];
-    return _dataDecode(data);
+    var db = _dataDecode(data);
+    return db;
   }
 
   /// Обновляет значение КФР для теста
@@ -170,22 +171,25 @@ class DbProvider {
     double gy = 0;
     double gz = 0;
 
+    int n = 0;
+
     for (int i = 0; i < data.length; i += 8) {
-      if (i % 6 == 0) {
+      if (n % 6 == 0) {
         ax = bdR.getFloat64(i);
-      } else if (i % 6 == 1) {
+      } else if (n % 6 == 1) {
         ay = bdR.getFloat64(i);
-      } else if (i % 6 == 2) {
+      } else if (n % 6 == 2) {
         az = bdR.getFloat64(i);
-      } else if (i % 6 == 3) {
+      } else if (n % 6 == 3) {
         gx = bdR.getFloat64(i);
-      } else if (i % 6 == 4) {
+      } else if (n % 6 == 4) {
         gy = bdR.getFloat64(i);
-      } else if (i % 6 == 5) {
+      } else if (n % 6 == 5) {
         gz = bdR.getFloat64(i);
         var block = DataBlock(ax: ax, ay: ay, az: az, gx: gx, gy: gy, gz: gz);
         retval.add(block);
       }
+      ++n;
     }
     return retval;
   }

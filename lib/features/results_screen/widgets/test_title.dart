@@ -13,7 +13,8 @@ class TestTitle extends StatefulWidget {
 
   final RecordTest test;
   final bool isLast;
-  final VoidCallback? onTap;
+//  final VoidCallback? onTap;
+  final Function onTap;
 
   @override
   State<TestTitle> createState() => _TestTitleState();
@@ -25,7 +26,8 @@ class _TestTitleState extends State<TestTitle> {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        widget.onTap?.call();
+        widget.onTap(widget.test);
+//        widget.onTap?.call(widget.test);
       },
       child: _buildTitle(context, theme),
     );
@@ -70,7 +72,7 @@ class _TestTitleState extends State<TestTitle> {
                   child: Column(
                 children: [
                   Text(
-                    'КФР = ${widget.test.kfr.toInt()}%',
+                    'КФР = ${num.parse(widget.test.kfr.toStringAsFixed(0))}%',
                     style: theme.textTheme.titleLarge,
                     overflow: TextOverflow.ellipsis,
                     textScaler: const TextScaler.linear(1.0),
