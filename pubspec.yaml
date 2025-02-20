@@ -78,6 +78,9 @@ flutter:
     - lib/assets/icons/zeroing48.png
     - lib/assets/icons/play48.png
     - lib/assets/icons/stop48.png
+    - lib/assets/icons/hist48.png
+    - lib/assets/icons/res_test48.png
+    - lib/assets/icons/delete48.png
     - lib/assets/icons/hist60.png
     - lib/assets/icons/hist100.png
     - lib/assets/icons/play100.png

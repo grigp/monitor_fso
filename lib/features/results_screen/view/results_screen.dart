@@ -73,17 +73,50 @@ class _ResultsScreenState extends State<ResultsScreen> {
             ),
           ],
         ),
-        // body: BlocBuilder<ResultBloc, ResultState>(
-        //   bloc: _database,
-        //   builder: (context, state) {
-        //     if (state is DataLoaded) {
-        //       // List<DataBlock> data = _zeroing(state.data);
-        //       // var kfr = KfrCalculator(data);
-        //       return Center();
-        //     }
-        //   },
-        // ),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: _onNewTest,
+              heroTag: 'NewTest',
+              tooltip: 'Провести тест',
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              child: Image.asset('lib/assets/icons/play48.png'),
+            ),
+            const SizedBox(width: 40),
+            FloatingActionButton(
+              onPressed: _onDeleteTest,
+              heroTag: 'DeleteTest',
+              tooltip: 'Удалить тест',
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              child: Image.asset('lib/assets/icons/delete48.png'),
+            ),
+            const SizedBox(width: 40),
+            FloatingActionButton(
+              onPressed: _onOpenTest,
+              heroTag: 'OpenTest',
+              tooltip: 'Открыть тест',
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              child: Image.asset('lib/assets/icons/res_test48.png'),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  void _onNewTest() {
+
+  }
+
+  void _onDeleteTest() {
+
+  }
+
+  void _onOpenTest() {
+
   }
 }
