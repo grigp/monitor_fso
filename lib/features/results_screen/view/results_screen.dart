@@ -24,6 +24,7 @@ class ResultsScreen extends StatefulWidget {
 class _ResultsScreenState extends State<ResultsScreen> {
   List<RecordTest> _tests = [];
   bool _readed = false;
+  String _uidHandler = '';
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +117,15 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
     _readTestList();
     ++screenCounter;
+
+    _uidHandler = GetIt.I<DbProvider>().addHandler(onDbChange);
+  }
+
+
+  @override
+  void dispose() {
+    GetIt.I<DbProvider>().removeHandler(_uidHandler);
+    super.dispose();
   }
 
   List<Widget> _builldTestTitle(BuildContext context) {
@@ -161,6 +171,11 @@ class _ResultsScreenState extends State<ResultsScreen> {
       settings: const RouteSettings(name: '/test_result'),
     );
     Navigator.of(context).push(route);
+  }
+
+  /// Обработка сообщения об изменениив БД
+  void onDbChange(DBEvents event, String testUid) {
+    _readTestList();
   }
 
 }

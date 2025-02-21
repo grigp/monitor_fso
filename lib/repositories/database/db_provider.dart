@@ -2,8 +2,20 @@ import 'dart:typed_data';
 
 import 'package:monitor_fso/repositories/database/db_defines.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
 
 import '../defines.dart';
+
+/// Обработчик событий в БД
+class HandlerInfo {
+  String uid;
+  Function func;
+
+  HandlerInfo({
+    required this.uid,
+    required this.func,
+  });
+}
 
 class DbProvider {
   DbProvider() {
@@ -38,6 +50,8 @@ class DbProvider {
   String _dbPath = '';
   late Database _db;
 
+  List<HandlerInfo> _handlers = [];
+
   Future _openDB() async {
     if (_dbPath == '') {
       _dbPath = '${await getDatabasesPath()}/data/database.db';
@@ -60,6 +74,11 @@ class DbProvider {
       'freq': rec.freq,
       'data': _dataEncode(rec.data),
     });
+
+    /// Известим интересующихся о появлении теста
+    for (int i = 0; i < _handlers.length; ++i) {
+      _handlers[i].func(DBEvents.dbeAddTest, rec.uid);
+    }
     // await _db.transaction((txn) async {
     //   await txn.rawInsert(
     //       'INSERT INTO Tests(uid, dt, methodicUid) VALUES("${rec.uid}", "${rec.dt.toString()}", "${rec.methodicUid}")');
@@ -115,14 +134,37 @@ class DbProvider {
   Future deleteTest(String testUid) async {
     await _openDB();
     await _db.rawQuery('DELETE FROM Tests WHERE uid = $testUid');
+
+    /// Известим интересующихся об удалении теста
+    for (int i = 0; i < _handlers.length; ++i) {
+      _handlers[i].func(DBEvents.dbeDeleteTest, testUid);
+    }
   }
 
-  String getValue() {
-    final dt = DateTime.parse('2012-07-12 12:25'); //DateTime.now();
-    final sdt = dt.toString();
-    final dt1 = DateTime.parse(sdt);
+  /// Добавляет обработчик событий.
+  /// Возвращает uid. присвоенный обработчику
+  String addHandler(Function handler) {
+    var uid = const Uuid().v1();
+    var hi = HandlerInfo(
+      uid: uid,
+      func: handler,
+    );
+    _handlers.add(hi);
+    return uid;
+  }
 
-    return '${dt.toString()}  -> ($sdt) ->  ${dt1.toString()}';
+  /// Удаляет обработчик событий
+  void removeHandler(String uid) {
+    int idx = -1;
+    for (int i = 0; i < _handlers.length; ++i) {
+      if (_handlers[i].uid == uid) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx > -1) {
+      _handlers.removeAt(idx);
+    }
   }
 
   /// Переводит данные теста из удобного формата для отображения в
@@ -194,3 +236,6 @@ class DbProvider {
     return retval;
   }
 }
+
+
+enum DBEvents { dbeAddTest, dbeDeleteTest }
