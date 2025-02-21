@@ -7,10 +7,12 @@ import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_defines.dart';
 import '../../../repositories/database/test_data.dart';
 import '../../../repositories/defines.dart';
+import '../../../uikit/monfso_button.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/exit_program_dialog.dart';
 import '../../record_screen/view/record_screen.dart';
 import '../../test_result_screen/view/test_result_screen.dart';
+import '../result_utils.dart';
 
 class ResultsScreen extends StatefulWidget {
   const ResultsScreen({super.key, required this.title});
@@ -121,7 +123,6 @@ class _ResultsScreenState extends State<ResultsScreen> {
     _uidHandler = GetIt.I<DbProvider>().addHandler(onDbChange);
   }
 
-
   @override
   void dispose() {
     GetIt.I<DbProvider>().removeHandler(_uidHandler);
@@ -134,8 +135,14 @@ class _ResultsScreenState extends State<ResultsScreen> {
           (test, index) => TestTitle(
             test: test,
             isLast: index == _tests.length - 1,
-            onTap: (RecordTest test) async {
+            onSelect: (RecordTest test) async {
               _openTest(context, test);
+            },
+            onDelete: (RecordTest test) async {
+              final bool? isDelete = await _askDeleteTest(test.dt);
+              if (isDelete!) {
+                GetIt.I<DbProvider>().deleteTest(test.uid);
+              }
             },
           ),
         )
@@ -178,6 +185,31 @@ class _ResultsScreenState extends State<ResultsScreen> {
     _readTestList();
   }
 
+  Future<bool?> _askDeleteTest(DateTime dt) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(
+            'Удалить тест\n${pdt(dt.day)}.${pdt(dt.month)}.${dt.year} ${pdt(dt.hour)}:${pdt(dt.minute)}:${pdt(dt.second)}?'),
+        actions: <Widget>[
+          MonfsoButton.accent(
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+            text: 'Нет',
+            width: 120,
+          ),
+          MonfsoButton.secondary(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            text: 'Да',
+            width: 120,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 extension ExtendedIterable<E> on Iterable<E> {

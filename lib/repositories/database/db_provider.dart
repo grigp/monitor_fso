@@ -128,12 +128,12 @@ class DbProvider {
   /// Обновляет значение КФР для теста
   Future setKfr(String testUid, double kfr) async {
     await _openDB();
-    await _db.rawQuery('UPDATE Tests SET kfr = $kfr WHERE uid = $testUid');
+    await _db.rawQuery('UPDATE Tests SET kfr = $kfr WHERE uid = \'$testUid\'');
   }
 
   Future deleteTest(String testUid) async {
     await _openDB();
-    await _db.rawQuery('DELETE FROM Tests WHERE uid = $testUid');
+    await _db.rawQuery('DELETE FROM Tests WHERE uid = \'$testUid\'');
 
     /// Известим интересующихся об удалении теста
     for (int i = 0; i < _handlers.length; ++i) {

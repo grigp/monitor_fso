@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_defines.dart';
+import '../result_utils.dart';
 
 class TestTitle extends StatefulWidget {
   const TestTitle({
     super.key,
     required this.test,
     required this.isLast,
-    required this.onTap,
+    required this.onSelect,
+    required this.onDelete,
   });
 
   final RecordTest test;
   final bool isLast;
-//  final VoidCallback? onTap;
-  final Function onTap;
+  final Function onSelect;
+  final Function onDelete;
 
   @override
   State<TestTitle> createState() => _TestTitleState();
@@ -26,8 +28,7 @@ class _TestTitleState extends State<TestTitle> {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        widget.onTap(widget.test);
-//        widget.onTap?.call(widget.test);
+        widget.onSelect(widget.test);
       },
       child: _buildTitle(context, theme),
     );
@@ -54,13 +55,13 @@ class _TestTitleState extends State<TestTitle> {
               Column(
                 children: [
                   Text(
-                    '${_pdt(dt.day)}.${_pdt(dt.month)}.${dt.year}',
+                    '${pdt(dt.day)}.${pdt(dt.month)}.${dt.year}',
                     style: theme.textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                     textScaler: const TextScaler.linear(1.0),
                   ),
                   Text(
-                    '${_pdt(dt.hour)}:${_pdt(dt.minute)}:${_pdt(dt.second)}',
+                    '${pdt(dt.hour)}:${pdt(dt.minute)}:${pdt(dt.second)}',
                     style: theme.textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                     textScaler: const TextScaler.linear(1.0),
@@ -69,23 +70,30 @@ class _TestTitleState extends State<TestTitle> {
               ),
               const SizedBox(width: 10),
               Expanded(
-                  child: Column(
-                children: [         
-                  Text(
-                    'КФР = ${num.parse(widget.test.kfr.toStringAsFixed(0))}%',
-                    style: theme.textTheme.titleLarge,
-                    overflow: TextOverflow.ellipsis,
-                    textScaler: const TextScaler.linear(1.0),
-                  ),
-                  LinearProgressIndicator(
-                    value: widget.test.kfr.toInt() / 100,
-                    minHeight: 20,
-                    borderRadius: BorderRadius.circular(8),
-                    backgroundColor: white,
-//                  color: Colors.yellow,
-                  ),
-                ],
-              )),
+                child: Column(
+                  children: [
+                    Text(
+                      'КФР = ${num.parse(widget.test.kfr.toStringAsFixed(0))}%',
+                      style: theme.textTheme.titleLarge,
+                      overflow: TextOverflow.ellipsis,
+                      textScaler: const TextScaler.linear(1.0),
+                    ),
+                    LinearProgressIndicator(
+                      value: widget.test.kfr.toInt() / 100,
+                      minHeight: 20,
+                      borderRadius: BorderRadius.circular(8),
+                      backgroundColor: white,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  widget.onDelete(widget.test);
+                },
+                child: const Icon(Icons.close),
+              )
             ],
           ),
           const SizedBox(height: 12),
@@ -103,11 +111,4 @@ class _TestTitleState extends State<TestTitle> {
     );
   }
 
-  String _pdt(int part) {
-    String retval = '$part';
-    if (retval.length < 2) {
-      retval = '0$retval';
-    }
-    return retval;
-  }
 }
