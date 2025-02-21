@@ -93,7 +93,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       )
                     ],
                     onChanged: (String value) {
-                      _timeWait = int.tryParse(value)!;
+                      if (value != '') {
+                        _timeWait = int.tryParse(value)!;
+                      }
                     },
                     keyboardType: TextInputType.number,
                   ),
@@ -124,7 +126,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       )
                     ],
                     onChanged: (String value) {
-                      _timeCalibr = int.tryParse(value)!;
+                      if (value != '') {
+                        _timeCalibr = int.tryParse(value)!;
+                      }
                     },
                     keyboardType: TextInputType.number,
                   ),
@@ -155,7 +159,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       )
                     ],
                     onChanged: (String value) {
-                      _timeRec = int.tryParse(value)!;
+                      if (value != '') {
+                        _timeRec = int.tryParse(value)!;
+                      }
                     },
                     keyboardType: TextInputType.number,
                   ),
@@ -189,6 +195,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Expanded(child: SizedBox(height: double.infinity)),
           Row(
             children: [
+              const Spacer(),
               ElevatedButton(
                 onPressed: () async {
                   await saveValues();
@@ -198,14 +205,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Text('Сохранить',
                     style: Theme.of(context).textTheme.headlineSmall),
               ),
+              const SizedBox(width: 20),
               ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Отмена',
-                      style: Theme.of(context).textTheme.headlineSmall))
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Отмена',
+                    style: Theme.of(context).textTheme.headlineSmall),
+              ),
+              const Spacer(),
             ],
-          )
+          ),
+          const SizedBox(height: 40),
         ],
       ),
     );
@@ -214,19 +225,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void getValues() async {
     const storage = FlutterSecureStorage();
     String? stw = await storage.read(key: 'time_wait');
-    if (stw != null) {
+    if (stw != null && stw != '') {
       _timeWait = int.tryParse(stw)!;
     }
     String? stc = await storage.read(key: 'time_calibration');
-    if (stc != null) {
+    if (stc != null && stc != '') {
       _timeCalibr = int.tryParse(stc)!;
     }
     String? str = await storage.read(key: 'time_record');
-    if (str != null) {
+    if (str != null && str != '') {
       _timeRec = int.tryParse(str)!;
     }
     String? stds = await storage.read(key: 'decimal_separator');
-    if (stds != null) {
+    if (stds != null && stds != '') {
       _ds = DecimalSeparator.values[int.tryParse(stds)!];
     }
 

@@ -70,7 +70,7 @@ class _TestTitleState extends State<TestTitle> {
               const SizedBox(width: 10),
               Expanded(
                   child: Column(
-                children: [
+                children: [         
                   Text(
                     'КФР = ${num.parse(widget.test.kfr.toStringAsFixed(0))}%',
                     style: theme.textTheme.titleLarge,

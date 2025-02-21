@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:monitor_fso/features/record_screen/view/record_screen.dart';
 import 'package:monitor_fso/uikit/monfso_button.dart';
 
 import '../../../assets/colors/colors.dart';
@@ -95,7 +96,14 @@ class _InvitationScreenState extends State<InvitationScreen> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushNamed('/record');
+//                            Navigator.of(context).pushNamed('/record');
+                            MaterialPageRoute route = MaterialPageRoute(
+                              builder: (context) => const RecordScreen(
+                                title: 'Запись',
+                              ),
+                              settings: const RouteSettings(name: '/record'),
+                            );
+                            Navigator.of(context).push(route);
                           },
                           child: SizedBox(
                             width: 140,
@@ -121,14 +129,13 @@ class _InvitationScreenState extends State<InvitationScreen> {
                         const Spacer(),
                         GestureDetector(
                           onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ResultsScreen(
-                                  title: 'Результаты тестов',
-                                ),
+                            MaterialPageRoute route = MaterialPageRoute(
+                              builder: (context) => const ResultsScreen(
+                                title: 'Результаты тестов',
                               ),
+                              settings: const RouteSettings(name: '/results'),
                             );
+                            Navigator.of(context).push(route);
                           },
                           child: SizedBox(
                             width: 140,

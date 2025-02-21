@@ -6,8 +6,10 @@ import 'package:monitor_fso/repositories/database/db_provider.dart';
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_defines.dart';
 import '../../../repositories/database/test_data.dart';
+import '../../../repositories/defines.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/exit_program_dialog.dart';
+import '../../record_screen/view/record_screen.dart';
 import '../../test_result_screen/view/test_result_screen.dart';
 
 class ResultsScreen extends StatefulWidget {
@@ -133,7 +135,9 @@ class _ResultsScreenState extends State<ResultsScreen> {
   @override
   void initState() {
     super.initState();
+
     _readTestList();
+    ++screenCounter;
   }
 
   List<Widget> _builldTestTitle(BuildContext context) {
@@ -157,7 +161,15 @@ class _ResultsScreenState extends State<ResultsScreen> {
     });
   }
 
-  void _onNewTest() {}
+  void _onNewTest() {
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => const RecordScreen(
+        title: 'Запись',
+      ),
+      settings: const RouteSettings(name: '/record'),
+    );
+    Navigator.of(context).push(route);
+  }
 
   void _onDeleteTest() {}
 
@@ -167,15 +179,14 @@ class _ResultsScreenState extends State<ResultsScreen> {
     test.data = await GetIt.I<DbProvider>().getTestData(test.uid);
     var testData = TestData.fromDb(test);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TestResultScreen(
-          title: 'Результаты теста',
-          testData: testData,
-        ),
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => TestResultScreen(
+        title: 'Результаты теста',
+        testData: testData,
       ),
+      settings: const RouteSettings(name: '/test_result'),
     );
+    Navigator.of(context).push(route);
 //          Navigator.of(context).pushNamed('/result');
   }
 

@@ -6,6 +6,7 @@ import 'package:monitor_fso/repositories/database/db_provider.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/test_data.dart';
+import '../../../repositories/defines.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/painters/graph.dart';
 import '../../../uikit/widgets/painters/histogram.dart';
@@ -131,6 +132,12 @@ class _TestResultScreenState extends State<TestResultScreen> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    ++screenCounter;
+  }
+
   void _onSaveTest() {
     var rec = RecordTest(
       uid: widget.testData.uid(),
@@ -148,13 +155,12 @@ class _TestResultScreenState extends State<TestResultScreen> {
   }
 
   void _closeScreen() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const ResultsScreen(
-          title: 'Результаты тестов',
-        ),
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => const ResultsScreen(
+        title: 'Результаты тестов',
       ),
+      settings: const RouteSettings(name: '/results'),
     );
+    Navigator.of(context).push(route);
   }
 }

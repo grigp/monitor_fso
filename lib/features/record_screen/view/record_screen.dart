@@ -69,6 +69,9 @@ class _RecordScreenState extends State<RecordScreen> {
     getSettings();
     player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.stop);
+
+    ++screenCounter;
+
     super.initState();
   }
 
@@ -89,7 +92,7 @@ class _RecordScreenState extends State<RecordScreen> {
         }
         Future.delayed(Duration.zero, () {
           if (!context.mounted) return;
-          showExitProgramDialog(context);
+          _closeScreen();
         });
       },
       child: Scaffold(
@@ -118,7 +121,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 // const SizedBox(width: 10),
                                 BackScreenButton(
                                   onBack: () {
-                                    showExitProgramDialog(context);
+                                    _closeScreen();
                                   },
                                   hasBackground: false,
                                   isClose: true,
@@ -197,7 +200,6 @@ class _RecordScreenState extends State<RecordScreen> {
               FloatingActionButton(
                 onPressed: () {
 //                  Navigator.of(context).pushNamed('/settings');
-                  Navigator.of(context).pushNamed('/settings');
                   MaterialPageRoute route = MaterialPageRoute(
                     builder: (context) => SettingsScreen(
                       title: 'Настройки',
@@ -370,19 +372,32 @@ class _RecordScreenState extends State<RecordScreen> {
 
   void _finishRecord() async {
     await _testData.finish();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TestResultScreen(
-          title: 'Результаты теста',
-          testData: _testData,
-        ),
+
+    _pcBloc.add(StopEvent());
+
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => TestResultScreen(
+        title: 'Результаты теста',
+        testData: _testData,
       ),
+      settings: const RouteSettings(name: '/test_result'),
     );
+    Navigator.of(context).push(route);
 //          Navigator.of(context).pushNamed('/result');
   }
 
   void _onSettingsAccept() {
     getSettings();
+  }
+
+  void _closeScreen() {
+    if (screenCounter == 1) {
+      showExitProgramDialog(context);
+    } else {
+      _pcBloc.add(StopEvent());
+      Navigator.of(context).popUntil(
+        ModalRoute.withName('/results'),
+      );
+    }
   }
 }

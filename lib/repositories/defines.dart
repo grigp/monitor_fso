@@ -32,3 +32,5 @@ class DataBlock {
 ///< dsPoint - точка
 ///< dsComma - запятая
 enum DecimalSeparator { dsPoint, dsComma }
+
+int screenCounter = 0;
