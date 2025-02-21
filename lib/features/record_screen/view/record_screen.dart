@@ -12,6 +12,7 @@ import 'package:monitor_fso/uikit/widgets/exit_program_dialog.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/defines.dart';
+import '../../../uikit/monfso_button.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/painters/oscilloscope.dart';
 import '../../settings_screen/view/settings_screen.dart';
@@ -199,7 +200,6 @@ class _RecordScreenState extends State<RecordScreen> {
             if (!_isRecording)
               FloatingActionButton(
                 onPressed: () {
-//                  Navigator.of(context).pushNamed('/settings');
                   MaterialPageRoute route = MaterialPageRoute(
                     builder: (context) => SettingsScreen(
                       title: 'Настройки',
@@ -383,7 +383,6 @@ class _RecordScreenState extends State<RecordScreen> {
       settings: const RouteSettings(name: '/test_result'),
     );
     Navigator.of(context).push(route);
-//          Navigator.of(context).pushNamed('/result');
   }
 
   void _onSettingsAccept() {
@@ -394,9 +393,29 @@ class _RecordScreenState extends State<RecordScreen> {
     if (screenCounter == 1) {
       showExitProgramDialog(context);
     } else {
-      _pcBloc.add(StopEvent());
-      Navigator.of(context).popUntil(
-        ModalRoute.withName('/results'),
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Запись не завершена. Прервать?'),
+          actions: <Widget>[
+            MonfsoButton.accent(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              text: 'Нет',
+              width: 120,
+            ),
+            MonfsoButton.secondary(
+              onPressed: () {
+                Navigator.pop(context, 'Cancel');
+                _pcBloc.add(StopEvent());
+                Navigator.of(context).popUntil(
+                  ModalRoute.withName('/results'),
+                );
+              },
+              text: 'Да',
+              width: 120,
+            ),
+          ],
+        ),
       );
     }
   }
