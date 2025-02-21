@@ -94,6 +94,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                   children: <Widget>[..._builldTestTitle(context)],
                 ),
               ),
+            const SizedBox(height: 100),
           ],
         ),
         floatingActionButton: Row(
