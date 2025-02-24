@@ -131,7 +131,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
   }
 
   List<Widget> _builldTestTitle(BuildContext context) {
-    return _tests
+    /// Сначала получим список виджетов
+    List<Widget> retval = _tests.reversed
         .mapIndexed(
           (test, index) => TestTitle(
             test: test,
@@ -148,6 +149,21 @@ class _ResultsScreenState extends State<ResultsScreen> {
           ),
         )
         .toList();
+
+    /// Добавим в него разделители дат
+    if (retval.isNotEmpty) {
+      var dtc = (retval[0] as TestTitle).test.dt;
+      for (int i = 1; i < retval.length; ++i) {
+        if (retval[i] is TestTitle) {
+          var dt = (retval[i] as TestTitle).test.dt;
+          if (dt.day != dtc.day || dt.month != dtc.month || dt.year != dtc.year) {
+            retval.insert(i, Text('${pdt(dt.day)}.${pdt(dt.month)}.${pdt(dt.year)}'));
+          }
+        }
+      }
+    }
+
+    return retval;
   }
 
   void _readTestList() async {
