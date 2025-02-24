@@ -7,6 +7,7 @@ import 'package:monitor_fso/repositories/database/db_provider.dart';
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/test_data.dart';
 import '../../../repositories/defines.dart';
+import '../../../uikit/monfso_button.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/painters/graph.dart';
 import '../../../uikit/widgets/painters/histogram.dart';
@@ -138,7 +139,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
     ++screenCounter;
   }
 
-  void _onSaveTest() {
+  Future _onSaveTest() async {
     setState(() {
       widget.testData.setSaved();
     });
@@ -156,12 +157,54 @@ class _TestResultScreenState extends State<TestResultScreen> {
   }
 
   void _closeScreen() async {
-    MaterialPageRoute route = MaterialPageRoute(
-      builder: (context) => const ResultsScreen(
-        title: 'Результаты тестов',
-      ),
-      settings: const RouteSettings(name: '/results'),
-    );
-    Navigator.of(context).push(route);
+    int? dr = -1;
+    if (!widget.testData.isSaved()) {
+      dr = await showDialog<int>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text(
+            'Результаты не сохранены \nСохранить?',
+            style: TextStyle(fontSize: 20),
+          ),
+          actions: <Widget>[
+            MonfsoButton.accent(
+              onPressed: () {
+                Navigator.pop(context, 1);
+              },
+              text: 'Да',
+              width: 110,
+            ),
+            MonfsoButton.secondary(
+              onPressed: () {
+                Navigator.pop(context, -1);
+              },
+              text: 'Нет',
+              width: 110,
+            ),
+            MonfsoButton.secondary(
+              onPressed: () {
+                Navigator.pop(context, 0);
+              },
+              text: 'Отмена',
+              width: 110,
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (dr == 1) {
+      await _onSaveTest();
+    }
+
+    if (dr == 1 || dr == -1) {
+      MaterialPageRoute route = MaterialPageRoute(
+        builder: (context) => const ResultsScreen(
+          title: 'Результаты тестов',
+        ),
+        settings: const RouteSettings(name: '/results'),
+      );
+      Navigator.of(context).push(route);
+    }
   }
 }
