@@ -139,6 +139,10 @@ class _TestResultScreenState extends State<TestResultScreen> {
   }
 
   void _onSaveTest() {
+    setState(() {
+      widget.testData.setSaved();
+    });
+
     var rec = RecordTest(
       uid: widget.testData.uid(),
       dt: widget.testData.dateTime(),
@@ -149,9 +153,6 @@ class _TestResultScreenState extends State<TestResultScreen> {
     rec.data = widget.testData.data();
 
     GetIt.I<DbProvider>().addTest(rec);
-    setState(() {
-      widget.testData.setSaved();
-    });
   }
 
   void _closeScreen() async {
