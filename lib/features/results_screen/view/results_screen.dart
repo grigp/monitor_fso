@@ -130,37 +130,55 @@ class _ResultsScreenState extends State<ResultsScreen> {
     super.dispose();
   }
 
+  /// Заполняет список тестов
   List<Widget> _builldTestTitle(BuildContext context) {
-    /// Сначала получим список виджетов
-    List<Widget> retval = _tests.reversed
-        .mapIndexed(
-          (test, index) => TestTitle(
-            test: test,
-            isLast: index == _tests.length - 1,
-            onSelect: (RecordTest test) async {
-              _openTest(context, test);
-            },
-            onDelete: (RecordTest test) async {
-              final bool? isDelete = await _askDeleteTest(test.dt);
-              if (isDelete!) {
-                GetIt.I<DbProvider>().deleteTest(test.uid);
-              }
-            },
-          ),
-        )
-        .toList();
+    var dtc = DateTime(2000, 1, 1, 0, 0, 0);
+    List<Widget> retval = [];
 
-    /// Добавим в него разделители дат
-    if (retval.isNotEmpty) {
-      var dtc = (retval[0] as TestTitle).test.dt;
-      for (int i = 1; i < retval.length; ++i) {
-        if (retval[i] is TestTitle) {
-          var dt = (retval[i] as TestTitle).test.dt;
-          if (dt.day != dtc.day || dt.month != dtc.month || dt.year != dtc.year) {
-            retval.insert(i, Text('${pdt(dt.day)}.${pdt(dt.month)}.${pdt(dt.year)}'));
-          }
-        }
+    /// По списку от БД
+    for (int i = _tests.length - 1; i >= 0; --i) {
+      /// Если дата изменилась, то сначала выводим дату
+      var dt = _tests[i].dt;
+      if (dt.day != dtc.day || dt.month != dtc.month || dt.year != dtc.year) {
+        retval.add(
+          Container(
+            padding: const EdgeInsets.only(
+              top: 5,
+              bottom: 0,
+              left: 10,
+              right: 10,
+            ),
+            child: Text(
+              '${pdt(dt.day)}:${pdt(dt.month)}:${pdt(dt.year)}',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              overflow: TextOverflow.ellipsis,
+              textScaler: const TextScaler.linear(1.0),
+            ),
+          ),
+        );
+        dtc = dt;
       }
+
+      /// А потом сам заголовок теста
+      retval.add(
+        TestTitle(
+          test: _tests[i],
+          isLast: false,
+          //index == _tests.length - 1,
+          onSelect: (RecordTest test) async {
+            _openTest(context, test);
+          },
+          onDelete: (RecordTest test) async {
+            final bool? isDelete = await _askDeleteTest(test.dt);
+            if (isDelete!) {
+              GetIt.I<DbProvider>().deleteTest(test.uid);
+            }
+          },
+        ),
+      );
     }
 
     return retval;
@@ -229,9 +247,3 @@ class _ResultsScreenState extends State<ResultsScreen> {
   }
 }
 
-extension ExtendedIterable<E> on Iterable<E> {
-  Iterable<T> mapIndexed<T>(T Function(E e, int i) f) {
-    var i = 0;
-    return map((e) => f(e, i++));
-  }
-}

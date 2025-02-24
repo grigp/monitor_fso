@@ -30,7 +30,7 @@ class _TestTitleState extends State<TestTitle> {
       onTap: () {
         widget.onSelect(widget.test);
       },
-      child: _buildTitle(context, theme),
+      child:_buildTitle(context, theme),
     );
   }
 
@@ -111,4 +111,8 @@ class _TestTitleState extends State<TestTitle> {
     );
   }
 
+  Widget _buildDivider(BuildContext context, ThemeData theme) {
+    var dt = widget.test.dt;
+    return Text('${pdt(dt.day)}.${pdt(dt.month)}.${pdt(dt.year)}');
+  }
 }
