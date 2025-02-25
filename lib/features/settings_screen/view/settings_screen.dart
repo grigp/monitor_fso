@@ -60,6 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const Text(
                       'Параметры',
                       textAlign: TextAlign.center,
+                      textScaler: TextScaler.linear(1.0),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -75,6 +76,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(width: 20),
               const Text(
                 'Время ожидания, с',
+                textScaler: TextScaler.linear(1.0),
                 style: TextStyle(fontSize: 18),
               ),
               const Spacer(),
@@ -108,6 +110,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(width: 20),
               const Text(
                 'Время калибровки, с',
+                textScaler: TextScaler.linear(1.0),
                 style: TextStyle(fontSize: 18),
               ),
               const Spacer(),
@@ -141,6 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(width: 20),
               const Text(
                 'Время записи, с',
+                textScaler: TextScaler.linear(1.0),
                 style: TextStyle(fontSize: 18),
               ),
               const Spacer(),
@@ -172,6 +176,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 20),
           const Text(
             'Разделитель частей числа',
+            textScaler: TextScaler.linear(1.0),
             style: TextStyle(fontSize: 20),
           ),
           SegmentedButton<DecimalSeparator>(
@@ -202,8 +207,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   await widget.onAccept();
                   Navigator.of(context).pop();
                 },
-                child: Text('Сохранить',
-                    style: Theme.of(context).textTheme.headlineSmall),
+                child: Text(
+                  'Сохранить',
+                  textScaler: TextScaler.linear(1.0),
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
               ),
               const SizedBox(width: 20),
               ElevatedButton(
@@ -211,6 +219,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Navigator.of(context).pop();
                 },
                 child: Text('Отмена',
+                    textScaler: const TextScaler.linear(1.0),
                     style: Theme.of(context).textTheme.headlineSmall),
               ),
               const Spacer(),

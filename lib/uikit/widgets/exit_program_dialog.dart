@@ -7,7 +7,10 @@ void showExitProgramDialog(BuildContext context) {
   showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: const Text('Выйти из программы?'),
+      title: const Text(
+        'Выйти из программы?',
+        textScaler: TextScaler.linear(1.0),
+      ),
       actions: <Widget>[
         MonfsoButton.accent(
           onPressed: () => Navigator.pop(context, 'Cancel'),

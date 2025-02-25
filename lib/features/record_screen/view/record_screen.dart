@@ -138,6 +138,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 const Text(
                                   'Проведение теста',
                                   textAlign: TextAlign.center,
+                                  textScaler: TextScaler.linear(1.0),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
@@ -396,7 +397,10 @@ class _RecordScreenState extends State<RecordScreen> {
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text('Запись не завершена. Прервать?'),
+          title: const Text(
+            'Запись не завершена. Прервать?',
+            textScaler: TextScaler.linear(1.0),
+          ),
           actions: <Widget>[
             MonfsoButton.accent(
               onPressed: () => Navigator.pop(context, 'Cancel'),

@@ -81,6 +81,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
                       Text(
                         widget.title,
                         textAlign: TextAlign.center,
+                        textScaler: const TextScaler.linear(1.0),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -93,6 +94,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
             ),
             Text(
               'КФР = ${num.parse(widget.testData.kfr().toStringAsFixed(0))} %',
+              textScaler: const TextScaler.linear(1.0),
               style: const TextStyle(
                 color: tealDarkColor,
                 fontStyle: FontStyle.italic,
@@ -200,6 +202,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
         builder: (BuildContext context) => AlertDialog(
           title: const Text(
             'Результаты не сохранены \nСохранить?',
+            textScaler: TextScaler.linear(1.0),
             style: TextStyle(fontSize: 20),
           ),
           actions: <Widget>[

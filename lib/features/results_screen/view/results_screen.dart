@@ -72,6 +72,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                       Text(
                         widget.title,
                         textAlign: TextAlign.center,
+                        textScaler: const TextScaler.linear(1.0),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -246,7 +247,9 @@ class _ResultsScreenState extends State<ResultsScreen> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text(
-            'Удалить тест\n${pdt(dt.day)}.${pdt(dt.month)}.${dt.year} ${pdt(dt.hour)}:${pdt(dt.minute)}:${pdt(dt.second)}?'),
+          'Удалить тест\n${pdt(dt.day)}.${pdt(dt.month)}.${dt.year} ${pdt(dt.hour)}:${pdt(dt.minute)}:${pdt(dt.second)}?',
+          textScaler: TextScaler.linear(1.0),
+        ),
         actions: <Widget>[
           MonfsoButton.accent(
             onPressed: () {
@@ -267,4 +270,3 @@ class _ResultsScreenState extends State<ResultsScreen> {
     );
   }
 }
-
