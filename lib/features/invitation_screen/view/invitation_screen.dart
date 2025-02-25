@@ -29,47 +29,45 @@ class _InvitationScreenState extends State<InvitationScreen> {
             children: [
               Column(
                 children: [
+                  const SizedBox(height: 60),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                    ),
+                    child: Text(
+                      'Мониторинг функционального состояния организма - ФСО',
+                      textAlign: TextAlign.center,
+                      textScaler: TextScaler.linear(1.0),
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 155),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Container(
-                    color: tealBackgroundColor,
+                    color: Colors.black12,
                     width: double.infinity,
-                    height: 380,
+                    height: 270,
                     child: Column(
                       children: [
-                        const SizedBox(height: 80),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 10,
-                            right: 10,
-                          ),
-                          child: Text(
-                            'Мониторинг функционального состояния организма - ФСО',
-                            textAlign: TextAlign.center,
-                            textScaler: TextScaler.linear(1.0),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Center(
-                          child: Image.asset('lib/assets/icons/main_icon.png'),
+                          child: Image.asset('lib/assets/icons/screen_preview.png'),
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                    color: tealDarkColor,
-                    width: double.infinity,
-                    height: 3,
-                  ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   const Text(
                     'Равновесие тела – интегральная характеристика функционального состояния организма',
                     textAlign: TextAlign.center,
                     textScaler: TextScaler.linear(1.0),
                     style: TextStyle(
                       color: tealDarkColor,
+                      fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
@@ -80,6 +78,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                     textScaler: TextScaler.linear(1.0),
                     style: TextStyle(
                       color: tealDarkColor,
+                      fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
