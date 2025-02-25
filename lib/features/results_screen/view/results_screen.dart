@@ -135,6 +135,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
     var dtc = DateTime(2000, 1, 1, 0, 0, 0);
     List<Widget> retval = [];
 
+    if (_tests.isEmpty) return retval;
+
     /// По списку от БД
     for (int i = _tests.length - 1; i >= 0; --i) {
       /// Если дата изменилась, то сначала выводим дату
