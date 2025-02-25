@@ -54,11 +54,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     SizedBox(
                       width: 70,
                       height: 70,
-                      child: Image.asset('lib/assets/icons/accel_icon.png'),
+                      child: Image.asset('lib/assets/icons/settings60.png'),
                     ),
                     const SizedBox(width: 10),
                     const Text(
-                      'Проведение теста',
+                      'Параметры',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,

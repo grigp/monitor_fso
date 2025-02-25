@@ -215,7 +215,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 child: Image.asset('lib/assets/icons/settings48.png'),
               ),
-            const SizedBox(width: 40),
+            const SizedBox(width: 20),
             if (!_isRecording)
               FloatingActionButton(
                 onPressed: () {
@@ -227,7 +227,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 child: Image.asset('lib/assets/icons/zeroing48.png'),
               ),
-            const SizedBox(width: 40),
+            const SizedBox(width: 20),
             FloatingActionButton(
               onPressed: _setRecording,
               heroTag: 'Recording',

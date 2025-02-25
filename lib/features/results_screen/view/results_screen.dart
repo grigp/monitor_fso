@@ -11,6 +11,7 @@ import '../../../uikit/monfso_button.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/exit_program_dialog.dart';
 import '../../record_screen/view/record_screen.dart';
+import '../../settings_screen/view/settings_screen.dart';
 import '../../test_result_screen/view/test_result_screen.dart';
 import '../result_utils.dart';
 
@@ -100,6 +101,24 @@ class _ResultsScreenState extends State<ResultsScreen> {
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            FloatingActionButton(
+              onPressed: () {
+                MaterialPageRoute route = MaterialPageRoute(
+                  builder: (context) => SettingsScreen(
+                    title: 'Настройки',
+                    onAccept: () {},
+                  ),
+                  settings: const RouteSettings(name: '/select'),
+                );
+                Navigator.of(context).push(route);
+              },
+              heroTag: 'Settings',
+              tooltip: 'Настройки',
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              child: Image.asset('lib/assets/icons/settings48.png'),
+            ),
+            const SizedBox(width: 20),
             FloatingActionButton(
               onPressed: _onNewTest,
               heroTag: 'NewTest',

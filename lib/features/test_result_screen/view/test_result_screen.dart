@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/results_screen/view/results_screen.dart';
 import 'package:monitor_fso/repositories/database/db_defines.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/test_data.dart';
@@ -11,6 +16,7 @@ import '../../../uikit/monfso_button.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/painters/graph.dart';
 import '../../../uikit/widgets/painters/histogram.dart';
+import '../../results_screen/result_utils.dart';
 
 class TestResultScreen extends StatefulWidget {
   const TestResultScreen({
@@ -27,6 +33,8 @@ class TestResultScreen extends StatefulWidget {
 }
 
 class _TestResultScreenState extends State<TestResultScreen> {
+  DecimalSeparator _ds = DecimalSeparator.dsComma;
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -118,6 +126,33 @@ class _TestResultScreenState extends State<TestResultScreen> {
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            FloatingActionButton(
+              onPressed: () async {
+                final dir = Platform.isAndroid
+                    ? await getExternalStorageDirectory()
+                    : await getApplicationSupportDirectory();
+
+                var dt = widget.testData.dateTime();
+                String fn =
+                    'accel_${pdt(dt.day)}_${pdt(dt.month)}_${pdt(dt.year)}_${pdt(dt.hour)}_${pdt(dt.minute)}_${pdt(dt.second)}.sig';
+                var f = File('${dir?.path}/$fn');
+                if (await f.exists()) {
+                  await f.delete();
+                }
+                await f.writeAsString(_dataToString(widget.testData.data()));
+                print('--- ${dir?.path}/$fn');
+                Share.shareXFiles([XFile('${dir?.path}/$fn')],
+                    text: 'Сигналы акселерограммы по x, y и z');
+
+                //Share.share(dataToString(data));
+              },
+              heroTag: 'Share',
+              tooltip: 'Поделиться',
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              child: Image.asset('lib/assets/icons/share48.png'),
+            ),
+            if (!widget.testData.isSaved()) const SizedBox(width: 20),
             if (!widget.testData.isSaved())
               FloatingActionButton(
                 onPressed: _onSaveTest,
@@ -136,6 +171,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
   @override
   void initState() {
     super.initState();
+    _getValues();
     ++screenCounter;
   }
 
@@ -205,6 +241,43 @@ class _TestResultScreenState extends State<TestResultScreen> {
         settings: const RouteSettings(name: '/results'),
       );
       Navigator.of(context).push(route);
+    }
+  }
+
+  String v2s(double val) {
+    String sval = '$val';
+    String retval = '';
+    for (int i = 0; i < sval.length; ++i) {
+      if (sval[i] != '.' && sval[i] != ',') {
+        retval = '$retval${sval[i]}';
+      } else {
+        if (_ds == DecimalSeparator.dsPoint) {
+          retval = '$retval.';
+        } else if (_ds == DecimalSeparator.dsComma) {
+          retval = '$retval,';
+        }
+      }
+    }
+//    print('-------------------- $_ds --- ${retval}');
+    return retval;
+  }
+
+  String _dataToString(List<DataBlock> data) {
+    String retval = 'AX\tAY\tAZ\tGX\tGY\tGZ\n';
+
+    for (int i = 0; i < data.length; ++i) {
+      retval =
+          '$retval${v2s(data[i].ax)}\t${v2s(data[i].ay)}\t${v2s(data[i].az)}\t${v2s(data[i].gx)}\t${v2s(data[i].gy)}\t${v2s(data[i].gz)}\n';
+      //     print('--------------------$i : $_ds ---- $retval');
+    }
+    return retval;
+  }
+
+  void _getValues() async {
+    const storage = FlutterSecureStorage();
+    String? stds = await storage.read(key: 'decimal_separator');
+    if (stds != null) {
+      _ds = DecimalSeparator.values[int.tryParse(stds)!];
     }
   }
 }

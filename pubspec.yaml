@@ -39,7 +39,7 @@ dependencies:
   audioplayers: ^6.1.2
   sqflite: ^2.4.1
 #  assets_audio_player: ^3.1.1
-#  share_plus: ^10.0.2
+  share_plus: ^10.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -75,6 +75,7 @@ flutter:
     - lib/assets/icons/accel_icon.png
     - lib/assets/icons/res_test.png
     - lib/assets/icons/save48.png
+    - lib/assets/icons/share48.png
     - lib/assets/icons/settings48.png
     - lib/assets/icons/zeroing48.png
     - lib/assets/icons/play48.png
@@ -83,6 +84,7 @@ flutter:
     - lib/assets/icons/res_test48.png
     - lib/assets/icons/delete48.png
     - lib/assets/icons/hist60.png
+    - lib/assets/icons/settings60.png
     - lib/assets/icons/hist100.png
     - lib/assets/icons/play100.png
 
