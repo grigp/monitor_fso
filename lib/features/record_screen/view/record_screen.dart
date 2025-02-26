@@ -1,5 +1,4 @@
-// import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:audioplayers/audioplayers.dart';
+//import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -53,7 +52,7 @@ class _RecordScreenState extends State<RecordScreen> {
 
   List<DataBlock> _block = [];
 
-  late AudioPlayer player = AudioPlayer();
+//  late AudioPlayer player = AudioPlayer();
 
   /// Данные для записи
   List<OscillBlock> _blockView = [];
@@ -68,8 +67,8 @@ class _RecordScreenState extends State<RecordScreen> {
     _testData = TestData.fromRecord(_freq.toDouble());
     _pcBloc.add(InitSendDataEvent(func: getData));
     getSettings();
-    player = AudioPlayer();
-    player.setReleaseMode(ReleaseMode.stop);
+    // player = AudioPlayer();
+    // player.setReleaseMode(ReleaseMode.stop);
 
     ++screenCounter;
 
@@ -79,7 +78,7 @@ class _RecordScreenState extends State<RecordScreen> {
   @override
   void dispose() {
     _pcBloc.add(StopEvent());
-    player.dispose();
+//    player.dispose();
     super.dispose();
   }
 
@@ -314,8 +313,8 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   void _playWithOK() async {
-    await player.setSource(AssetSource('sounds/ok.mp3'));
-    await player.resume();
+    // await player.setSource(AssetSource('sounds/ok.mp3'));
+    // await player.resume();
   }
 
   void onEndCalibration() async {
