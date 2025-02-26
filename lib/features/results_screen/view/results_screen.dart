@@ -90,6 +90,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
             ),
             if (_readed)
               Expanded(
+                // child: SliverList(
+                //     delegate:
+                //         SliverChildListDelegate(_builldTestTitle(context)),
+                // ),
                 child: ListView(
                   padding: const EdgeInsets.only(bottom: 10),
                   shrinkWrap: true,
