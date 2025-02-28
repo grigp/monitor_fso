@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/results_screen/view/results_screen.dart';
 import 'package:monitor_fso/repositories/database/db_defines.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
+import 'package:monitor_fso/repositories/logger/app_errors.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -37,6 +38,8 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String le = GetIt.I<AppErrors>().getLastError();
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -103,6 +106,10 @@ class _TestResultScreenState extends State<TestResultScreen> {
               ),
 //                style: Theme.of(context).textTheme.displaySmall,
             ),
+            if (le != '')
+              Text(
+                le
+              ),
             SizedBox(
               height: 150,
               width: double.infinity,

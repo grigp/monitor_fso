@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/test_result_screen/view/test_result_screen.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
 import 'package:monitor_fso/repositories/database/test_data.dart';
+import 'package:monitor_fso/repositories/logger/app_errors.dart';
 import 'package:monitor_fso/repositories/source/abstract_driver.dart';
 import 'package:monitor_fso/uikit/widgets/exit_program_dialog.dart';
 
@@ -314,8 +315,13 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   void _playWithOK() async {
-    await player.setSource(AssetSource('sounds/ok.mp3'));
-    await player.resume();
+    try {
+      await player.setSource(AssetSource('sounds/ok.mp3'));
+      await player.resume();
+    } catch (e) {
+      GetIt.I<AppErrors>().registerError(e.toString());
+      print('################################### ${e.toString()}');
+    }
   }
 
   void onEndCalibration() async {
