@@ -35,10 +35,10 @@ class TestResultScreen extends StatefulWidget {
 
 class _TestResultScreenState extends State<TestResultScreen> {
   DecimalSeparator _ds = DecimalSeparator.dsComma;
+  String _lastError = '';
 
   @override
   Widget build(BuildContext context) {
-    String le = GetIt.I<AppErrors>().getLastError();
 
     return PopScope(
       canPop: false,
@@ -106,9 +106,9 @@ class _TestResultScreenState extends State<TestResultScreen> {
               ),
 //                style: Theme.of(context).textTheme.displaySmall,
             ),
-            if (le != '')
+            if (_lastError != '')
               Text(
-                le
+                _lastError
               ),
             SizedBox(
               height: 150,
@@ -182,7 +182,10 @@ class _TestResultScreenState extends State<TestResultScreen> {
     super.initState();
     _getValues();
     ++screenCounter;
+    _lastError =  GetIt.I<AppErrors>().getLastError();
   }
+
+
 
   Future _onSaveTest() async {
     setState(() {

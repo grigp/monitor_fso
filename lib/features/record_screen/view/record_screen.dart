@@ -1,5 +1,8 @@
 // import 'package:assets_audio_player/assets_audio_player.dart';
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -257,6 +260,13 @@ class _RecordScreenState extends State<RecordScreen> {
       _timeRec = int.tryParse(str)!;
     }
     _pcBloc.add(UpdateParamsEvent());
+    //
+    // if (Platform.isAndroid) {
+    //   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    //   AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    //   print('Running on baseOS: ${Platform.operatingSystem} ${androidInfo.version.release}');
+    //   GetIt.I<AppErrors>().registerError('${Platform.operatingSystem} ${androidInfo.version.release}');
+    // }
   }
 
   void getData(
@@ -316,11 +326,26 @@ class _RecordScreenState extends State<RecordScreen> {
 
   void _playWithOK() async {
     try {
-      await player.setSource(AssetSource('sounds/ok.mp3'));
-      await player.resume();
+      bool isEnableSound = true;
+      if (Platform.isAndroid) {
+        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+        // GetIt.I<AppErrors>().registerError('${Platform.operatingSystem} ${androidInfo.version.release}');
+        try {
+          /// Разрешаем звук на андроидах с версией больше 10
+          isEnableSound = int.parse(androidInfo.version.release) >= 10;
+        } catch (e) {
+          isEnableSound = false;
+        }
+      }
+
+      if (isEnableSound) {
+        await player.setSource(AssetSource('sounds/ok.wav'));
+        await player.resume();
+      }
     } catch (e) {
       GetIt.I<AppErrors>().registerError(e.toString());
-      print('################################### ${e.toString()}');
     }
   }
 
