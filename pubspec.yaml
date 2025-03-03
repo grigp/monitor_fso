@@ -75,6 +75,7 @@ flutter:
     - lib/assets/icons/screen_preview.png
     - lib/assets/icons/accel_icon.png
     - lib/assets/icons/res_test.png
+    - lib/assets/icons/info36.png
     - lib/assets/icons/save48.png
     - lib/assets/icons/share48.png
     - lib/assets/icons/settings48.png

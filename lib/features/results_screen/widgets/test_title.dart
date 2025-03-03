@@ -73,7 +73,7 @@ class _TestTitleState extends State<TestTitle> {
                 child: Column(
                   children: [
                     Text(
-                      'КФР = ${num.parse(widget.test.kfr.toStringAsFixed(0))}%',
+                      'ФСО = ${num.parse(widget.test.kfr.toStringAsFixed(0))}%',
                       style: theme.textTheme.titleLarge,
                       overflow: TextOverflow.ellipsis,
                       textScaler: const TextScaler.linear(1.0),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:monitor_fso/features/info_screen/view/info_screen.dart';
 import 'package:monitor_fso/features/record_screen/view/record_screen.dart';
 import 'package:monitor_fso/uikit/monfso_button.dart';
 
@@ -43,7 +44,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Container(
                 color: Colors.black12,
                 width: double.infinity,
@@ -57,7 +58,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               const Text(
                 'Равновесие тела – интегральная характеристика функционального состояния организма',
                 textAlign: TextAlign.center,
@@ -68,16 +69,30 @@ class _InvitationScreenState extends State<InvitationScreen> {
                   fontSize: 20,
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'Мониторинг ФСО – залог адекватного контроля здоровья',
-                textAlign: TextAlign.center,
-                textScaler: TextScaler.linear(1.0),
-                style: TextStyle(
-                  color: tealDarkColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Мониторинг ФСО – залог адекватного контроля здоровья',
+                      textAlign: TextAlign.center,
+                      textScaler: TextScaler.linear(1.0),
+                      style: TextStyle(
+                        color: tealDarkColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    child: Image.asset('lib/assets/icons/info36.png'),
+                    onTap: () {
+                      _showInfoScreen();
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                ],
               ),
               const Spacer(),
               Row(
@@ -155,5 +170,15 @@ class _InvitationScreenState extends State<InvitationScreen> {
         ),
       ),
     );
+  }
+
+  void _showInfoScreen() {
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => const InfoScreen(
+        title: 'Информация',
+      ),
+      settings: const RouteSettings(name: '/info'),
+    );
+    Navigator.of(context).push(route);
   }
 }

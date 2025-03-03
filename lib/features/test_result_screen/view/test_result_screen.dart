@@ -52,10 +52,6 @@ class _TestResultScreenState extends State<TestResultScreen> {
         });
       },
       child: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: tealBackgroundColor,
-        //   title: Text(widget.title),
-        // ),
         body: Column(
           children: [
             Container(
@@ -96,7 +92,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
               ),
             ),
             Text(
-              'КФР = ${num.parse(widget.testData.kfr().toStringAsFixed(0))} %',
+              'ФСО = ${num.parse(widget.testData.kfr().toStringAsFixed(0))} %',
               textScaler: const TextScaler.linear(1.0),
               style: const TextStyle(
                 color: tealDarkColor,
