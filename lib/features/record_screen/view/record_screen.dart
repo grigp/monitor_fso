@@ -384,7 +384,7 @@ class _RecordScreenState extends State<RecordScreen> {
     } else if (_stage == RecordStages.stgWait1) {
       return '${num.parse((_timeWait - (_recCount / _freq)).toStringAsFixed(1))} сек';
     } else if (_stage == RecordStages.stgWait2) {
-      return '${num.parse((1 - (_recCount / _freq)).toStringAsFixed(1))} сек';
+      return ''; //'''${num.parse((1 - (_recCount / _freq)).toStringAsFixed(1))} сек';Усачев хочет, чтобы сообщения не было
     }
     return '';
   }
@@ -395,7 +395,7 @@ class _RecordScreenState extends State<RecordScreen> {
     } else if (_stage == RecordStages.stgCalibrating) {
       return 'Калибровка';
     } else if (_stage == RecordStages.stgWait2) {
-      return 'До записи';
+      return ''; //'''До записи';          Усачев хочет, чтобы сообщения не было
     } else if (_stage == RecordStages.stgRecording) {
       return 'Запись $_timeRec сек';
     }
