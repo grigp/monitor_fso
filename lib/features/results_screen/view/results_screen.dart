@@ -90,15 +90,14 @@ class _ResultsScreenState extends State<ResultsScreen> {
             ),
             if (_readed)
               Expanded(
-                // child: SliverList(
-                //     delegate:
-                //         SliverChildListDelegate(_builldTestTitle(context)),
-                // ),
-                child: ListView(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  shrinkWrap: true,
-                  children: <Widget>[..._builldTestTitle(context)],
-                ),
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverList(
+                        delegate:
+                        SliverChildListDelegate(_builldTestTitle(context)),
+                      ),
+                    ],
+                  ),
               ),
             const SizedBox(height: 100),
           ],
