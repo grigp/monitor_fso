@@ -25,9 +25,14 @@ import '../bloc/recording_bloc.dart';
 enum RecordStages { stgNone, stgWait1, stgCalibrating, stgWait2, stgRecording }
 
 class RecordScreen extends StatefulWidget {
-  const RecordScreen({super.key, required this.title});
+  const RecordScreen({
+    super.key,
+    required this.title,
+    required this.entrence,
+  });
 
   final String title;
+  final RunTestEntrance entrence;
 
   @override
   State<RecordScreen> createState() => _RecordScreenState();
@@ -142,7 +147,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 const Expanded(
                                   child: Text(
                                     'Проведение теста',
-                                    textAlign: TextAlign.center,
+                                    textAlign: TextAlign.left,
                                     overflow: TextOverflow.ellipsis,
                                     textScaler: TextScaler.linear(1.0),
                                     style: TextStyle(
@@ -227,18 +232,18 @@ class _RecordScreenState extends State<RecordScreen> {
                 child: Image.asset('lib/assets/icons/settings48.png'),
               ),
             const SizedBox(width: 20),
-            if (!_isRecording)
-              FloatingActionButton(
-                onPressed: () {
-                  _pcBloc.add(CalibrationEvent(func: onEndCalibration));
-                },
-                heroTag: 'Calibrate',
-                tooltip: 'Калибровка',
-                foregroundColor: Theme.of(context).colorScheme.primary,
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                child: Image.asset('lib/assets/icons/zeroing48.png'),
-              ),
-            const SizedBox(width: 20),
+            // if (!_isRecording) /// TODO: Закомментирована калибровка, ибо выполняется перед записью
+            //   FloatingActionButton(
+            //     onPressed: () {
+            //       _pcBloc.add(CalibrationEvent(func: onEndCalibration));
+            //     },
+            //     heroTag: 'Calibrate',
+            //     tooltip: 'Калибровка',
+            //     foregroundColor: Theme.of(context).colorScheme.primary,
+            //     backgroundColor: Theme.of(context).colorScheme.surface,
+            //     child: Image.asset('lib/assets/icons/zeroing48.png'),
+            //   ),
+            // const SizedBox(width: 20),
             FloatingActionButton(
               onPressed: _setRecording,
               heroTag: 'Recording',
@@ -416,6 +421,7 @@ class _RecordScreenState extends State<RecordScreen> {
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => TestResultScreen(
         title: 'Результаты теста',
+        entrence: widget.entrence,
         testData: _testData,
       ),
       settings: const RouteSettings(name: '/test_result'),

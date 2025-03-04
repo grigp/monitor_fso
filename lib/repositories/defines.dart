@@ -31,6 +31,12 @@ class DataBlock {
 ///< Раделитель целой и дробной части числа при экспорте сигнала
 ///< dsPoint - точка
 ///< dsComma - запятая
-enum DecimalSeparator { dsPoint, dsComma }
+enum DecimalSeparator {dsPoint, dsComma}
+
+///< Точка входа в тест
+///< rteInvitation - окно приглашения
+///< rteTestsNew - окно списка тестов, новый тест
+///< rteTestsOpen - окно списка тестов, открыть тест
+enum RunTestEntrance {rteInvitation, rteTestsNew, rteTestsOpen}
 
 int screenCounter = 0;

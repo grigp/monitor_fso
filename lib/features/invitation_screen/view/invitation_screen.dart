@@ -6,6 +6,7 @@ import 'package:monitor_fso/uikit/monfso_button.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_provider.dart';
+import '../../../repositories/defines.dart';
 import '../../results_screen/view/results_screen.dart';
 
 class InvitationScreen extends StatefulWidget {
@@ -104,6 +105,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       MaterialPageRoute route = MaterialPageRoute(
                         builder: (context) => const RecordScreen(
                           title: 'Запись',
+                          entrence: RunTestEntrance.rteInvitation,
                         ),
                         settings: const RouteSettings(name: '/record'),
                       );

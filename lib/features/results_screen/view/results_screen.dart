@@ -75,7 +75,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                       Expanded(
                         child: Text(
                           widget.title,
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           textScaler: const TextScaler.linear(1.0),
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -138,7 +138,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
               tooltip: 'Провести тест',
               foregroundColor: Theme.of(context).colorScheme.primary,
               backgroundColor: Theme.of(context).colorScheme.surface,
-              child: Image.asset('lib/assets/icons/play48.png'),
+              child: Image.asset('lib/assets/icons/run_test48.png'),
             ),
           ],
         ),
@@ -232,6 +232,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => const RecordScreen(
         title: 'Запись',
+        entrence: RunTestEntrance.rteTestsNew,
       ),
       settings: const RouteSettings(name: '/record'),
     );
@@ -245,6 +246,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => TestResultScreen(
         title: 'Результаты теста',
+        entrence: RunTestEntrance.rteTestsOpen,
         testData: testData,
       ),
       settings: const RouteSettings(name: '/test_result'),

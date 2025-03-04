@@ -24,10 +24,12 @@ class TestResultScreen extends StatefulWidget {
     super.key,
     required this.title,
     required this.testData,
+    required this.entrence,
   });
 
   final String title;
   final TestData testData;
+  final RunTestEntrance entrence;
 
   @override
   State<StatefulWidget> createState() => _TestResultScreenState();
@@ -79,7 +81,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
                       Expanded(
                         child: Text(
                           widget.title,
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           textScaler: const TextScaler.linear(1.0),
                           style: const TextStyle(
@@ -240,13 +242,21 @@ class _TestResultScreenState extends State<TestResultScreen> {
     }
 
     if (dr == 1 || dr == -1) {
-      MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => const ResultsScreen(
-          title: 'Результаты тестов',
-        ),
-        settings: const RouteSettings(name: '/results'),
-      );
-      Navigator.of(context).push(route);
+      if (widget.entrence == RunTestEntrance.rteInvitation) {
+        MaterialPageRoute route = MaterialPageRoute(
+          builder: (context) => const ResultsScreen(
+            title: 'Результаты тестов',
+          ),
+          settings: const RouteSettings(name: '/results'),
+        );
+        Navigator.of(context).push(route);
+      } else if (widget.entrence == RunTestEntrance.rteTestsNew) {
+        Navigator.of(context).popUntil(
+          ModalRoute.withName('/results'),
+        );
+      } else if (widget.entrence == RunTestEntrance.rteTestsOpen) {
+        Navigator.pop(context, 0);
+      }
     }
   }
 

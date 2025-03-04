@@ -86,6 +86,7 @@ flutter:
     - lib/assets/icons/hist48.png
     - lib/assets/icons/res_test48.png
     - lib/assets/icons/delete48.png
+    - lib/assets/icons/run_test48.png
     - lib/assets/icons/hist60.png
     - lib/assets/icons/settings60.png
     - lib/assets/icons/hist100.png
