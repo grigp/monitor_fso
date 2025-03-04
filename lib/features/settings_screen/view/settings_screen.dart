@@ -116,7 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const Spacer(),
               if (_isReady)
                 SizedBox(
-                  width: 100,
+                  width: 90,
                   child: TextField(
                     controller: _textTimeCalibr,
                     style: Theme.of(context).textTheme.headlineSmall,

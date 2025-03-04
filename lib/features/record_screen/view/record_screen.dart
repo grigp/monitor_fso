@@ -139,13 +139,16 @@ class _RecordScreenState extends State<RecordScreen> {
                                       'lib/assets/icons/accel_icon.png'),
                                 ),
                                 const SizedBox(width: 10),
-                                const Text(
-                                  'Проведение теста',
-                                  textAlign: TextAlign.center,
-                                  textScaler: TextScaler.linear(1.0),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
+                                const Expanded(
+                                  child: Text(
+                                    'Проведение теста',
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    textScaler: TextScaler.linear(1.0),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -181,10 +184,13 @@ class _RecordScreenState extends State<RecordScreen> {
                         child: Column(
                           children: [
                             const SizedBox(height: 200),
-                            Text(sStage,
-                                style:
-                                    Theme.of(context).textTheme.displaySmall),
+                            Text(
+                              sStage,
+                              textScaler: const TextScaler.linear(1.0),
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
                             Text(sTimer,
+                                textScaler: const TextScaler.linear(1.0),
                                 style:
                                     Theme.of(context).textTheme.displayLarge),
                           ],

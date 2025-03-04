@@ -39,7 +39,6 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -77,13 +76,16 @@ class _TestResultScreenState extends State<TestResultScreen> {
                         child: Image.asset('lib/assets/icons/res_test.png'),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        widget.title,
-                        textAlign: TextAlign.center,
-                        textScaler: const TextScaler.linear(1.0),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                      Expanded(
+                        child: Text(
+                          widget.title,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          textScaler: const TextScaler.linear(1.0),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ],
@@ -102,10 +104,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
               ),
 //                style: Theme.of(context).textTheme.displaySmall,
             ),
-            if (_lastError != '')
-              Text(
-                _lastError
-              ),
+            if (_lastError != '') Text(_lastError),
             SizedBox(
               height: 150,
               width: double.infinity,
@@ -178,10 +177,8 @@ class _TestResultScreenState extends State<TestResultScreen> {
     super.initState();
     _getValues();
     ++screenCounter;
-    _lastError =  GetIt.I<AppErrors>().getLastError();
+    _lastError = GetIt.I<AppErrors>().getLastError();
   }
-
-
 
   Future _onSaveTest() async {
     setState(() {
@@ -217,21 +214,21 @@ class _TestResultScreenState extends State<TestResultScreen> {
                 Navigator.pop(context, 1);
               },
               text: 'Да',
-              width: 110,
+              width: 140,
             ),
             MonfsoButton.secondary(
               onPressed: () {
                 Navigator.pop(context, -1);
               },
               text: 'Нет',
-              width: 110,
+              width: 140,
             ),
             MonfsoButton.secondary(
               onPressed: () {
                 Navigator.pop(context, 0);
               },
               text: 'Отмена',
-              width: 110,
+              width: 140,
             ),
           ],
         ),

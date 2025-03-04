@@ -72,13 +72,16 @@ class _ResultsScreenState extends State<ResultsScreen> {
                         child: Image.asset('lib/assets/icons/hist60.png'),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        widget.title,
-                        textAlign: TextAlign.center,
-                        textScaler: const TextScaler.linear(1.0),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                      Expanded(
+                        child: Text(
+                          widget.title,
+                          textAlign: TextAlign.center,
+                          textScaler: const TextScaler.linear(1.0),
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ],

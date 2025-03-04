@@ -44,7 +44,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const Spacer(),
               Container(
                 color: Colors.black12,
                 width: double.infinity,
@@ -58,7 +58,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+              const Spacer(),
               const Text(
                 'Равновесие тела – интегральная характеристика функционального состояния организма',
                 textAlign: TextAlign.center,
@@ -66,10 +66,10 @@ class _InvitationScreenState extends State<InvitationScreen> {
                 style: TextStyle(
                   color: tealDarkColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 10),
+              const Spacer(),
               Row(
                 children: [
                   const Expanded(
@@ -80,7 +80,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       style: TextStyle(
                         color: tealDarkColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 16,
                       ),
                     ),
                   ),
