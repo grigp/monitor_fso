@@ -64,7 +64,7 @@ class DbProvider {
   }
 
   /// Записывает информацию о тесте в базу данных
-  void addTest(RecordTest rec) async {
+  Future addTest(RecordTest rec) async {
     await _openDB();
     await _db.insert('Tests', {
       'uid': rec.uid,

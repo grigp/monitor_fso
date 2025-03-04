@@ -196,7 +196,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
     );
     rec.data = widget.testData.data();
 
-    GetIt.I<DbProvider>().addTest(rec);
+    await GetIt.I<DbProvider>().addTest(rec);
   }
 
   void _closeScreen() async {
