@@ -28,9 +28,12 @@ class _ResultsScreenState extends State<ResultsScreen> {
   List<RecordTest> _tests = [];
   bool _readed = false;
   String _uidHandler = '';
+  DateTime _dtc = DateTime(2000, 1, 1, 0, 0, 0);
 
   @override
   Widget build(BuildContext context) {
+    _dtc = DateTime(2000, 1, 1, 0, 0, 0);
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -90,14 +93,17 @@ class _ResultsScreenState extends State<ResultsScreen> {
             ),
             if (_readed)
               Expanded(
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverList(
-                        delegate:
-                        SliverChildListDelegate(_builldTestTitle(context)),
-                      ),
-                    ],
-                  ),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverList.builder(
+                      itemCount: _tests.length,
+                      itemBuilder: (context, index) {
+                        return _buildTestTitle(
+                            context, _tests.length - index - 1);
+                      },
+                    ),
+                  ],
+                ),
               ),
             const SizedBox(height: 100),
           ],
@@ -153,60 +159,63 @@ class _ResultsScreenState extends State<ResultsScreen> {
     super.dispose();
   }
 
-  /// Заполняет список тестов
-  List<Widget> _builldTestTitle(BuildContext context) {
-    var dtc = DateTime(2000, 1, 1, 0, 0, 0);
-    List<Widget> retval = [];
-
-    if (_tests.isEmpty) return retval;
-
-    /// По списку от БД
-    for (int i = _tests.length - 1; i >= 0; --i) {
-      /// Если дата изменилась, то сначала выводим дату
-      var dt = _tests[i].dt;
-      if (dt.day != dtc.day || dt.month != dtc.month || dt.year != dtc.year) {
-        retval.add(
-          Container(
-            padding: const EdgeInsets.only(
-              top: 5,
-              bottom: 0,
-              left: 10,
-              right: 10,
-            ),
-            child: Text(
-              '${pdt(dt.day)}:${pdt(dt.month)}:${pdt(dt.year)}',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-              overflow: TextOverflow.ellipsis,
-              textScaler: const TextScaler.linear(1.0),
-            ),
-          ),
-        );
-        dtc = dt;
-      }
-
-      /// А потом сам заголовок теста
-      retval.add(
-        TestTitle(
-          test: _tests[i],
-          isLast: false,
-          //index == _tests.length - 1,
-          onSelect: (RecordTest test) async {
-            _openTest(context, test);
-          },
-          onDelete: (RecordTest test) async {
-            final bool? isDelete = await _askDeleteTest(test.dt);
-            if (isDelete!) {
-              GetIt.I<DbProvider>().deleteTest(test.uid);
-            }
-          },
-        ),
+  /// Возврвщает тест для списка тестов
+  Widget _buildTestTitle(BuildContext context, int index) {
+    /// Если дата изменилась, то сначала выводим дату, потом элемент
+    var dt = _tests[index].dt;
+    if (dt.day != _dtc.day || dt.month != _dtc.month || dt.year != _dtc.year) {
+      _dtc = dt;
+      return Column(
+        children: [
+          _getDataDivider(dt),
+          _getTestTitle(context, index),
+        ],
       );
+    } else {
+      return _getTestTitle(context, index);
     }
+  }
 
-    return retval;
+  /// Возвращает разделитель дат
+  Widget _getDataDivider(DateTime dt) {
+    return Container(
+      padding: const EdgeInsets.only(
+        top: 5,
+        bottom: 0,
+        left: 10,
+        right: 10,
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          '${pdt(dt.day)}:${pdt(dt.month)}:${pdt(dt.year)}',
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          overflow: TextOverflow.ellipsis,
+          textScaler: const TextScaler.linear(1.0),
+        ),
+      ),
+    );
+  }
+
+  /// Возвращает заголовок теста
+  Widget _getTestTitle(BuildContext context, int index) {
+    return TestTitle(
+      test: _tests[index],
+      isLast: false,
+      //index == _tests.length - 1,
+      onSelect: (RecordTest test) async {
+        _openTest(context, test);
+      },
+      onDelete: (RecordTest test) async {
+        final bool? isDelete = await _askDeleteTest(test.dt);
+        if (isDelete!) {
+          GetIt.I<DbProvider>().deleteTest(test.uid);
+        }
+      },
+    );
   }
 
   void _readTestList() async {
