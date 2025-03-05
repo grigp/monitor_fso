@@ -73,7 +73,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           Row(
             children: [
-              const SizedBox(width: 20),
+              const SizedBox(width: 10),
               const Text(
                 'Время ожидания, с',
                 textScaler: TextScaler.linear(1.0),
@@ -102,12 +102,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 10),
             ],
           ),
           Row(
             children: [
-              const SizedBox(width: 20),
+              const SizedBox(width: 10),
               const Text(
                 'Время калибровки, с',
                 textScaler: TextScaler.linear(1.0),
@@ -116,7 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const Spacer(),
               if (_isReady)
                 SizedBox(
-                  width: 90,
+                  width: 100,
                   child: TextField(
                     controller: _textTimeCalibr,
                     style: Theme.of(context).textTheme.headlineSmall,
@@ -136,12 +136,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 10),
             ],
           ),
           Row(
             children: [
-              const SizedBox(width: 20),
+              const SizedBox(width: 10),
               const Text(
                 'Время записи, с',
                 textScaler: TextScaler.linear(1.0),
@@ -170,12 +170,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 10),
             ],
           ),
           const SizedBox(height: 20),
           const Text(
-            'Разделитель частей числа',
+            'Разделитель частей числа в сводке',
             textScaler: TextScaler.linear(1.0),
             style: TextStyle(fontSize: 20),
           ),
