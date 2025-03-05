@@ -209,7 +209,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
                 child: Text(
                   'Сохранить',
-                  textScaler: TextScaler.linear(1.0),
+                  textScaler: const TextScaler.linear(1.0),
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
