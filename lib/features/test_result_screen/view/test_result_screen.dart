@@ -41,6 +41,8 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var dt = widget.testData.dateTime();
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -93,6 +95,15 @@ class _TestResultScreenState extends State<TestResultScreen> {
                     ],
                   ),
                 ],
+              ),
+            ),
+            Text(
+              'Проведен ${pdt(dt.day)}.${pdt(dt.month)}.${pdt(dt.year)} ${pdt(dt.hour)}:${pdt(dt.minute)}:${pdt(dt.second)}',
+              textScaler: const TextScaler.linear(1.0),
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                color: tealDarkColor,
+                fontSize: 14,
               ),
             ),
             Text(
