@@ -164,18 +164,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
   /// Возврвщает тест для списка тестов
   Widget _buildTestTitle(BuildContext context, int index) {
-    /// Если дата изменилась, то сначала выводим дату, потом элемент
-    var dt = _tests[index].dt;
-    if (dt.day != _dtc.day || dt.month != _dtc.month || dt.year != _dtc.year) {
-      _dtc = dt;
-      return Column(
-        children: [
-          _getDataDivider(dt),
-          _getTestTitle(context, index),
-        ],
-      );
-    } else {
+    if (_tests[index].uid != '') {
       return _getTestTitle(context, index);
+    } else {
+      return _getDataDivider(_tests[index].dt);
     }
   }
 
@@ -222,7 +214,34 @@ class _ResultsScreenState extends State<ResultsScreen> {
   }
 
   void _readTestList() async {
+    /// Прочитаем
     _tests = await GetIt.I<DbProvider>().getListTests();
+
+    /// Вставим элементы, соотвествующие смене дат
+    if (_tests.isNotEmpty) {
+      var dtc = DateTime(2000, 1, 1, 0, 0, 0);
+
+      for (int i = _tests.length - 1; i >= 0; --i) {
+        var dt = _tests[i].dt;
+        if (dt.day != dtc.day ||
+            dt.month != dtc.month ||
+            dt.year != dtc.year) {
+          _tests.insert(
+            i + 1,
+            RecordTest(
+              uid: '',
+              dt: _tests[i].dt,
+              methodicUid: '',
+              kfr: 0,
+              freq: 0,
+            ),
+          );
+          dtc = dt;
+        }
+      }
+    }
+
+    /// Оповестим виджет
     setState(() {
       _readed = true;
     });
