@@ -84,7 +84,7 @@ class Graph extends CustomPainter {
       }
     }
 
-    // Рамка
+    /// Рамка
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), _paintFrame);
 
     double zoneHeight = size.height / 3;
@@ -95,6 +95,7 @@ class Graph extends CustomPainter {
     canvas.drawLine(const Offset(LeftBorder, 0),
         Offset(LeftBorder, size.height), _paintAxis);
 
+    /// Подписи осей
     drawText(canvas, size, 'AX', 4, zoneHeight / 2 - 11, Colors.black, 22);
     drawText(canvas, size, 'AY', 4, zoneHeight / 2 * 3 - 11, Colors.black, 22);
     drawText(canvas, size, 'AZ', 4, zoneHeight / 2 * 5 - 11, Colors.black, 22);
@@ -159,8 +160,6 @@ class Graph extends CustomPainter {
 
         drawText(canvas, size, ((i + 1) ~/ freq).toString(), x2 + 2, TopBorder,
             Colors.black, 10);
-//         par = createText(((i+1) / freq).toString())..layout(const ParagraphConstraints(width: 20));
-        // canvas.drawParagraph(par, Offset(x2 + 2, size.height - BottomBorder - 12));
       }
     }
   } // paint

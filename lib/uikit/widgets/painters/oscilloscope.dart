@@ -109,12 +109,12 @@ class Oscilloscope extends CustomPainter {
 
     var length = size.width - RightBorder - LeftBorder;
 
-    // Коррекция длины массива
+    /// Коррекция длины массива
     if (_data.length > length) {
       _data.removeRange(0, (_data.length - length).toInt());
     }
 
-    // Начальная точка построения
+    /// Начальная точка построения
     pos += shift;
     if (pos > size.width - RightBorder) {
       pos = LeftBorder.toInt();
@@ -166,9 +166,7 @@ class Oscilloscope extends CustomPainter {
       }
     }
 
-    // print('-----------------------------');
-
-    // Маркер
+    /// Маркер
     canvas.drawLine(Offset(pos.toDouble(), TopBorder),
         Offset(pos.toDouble(), size.height - BottomBorder), _paintMarker);
   } // paint
