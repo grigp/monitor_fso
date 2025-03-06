@@ -23,8 +23,11 @@ class Graph extends CustomPainter {
   final Paint _paintAxis = Paint()
     ..color = Colors.black87
     ..strokeWidth = 1;
-  final Paint _paintGrid = Paint()
-    ..color = Colors.black45
+  final Paint _paintGridSlim = Paint()
+    ..color = Colors.black38
+    ..style = PaintingStyle.stroke;
+  final Paint _paintGridThik = Paint()
+    ..color = Colors.black54
     ..style = PaintingStyle.stroke;
   final Paint _paintGraph = Paint()
     ..color = Colors.blue.shade900
@@ -56,6 +59,7 @@ class Graph extends CustomPainter {
       maxWidth: size.width,
     );
     final offset = Offset(x, y);
+//    print('------------ $text : ${textPainter.width}');
     textPainter.paint(canvas, offset);
   }
 
@@ -154,12 +158,21 @@ class Graph extends CustomPainter {
       canvas.drawLine(p1, p2, _paintGraph);
 
       if ((i + 1) % freq == 0) {
+        var v = (i + 1) ~/ freq;
         p1 = Offset(x2, TopBorder);
         p2 = Offset(x2, size.height - BottomBorder);
-        canvas.drawLine(p1, p2, _paintGrid);
+        canvas.drawLine(p1, p2, _paintGridSlim);
 
-        drawText(canvas, size, ((i + 1) ~/ freq).toString(), x2 + 2, TopBorder,
-            Colors.black, 10);
+        if (values.length <= 20 * freq) {
+          drawText(
+              canvas, size, v.toString(), x2 + 2, TopBorder, Colors.black, 10);
+        } else {
+          if (v % 5 == 0) {
+            canvas.drawLine(p1, p2, _paintGridThik);
+            drawText(
+                canvas, size, v.toString(), x2 + 2, TopBorder, Colors.black, 10);
+          }
+        }
       }
     }
   } // paint
