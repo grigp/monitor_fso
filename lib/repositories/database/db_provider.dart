@@ -163,12 +163,13 @@ class DbProvider {
     }
   }
 
+  /// Добавляет в список list по байтам значение value, начиная с индекса idx
   void _addValueToIntList(List<int> list, int idx, double value) {
     ByteData bd = ByteData(8);
     bd.setFloat64(0, value);
-    var ax = bd.buffer.asUint8List();
+    var vBt = bd.buffer.asUint8List();
     for (int j = 0; j < 8; ++j){
-      list[idx + j] = ax[j];
+      list[idx + j] = vBt[j];
     }
   }
 
