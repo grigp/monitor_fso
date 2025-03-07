@@ -38,6 +38,7 @@ class TestResultScreen extends StatefulWidget {
 class _TestResultScreenState extends State<TestResultScreen> {
   DecimalSeparator _ds = DecimalSeparator.dsComma;
   String _lastError = '';
+  bool _isSaved = false;
 
   @override
   Widget build(BuildContext context) {
@@ -169,10 +170,12 @@ class _TestResultScreenState extends State<TestResultScreen> {
               backgroundColor: Theme.of(context).colorScheme.surface,
               child: Image.asset('lib/assets/icons/share48.png'),
             ),
-            if (!widget.testData.isSaved()) const SizedBox(width: 20),
-            if (!widget.testData.isSaved())
+            // if (!widget.testData.isSaved()) const SizedBox(width: 20),
+            // if (!widget.testData.isSaved())
+            if (!_isSaved) const SizedBox(width: 20),
+            if (!_isSaved)
               FloatingActionButton(
-                onPressed: _onSaveTest,
+                onPressed: _doSaveTest,
                 heroTag: 'Save',
                 tooltip: 'Сохранить',
                 foregroundColor: Theme.of(context).colorScheme.primary,
@@ -188,15 +191,25 @@ class _TestResultScreenState extends State<TestResultScreen> {
   @override
   void initState() {
     super.initState();
+    _isSaved = widget.testData.isSaved();
     _getValues();
     ++screenCounter;
     _lastError = GetIt.I<AppErrors>().getLastError();
   }
 
-  Future _onSaveTest() async {
+  Future _doSaveUpdate() async {
     setState(() {
+      _isSaved = true;
       widget.testData.setSaved();
     });
+  }
+
+  void _doSaveTest() async {
+    await _onSaveTest();
+  }
+
+  Future _onSaveTest() async {
+    await _doSaveUpdate();
 
     var rec = RecordTest(
       uid: widget.testData.uid(),

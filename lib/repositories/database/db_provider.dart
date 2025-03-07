@@ -65,6 +65,8 @@ class DbProvider {
 
   /// Записывает информацию о тесте в базу данных
   Future addTest(RecordTest rec) async {
+    var data = await _dataEncode(rec.data);
+
     await _openDB();
     await _db.insert('Tests', {
       'uid': rec.uid,
@@ -72,19 +74,13 @@ class DbProvider {
       'methodicUid': rec.methodicUid,
       'kfr': rec.kfr,
       'freq': rec.freq,
-      'data': _dataEncode(rec.data),
+      'data': data,
     });
 
     /// Известим интересующихся о появлении теста
     for (int i = 0; i < _handlers.length; ++i) {
       _handlers[i].func(DBEvents.dbeAddTest, rec.uid);
     }
-    // await _db.transaction((txn) async {
-    //   await txn.rawInsert(
-    //       'INSERT INTO Tests(uid, dt, methodicUid) VALUES("${rec.uid}", "${rec.dt.toString()}", "${rec.methodicUid}")');
-    //   ///TODO: добавить данные из rec.data (BLOB)
-    //
-    // });
   }
 
   /// Возвращает кол-во тестов
@@ -167,37 +163,29 @@ class DbProvider {
     }
   }
 
+  void _addValueToIntList(List<int> list, int idx, double value) {
+    ByteData bd = ByteData(8);
+    bd.setFloat64(0, value);
+    var ax = bd.buffer.asUint8List();
+    for (int j = 0; j < 8; ++j){
+      list[idx + j] = ax[j];
+    }
+  }
+
   /// Переводит данные теста из удобного формата для отображения в
   /// формат для сохранения в базе данных (BLOB)
-  Uint8List _dataEncode(List<DataBlock> data) {
-    List<int> li = [];
+  Future<Uint8List> _dataEncode(List<DataBlock> data) async {
+    List<int> li = List.filled(data.length * 48, 0);
+    
     for (int i = 0; i < data.length; ++i) {
-      ByteData bdAx = ByteData(8);
-      bdAx.setFloat64(0, data[i].ax);
-
-      ByteData bdAy = ByteData(8);
-      bdAy.setFloat64(0, data[i].ay);
-
-      ByteData bdAz = ByteData(8);
-      bdAz.setFloat64(0, data[i].az);
-
-      ByteData bdGx = ByteData(8);
-      bdGx.setFloat64(0, data[i].gx);
-
-      ByteData bdGy = ByteData(8);
-      bdGy.setFloat64(0, data[i].gy);
-
-      ByteData bdGz = ByteData(8);
-      bdGz.setFloat64(0, data[i].gz);
-
-      li = li +
-          bdAx.buffer.asUint8List() +
-          bdAy.buffer.asUint8List() +
-          bdAz.buffer.asUint8List() +
-          bdGx.buffer.asUint8List() +
-          bdGy.buffer.asUint8List() +
-          bdGz.buffer.asUint8List();
+      _addValueToIntList(li, i * 48, data[i].ax);
+      _addValueToIntList(li, i * 48 + 8, data[i].ay);
+      _addValueToIntList(li, i * 48 + 16, data[i].az);
+      _addValueToIntList(li, i * 48 + 24, data[i].gx);
+      _addValueToIntList(li, i * 48 + 32, data[i].gy);
+      _addValueToIntList(li, i * 48 + 40, data[i].gz);
     }
+
     return Uint8List.fromList(li);
   }
 
