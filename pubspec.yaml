@@ -88,6 +88,15 @@ flutter:
     - lib/assets/icons/new_test48.png
     - lib/assets/icons/delete48.png
     - lib/assets/icons/run_test48.png
+    - lib/assets/icons/info48_flat.png
+    - lib/assets/icons/pause48_flat.png
+    - lib/assets/icons/play48_flat.png
+    - lib/assets/icons/plus48_flat.png
+    - lib/assets/icons/plus100_flat.png
+    - lib/assets/icons/results100_flat.png
+    - lib/assets/icons/save48_flat.png
+    - lib/assets/icons/share48_flat.png
+    - lib/assets/icons/settings48_flat.png
     - lib/assets/icons/hist60.png
     - lib/assets/icons/settings60.png
     - lib/assets/icons/hist100.png

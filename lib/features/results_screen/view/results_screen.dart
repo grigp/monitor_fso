@@ -129,7 +129,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
               tooltip: 'Настройки',
               foregroundColor: Theme.of(context).colorScheme.primary,
               backgroundColor: Theme.of(context).colorScheme.surface,
-              child: Image.asset('lib/assets/icons/settings48.png'),
+              child: Image.asset('lib/assets/icons/settings48_flat.png'),
             ),
             const SizedBox(width: 20),
             FloatingActionButton(
@@ -138,7 +138,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
               tooltip: 'Провести тест',
               foregroundColor: Theme.of(context).colorScheme.primary,
               backgroundColor: Theme.of(context).colorScheme.surface,
-              child: Image.asset('lib/assets/icons/new_test48.png'),
+              child: Image.asset('lib/assets/icons/plus48_flat.png'),
             ),
           ],
         ),

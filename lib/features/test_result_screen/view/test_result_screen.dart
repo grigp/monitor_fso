@@ -168,7 +168,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
               tooltip: 'Поделиться',
               foregroundColor: Theme.of(context).colorScheme.primary,
               backgroundColor: Theme.of(context).colorScheme.surface,
-              child: Image.asset('lib/assets/icons/share48.png'),
+              child: Image.asset('lib/assets/icons/share48_flat.png'),
             ),
             // if (!widget.testData.isSaved()) const SizedBox(width: 20),
             // if (!widget.testData.isSaved())
@@ -180,7 +180,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
                 tooltip: 'Сохранить',
                 foregroundColor: Theme.of(context).colorScheme.primary,
                 backgroundColor: Theme.of(context).colorScheme.surface,
-                child: Image.asset('lib/assets/icons/save48.png'),
+                child: Image.asset('lib/assets/icons/save48_flat.png'),
               ),
           ],
         ),

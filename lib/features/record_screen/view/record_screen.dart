@@ -19,6 +19,7 @@ import '../../../repositories/defines.dart';
 import '../../../uikit/monfso_button.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/painters/oscilloscope.dart';
+import '../../results_screen/view/results_screen.dart';
 import '../../settings_screen/view/settings_screen.dart';
 import '../bloc/recording_bloc.dart';
 
@@ -229,7 +230,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 tooltip: 'Настройки',
                 foregroundColor: Theme.of(context).colorScheme.primary,
                 backgroundColor: Theme.of(context).colorScheme.surface,
-                child: Image.asset('lib/assets/icons/settings48.png'),
+                child: Image.asset('lib/assets/icons/settings48_flat.png'),
               ),
             const SizedBox(width: 20),
             // if (!_isRecording) /// TODO: Закомментирована калибровка, ибо выполняется перед записью
@@ -251,8 +252,8 @@ class _RecordScreenState extends State<RecordScreen> {
               foregroundColor: Theme.of(context).colorScheme.primary,
               backgroundColor: Theme.of(context).colorScheme.surface,
               child: _isRecording
-                  ? Image.asset('lib/assets/icons/stop48.png')
-                  : Image.asset('lib/assets/icons/play48.png'),
+                  ? Image.asset('lib/assets/icons/pause48_flat.png')
+                  : Image.asset('lib/assets/icons/play48_flat.png'),
             ),
           ],
         ),
@@ -434,9 +435,6 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   void _closeScreen() {
-    if (screenCounter == 1) {
-      showExitProgramDialog(context);
-    } else {
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -454,9 +452,19 @@ class _RecordScreenState extends State<RecordScreen> {
               onPressed: () {
                 Navigator.pop(context, 'Cancel');
                 _pcBloc.add(StopEvent());
-                Navigator.of(context).popUntil(
-                  ModalRoute.withName('/results'),
-                );
+                if (screenCounter == 1) {
+                  MaterialPageRoute route = MaterialPageRoute(
+                    builder: (context) => const ResultsScreen(
+                      title: 'Результаты тестов',
+                    ),
+                    settings: const RouteSettings(name: '/results'),
+                  );
+                  Navigator.of(context).push(route);
+                } else {
+                  Navigator.of(context).popUntil(
+                    ModalRoute.withName('/results'),
+                  );
+                }
               },
               text: 'Да',
               width: 120,
@@ -465,5 +473,4 @@ class _RecordScreenState extends State<RecordScreen> {
         ),
       );
     }
-  }
 }

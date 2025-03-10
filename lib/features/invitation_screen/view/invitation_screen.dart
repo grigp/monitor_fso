@@ -87,7 +87,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                   ),
                   const SizedBox(width: 10),
                   GestureDetector(
-                    child: Image.asset('lib/assets/icons/info36.png'),
+                    child: Image.asset('lib/assets/icons/info48_flat.png'),
                     onTap: () {
                       _showInfoScreen();
                     },
@@ -117,7 +117,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       child: Center(
                         child: Column(
                           children: [
-                            Image.asset('lib/assets/icons/new_test100.png'),
+                            Image.asset('lib/assets/icons/plus100_flat.png'),
                             const Text(
                               'Провести тест',
                               textAlign: TextAlign.center,
@@ -149,7 +149,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       child: Center(
                         child: Column(
                           children: [
-                            Image.asset('lib/assets/icons/hist100.png'),
+                            Image.asset('lib/assets/icons/results100_flat.png'),
                             const Text(
                               'Результаты',
                               textAlign: TextAlign.center,
