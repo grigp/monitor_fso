@@ -281,6 +281,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
   Future<bool?> _askDeleteTest(DateTime dt) async {
     return await showDialog<bool>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) => AlertDialog(
         title: Text(
           'Удалить тест\n${pdt(dt.day)}.${pdt(dt.month)}.${dt.year} ${pdt(dt.hour)}:${pdt(dt.minute)}:${pdt(dt.second)}?',

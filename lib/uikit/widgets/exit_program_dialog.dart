@@ -6,6 +6,7 @@ import 'package:monitor_fso/uikit/monfso_button.dart';
 void showExitProgramDialog(BuildContext context) {
   showDialog<String>(
     context: context,
+    barrierDismissible: false,
     builder: (BuildContext context) => AlertDialog(
       title: const Text(
         'Выйти из программы?',

@@ -227,6 +227,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
     int? dr = -1;
     if (!widget.testData.isSaved()) {
       dr = await showDialog<int>(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: const Text(

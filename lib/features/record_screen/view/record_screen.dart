@@ -435,11 +435,21 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   void _closeScreen() {
+    if (_isRecording) {
+      _isRecording = false;
+      _closeScreenRecord();
+    } else {
+      _closeScreenPrepare();
+    }
+  }
+
+    void _closeScreenPrepare() {
       showDialog<String>(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) => AlertDialog(
           title: const Text(
-            'Запись не завершена. Прервать?',
+            'Тест не проведен. Выйти?',
             textScaler: TextScaler.linear(1.0),
           ),
           actions: <Widget>[
@@ -449,6 +459,47 @@ class _RecordScreenState extends State<RecordScreen> {
               width: 120,
             ),
             MonfsoButton.secondary(
+              onPressed: () {
+                Navigator.pop(context, 'Cancel');
+                _pcBloc.add(StopEvent());
+                if (screenCounter == 1) {
+                  MaterialPageRoute route = MaterialPageRoute(
+                    builder: (context) => const ResultsScreen(
+                      title: 'Результаты тестов',
+                    ),
+                    settings: const RouteSettings(name: '/results'),
+                  );
+                  Navigator.of(context).push(route);
+                } else {
+                  Navigator.of(context).popUntil(
+                    ModalRoute.withName('/results'),
+                  );
+                }
+              },
+              text: 'Да',
+              width: 120,
+            ),
+          ],
+        ),
+      );
+    }
+
+    void _closeScreenRecord() {
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text(
+            'Запись прервана. Отменить проведение теста?',
+            textScaler: TextScaler.linear(1.0),
+          ),
+          actions: <Widget>[
+            MonfsoButton.accent(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              text: 'Нет',
+              width: 120,
+            ),
+            MonfsoButton.accent(
               onPressed: () {
                 Navigator.pop(context, 'Cancel');
                 _pcBloc.add(StopEvent());
