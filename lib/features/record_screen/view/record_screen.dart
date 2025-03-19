@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:monitor_fso/features/info_method_screen/view/info_method_screen.dart';
 import 'package:monitor_fso/features/test_result_screen/view/test_result_screen.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
 import 'package:monitor_fso/repositories/database/test_data.dart';
@@ -157,6 +158,21 @@ class _RecordScreenState extends State<RecordScreen> {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(width: 10),
+                                if (!_isRecording)
+                                  GestureDetector(
+                                    onTap: () {
+                                      _showInfoScreen();
+                                    },
+                                    child: Icon(
+                                      Icons.info,
+                                      size: 35,
+                                      color: Colors.teal.shade200,
+                                    ),
+                                    // child: Image.asset(
+                                    //     'lib/assets/icons/info48_flat.png'),
+                                  ),
+                                const SizedBox(width: 10),
                               ],
                             ),
                           ],
@@ -443,85 +459,95 @@ class _RecordScreenState extends State<RecordScreen> {
     }
   }
 
-    void _closeScreenPrepare() {
-      showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text(
-            'Тест не проведен. Выйти?',
-            textScaler: TextScaler.linear(1.0),
-          ),
-          actions: <Widget>[
-            MonfsoButton.accent(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              text: 'Нет',
-              width: 120,
-            ),
-            MonfsoButton.secondary(
-              onPressed: () {
-                Navigator.pop(context, 'Cancel');
-                _pcBloc.add(StopEvent());
-                if (screenCounter == 1) {
-                  MaterialPageRoute route = MaterialPageRoute(
-                    builder: (context) => const ResultsScreen(
-                      title: 'Результаты тестов',
-                    ),
-                    settings: const RouteSettings(name: '/results'),
-                  );
-                  Navigator.of(context).push(route);
-                } else {
-                  Navigator.of(context).popUntil(
-                    ModalRoute.withName('/results'),
-                  );
-                }
-              },
-              text: 'Да',
-              width: 120,
-            ),
-          ],
+  void _closeScreenPrepare() {
+    showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text(
+          'Тест не проведен. Выйти?',
+          textScaler: TextScaler.linear(1.0),
         ),
-      );
-    }
+        actions: <Widget>[
+          MonfsoButton.accent(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            text: 'Нет',
+            width: 120,
+          ),
+          MonfsoButton.secondary(
+            onPressed: () {
+              Navigator.pop(context, 'Cancel');
+              _pcBloc.add(StopEvent());
+              if (screenCounter == 1) {
+                MaterialPageRoute route = MaterialPageRoute(
+                  builder: (context) => const ResultsScreen(
+                    title: 'Результаты тестов',
+                  ),
+                  settings: const RouteSettings(name: '/results'),
+                );
+                Navigator.of(context).push(route);
+              } else {
+                Navigator.of(context).popUntil(
+                  ModalRoute.withName('/results'),
+                );
+              }
+            },
+            text: 'Да',
+            width: 120,
+          ),
+        ],
+      ),
+    );
+  }
 
-    void _closeScreenRecord() {
-      showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text(
-            'Запись прервана. Отменить проведение теста?',
-            textScaler: TextScaler.linear(1.0),
-          ),
-          actions: <Widget>[
-            MonfsoButton.accent(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              text: 'Нет',
-              width: 120,
-            ),
-            MonfsoButton.accent(
-              onPressed: () {
-                Navigator.pop(context, 'Cancel');
-                _pcBloc.add(StopEvent());
-                if (screenCounter == 1) {
-                  MaterialPageRoute route = MaterialPageRoute(
-                    builder: (context) => const ResultsScreen(
-                      title: 'Результаты тестов',
-                    ),
-                    settings: const RouteSettings(name: '/results'),
-                  );
-                  Navigator.of(context).push(route);
-                } else {
-                  Navigator.of(context).popUntil(
-                    ModalRoute.withName('/results'),
-                  );
-                }
-              },
-              text: 'Да',
-              width: 120,
-            ),
-          ],
+  void _closeScreenRecord() {
+    showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text(
+          'Запись прервана. Отменить проведение теста?',
+          textScaler: TextScaler.linear(1.0),
         ),
-      );
-    }
+        actions: <Widget>[
+          MonfsoButton.accent(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            text: 'Нет',
+            width: 120,
+          ),
+          MonfsoButton.accent(
+            onPressed: () {
+              Navigator.pop(context, 'Cancel');
+              _pcBloc.add(StopEvent());
+              if (screenCounter == 1) {
+                MaterialPageRoute route = MaterialPageRoute(
+                  builder: (context) => const ResultsScreen(
+                    title: 'Результаты тестов',
+                  ),
+                  settings: const RouteSettings(name: '/results'),
+                );
+                Navigator.of(context).push(route);
+              } else {
+                Navigator.of(context).popUntil(
+                  ModalRoute.withName('/results'),
+                );
+              }
+            },
+            text: 'Да',
+            width: 120,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showInfoScreen() {
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => const InfoMethodScreen(
+        title: 'Информация',
+      ),
+      settings: const RouteSettings(name: '/info'),
+    );
+    Navigator.of(context).push(route);
+  }
 }
