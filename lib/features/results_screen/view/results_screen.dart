@@ -121,7 +121,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                     title: 'Настройки',
                     onAccept: () {},
                   ),
-                  settings: const RouteSettings(name: '/select'),
+                  settings: const RouteSettings(name: '/settings'),
                 );
                 Navigator.of(context).push(route);
               },

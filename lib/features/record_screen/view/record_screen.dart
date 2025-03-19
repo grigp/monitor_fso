@@ -14,6 +14,7 @@ import 'package:monitor_fso/repositories/database/test_data.dart';
 import 'package:monitor_fso/repositories/logger/app_errors.dart';
 import 'package:monitor_fso/repositories/source/abstract_driver.dart';
 import 'package:monitor_fso/uikit/widgets/exit_program_dialog.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/defines.dart';
@@ -238,7 +239,7 @@ class _RecordScreenState extends State<RecordScreen> {
                       title: 'Настройки',
                       onAccept: _onSettingsAccept,
                     ),
-                    settings: const RouteSettings(name: '/select'),
+                    settings: const RouteSettings(name: '/settings'),
                   );
                   Navigator.of(context).push(route);
                 },
@@ -372,8 +373,9 @@ class _RecordScreenState extends State<RecordScreen> {
         await player.setSource(AssetSource('sounds/ok.wav'));
         await player.resume();
       }
-    } catch (e) {
+    } catch (e, st) {
       GetIt.I<AppErrors>().registerError(e.toString());
+      GetIt.I<Talker>().handle(e, st, 'Sound generation error');
     }
   }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/router/routes.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import 'assets/colors/colors.dart';
 
@@ -19,7 +21,11 @@ class MonitorFsoApp extends StatelessWidget {
       ),
 //      home: const InvitationScreen(title: 'Мониторинг ФСО'),
       routes: routes,
+      navigatorObservers: [
+        TalkerRouteObserver(
+          GetIt.I<Talker>(),
+        )
+      ],
     );
   }
 }
-
