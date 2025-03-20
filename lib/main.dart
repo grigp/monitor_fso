@@ -13,6 +13,9 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'monitor_fso_app.dart';
 
 void main() {
+  FlutterError.onError =
+      (details) => GetIt.I<Talker>().handle(details.exception, details.stack);
+
   runZonedGuarded(() {
     GetIt.I.registerLazySingleton<DbProvider>(() => DbProvider());
     GetIt.I.registerLazySingleton<AbstractDriver>(() => AccelDriver());
@@ -30,12 +33,6 @@ void main() {
   }, (error, stack) {
     GetIt.I<Talker>().handle(error, stack);
   });
-  // runZonedGuarded(
-  //   () => runApp(const MonitorFsoApp()),
-  //   (error, stack) {
-  //     GetIt.I<Talker>().handle(error, stack);
-  //   },
-  // );
 
   //runApp(const MonitorFsoApp());
 }

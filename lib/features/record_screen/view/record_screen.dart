@@ -342,9 +342,9 @@ class _RecordScreenState extends State<RecordScreen> {
           _isRecording = false;
           _recCount = 0;
           _stage = RecordStages.stgNone;
-          // await _database.setParams(_freq);  TODO: открыть
           _finishRecord();
           _playWithOK();
+          GetIt.I<Talker>().info('Finish recording');
           setState(() {
             _saveIcon = Icons.save_outlined;
           });
@@ -400,9 +400,11 @@ class _RecordScreenState extends State<RecordScreen> {
     ///! Остановили запись
     if (!_isRecording) {
       _stage = RecordStages.stgNone;
+      GetIt.I<Talker>().info('Stop recording');
 //      _finishRecord();
     } else {
       _stage = RecordStages.stgWait1;
+      GetIt.I<Talker>().info('Start recording');
     }
     _testData.clear();
   }

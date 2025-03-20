@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_it/get_it.dart';
 import 'package:number_text_input_formatter/number_text_input_formatter.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/defines.dart';
@@ -57,13 +59,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: Image.asset('lib/assets/icons/settings60.png'),
                     ),
                     const SizedBox(width: 10),
-                    const Text(
-                      'Параметры',
-                      textAlign: TextAlign.center,
-                      textScaler: TextScaler.linear(1.0),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                    const Expanded(
+                      child: Text(
+                        'Параметры',
+                        textScaler: TextScaler.linear(1.0),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => TalkerScreen(
+                              talker: GetIt.I<Talker>(),
+                              appBarTitle: 'Лог',
+                            ),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.book,
+                        color: Colors.teal.shade200,
                       ),
                     ),
                   ],
