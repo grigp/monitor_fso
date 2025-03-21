@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/results_screen/widgets/test_title.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_defines.dart';
@@ -208,6 +209,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
         final bool? isDelete = await _askDeleteTest(test.dt);
         if (isDelete!) {
           GetIt.I<DbProvider>().deleteTest(test.uid);
+          GetIt.I<Talker>().info('Delete test: ${test.dt}');
         }
       },
     );
@@ -261,6 +263,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
   void _openTest(BuildContext context, RecordTest test) async {
     test.data = await GetIt.I<DbProvider>().getTestData(test.uid);
     var testData = TestData.fromDb(test);
+
+    GetIt.I<Talker>().info('Open test: ${test.dt}');
 
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => TestResultScreen(

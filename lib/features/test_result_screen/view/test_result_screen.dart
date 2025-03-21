@@ -9,6 +9,7 @@ import 'package:monitor_fso/repositories/database/db_provider.dart';
 import 'package:monitor_fso/repositories/logger/app_errors.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/test_data.dart';
@@ -162,6 +163,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
                 Share.shareXFiles([XFile('${dir?.path}/$fn')],
                     text: 'Сигналы акселерограммы по x, y и z');
 
+                GetIt.I<Talker>().info('Export signal: ${dt}');
                 //Share.share(dataToString(data));
               },
               heroTag: 'Share',
@@ -221,6 +223,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
     rec.data = widget.testData.data();
 
     await GetIt.I<DbProvider>().addTest(rec);
+    GetIt.I<Talker>().info('Save test: ${widget.testData.dateTime()}');
   }
 
   void _closeScreen() async {
