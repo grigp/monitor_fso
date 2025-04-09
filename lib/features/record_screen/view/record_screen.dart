@@ -321,8 +321,6 @@ class _RecordScreenState extends State<RecordScreen> {
       if (_stage == RecordStages.stgRecording) {
         _testData.addValue(
             DataBlock(ax: ax, ay: ay, az: az, gx: gx, gy: gy, gz: gz));
-        // await _database TODO: открыть
-        //     .add(DataBlock(ax: ax, ay: ay, az: az, gx: gx, gy: gy, gz: gz));
       }
 
       ++_recCount;
@@ -343,17 +341,27 @@ class _RecordScreenState extends State<RecordScreen> {
           _recCount = 0;
           _stage = RecordStages.stgNone;
           _finishRecord();
-          _playWithOK();
+          _playSound('sounds/ok.wav');
           GetIt.I<Talker>().info('Finish recording');
           setState(() {
             _saveIcon = Icons.save_outlined;
           });
         }
       }
+
+      if (_isRecording && _recCount % _freq == 0) {
+        if (_stage == RecordStages.stgRecording ||
+            _stage == RecordStages.stgCalibrating ||
+            _stage == RecordStages.stgWait2 ||
+            _stage == RecordStages.stgWait1 &&
+                (_recCount >= (_timeWait - 4) * _freq)) {
+          _playSound('sounds/tick.mp3');
+        }
+      }
     }
   }
 
-  void _playWithOK() async {
+  void _playSound(String fn) async {
     try {
       bool isEnableSound = true;
       if (Platform.isAndroid) {
@@ -370,7 +378,7 @@ class _RecordScreenState extends State<RecordScreen> {
       }
 
       if (isEnableSound) {
-        await player.setSource(AssetSource('sounds/ok.wav'));
+        await player.setSource(AssetSource(fn));
         await player.resume();
       }
     } catch (e, st) {
