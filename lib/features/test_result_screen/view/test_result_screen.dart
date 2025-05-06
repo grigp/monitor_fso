@@ -40,6 +40,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
   DecimalSeparator _ds = DecimalSeparator.dsComma;
   String _lastError = '';
   bool _isSaved = false;
+  int _testCnt = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -206,85 +207,125 @@ class _TestResultScreenState extends State<TestResultScreen> {
     });
   }
 
+  Future _getTestsCount() async {
+    _testCnt = (await GetIt.I<DbProvider>().testsCount())!;
+  }
+
   void _doSaveTest() async {
     await _onSaveTest();
   }
 
   Future _onSaveTest() async {
-    await _doSaveUpdate();
+    await _getTestsCount();
+    if (isDemoVersion && (_testCnt < maxRecordsCount) ||
+        (!isDemoVersion)) {
+      await _doSaveUpdate();
 
-    var rec = RecordTest(
-      uid: widget.testData.uid(),
-      dt: widget.testData.dateTime(),
-      methodicUid: uidMethodicRec,
-      kfr: widget.testData.kfr(),
-      freq: widget.testData.freq(),
-    );
-    rec.data = widget.testData.data();
+      var rec = RecordTest(
+        uid: widget.testData.uid(),
+        dt: widget.testData.dateTime(),
+        methodicUid: uidMethodicRec,
+        kfr: widget.testData.kfr(),
+        freq: widget.testData.freq(),
+      );
+      rec.data = widget.testData.data();
 
-    await GetIt.I<DbProvider>().addTest(rec);
-    GetIt.I<Talker>().info('Save test: ${widget.testData.dateTime()}');
-  }
-
-  void _closeScreen() async {
-    int? dr = -1;
-    if (!widget.testData.isSaved()) {
-      dr = await showDialog<int>(
+      await GetIt.I<DbProvider>().addTest(rec);
+      GetIt.I<Talker>().info('Save test: ${widget.testData.dateTime()}');
+    } else {
+      await showDialog<int>(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text(
-            'Результаты не сохранены \nСохранить?',
-            textScaler: TextScaler.linear(1.0),
-            style: TextStyle(fontSize: 20),
+          title: Text(
+            'Количество тестов больше $maxRecordsCount\nРезультаты нельзя сохранить',
+            textScaler: const TextScaler.linear(1.0),
+            style: const TextStyle(fontSize: 20),
           ),
           actions: <Widget>[
             MonfsoButton.accent(
               onPressed: () {
                 Navigator.pop(context, 1);
               },
-              text: 'Да',
-              width: 140,
-            ),
-            MonfsoButton.secondary(
-              onPressed: () {
-                Navigator.pop(context, -1);
-              },
-              text: 'Нет',
-              width: 140,
-            ),
-            MonfsoButton.secondary(
-              onPressed: () {
-                Navigator.pop(context, 0);
-              },
-              text: 'Отмена',
+              text: 'Закрыть',
               width: 140,
             ),
           ],
         ),
-      );
-    }
+      );    }
+  }
 
-    if (dr == 1) {
-      await _onSaveTest();
-    }
-
-    if (dr == 1 || dr == -1) {
-      if (widget.entrence == RunTestEntrance.rteInvitation) {
-        MaterialPageRoute route = MaterialPageRoute(
-          builder: (context) => const ResultsScreen(
-            title: 'Результаты тестов',
-          ),
-          settings: const RouteSettings(name: '/results'),
+  void _closeScreen() async {
+    await _getTestsCount();
+    if (isDemoVersion && (_testCnt < maxRecordsCount) ||
+        (!isDemoVersion)) {
+      int? dr = -1;
+      if (!widget.testData.isSaved()) {
+        dr = await showDialog<int>(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) =>
+              AlertDialog(
+                title: const Text(
+                  'Результаты не сохранены \nСохранить?',
+                  textScaler: TextScaler.linear(1.0),
+                  style: TextStyle(fontSize: 20),
+                ),
+                actions: <Widget>[
+                  MonfsoButton.accent(
+                    onPressed: () {
+                      Navigator.pop(context, 1);
+                    },
+                    text: 'Да',
+                    width: 140,
+                  ),
+                  MonfsoButton.secondary(
+                    onPressed: () {
+                      Navigator.pop(context, -1);
+                    },
+                    text: 'Нет',
+                    width: 140,
+                  ),
+                  MonfsoButton.secondary(
+                    onPressed: () {
+                      Navigator.pop(context, 0);
+                    },
+                    text: 'Отмена',
+                    width: 140,
+                  ),
+                ],
+              ),
         );
-        Navigator.of(context).push(route);
-      } else if (widget.entrence == RunTestEntrance.rteTestsNew) {
-        Navigator.of(context).popUntil(
-          ModalRoute.withName('/results'),
-        );
-      } else if (widget.entrence == RunTestEntrance.rteTestsOpen) {
-        Navigator.pop(context, 0);
       }
+
+      if (dr == 1) {
+        await _onSaveTest();
+      }
+
+      if (dr == 1 || dr == -1) {
+        _doClose();
+      }
+    } else {
+      _doClose();
+    }
+  }
+
+  void _doClose() {
+    if (widget.entrence == RunTestEntrance.rteInvitation) {
+      MaterialPageRoute route = MaterialPageRoute(
+        builder: (context) =>
+        const ResultsScreen(
+          title: 'Результаты тестов',
+        ),
+        settings: const RouteSettings(name: '/results'),
+      );
+      Navigator.of(context).push(route);
+    } else if (widget.entrence == RunTestEntrance.rteTestsNew) {
+      Navigator.of(context).popUntil(
+        ModalRoute.withName('/results'),
+      );
+    } else if (widget.entrence == RunTestEntrance.rteTestsOpen) {
+      Navigator.pop(context, 0);
     }
   }
 

@@ -40,3 +40,12 @@ enum DecimalSeparator {dsPoint, dsComma}
 enum RunTestEntrance {rteInvitation, rteTestsNew, rteTestsOpen}
 
 int screenCounter = 0;
+
+/// Признак того, что программа является демо версией
+bool isDemoVersion = true;
+
+/// Кол-во записей в демонстрационной версии
+int maxRecordsCount = 10;
+
+/// Дата окончания работы демонстрационной версии
+DateTime dateDeadline = DateTime(2025, 5, 12);
