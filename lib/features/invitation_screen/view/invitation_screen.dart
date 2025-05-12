@@ -57,8 +57,8 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       const SizedBox(height: 5),
                       Center(
                         child: Text(
-                          'Это демонстрационная версия программы\n'
-                          'Она имеет срок действия до ${pdt(dateDeadline.day)}.${pdt(dateDeadline.month)}.${dateDeadline.year}.\n'
+                          'Демонстрационная версия программы\n'
+                          'Срок действия прекращается ${pdt(dateDeadline.day)}.${pdt(dateDeadline.month)}.${dateDeadline.year}.\n'
                           'Количество записей не может превышать $maxRecordsCount.',
                           textAlign: TextAlign.center,
                           textScaler: const TextScaler.linear(1.0),

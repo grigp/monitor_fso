@@ -45,7 +45,7 @@ int screenCounter = 0;
 bool isDemoVersion = true;
 
 /// Кол-во записей в демонстрационной версии
-int maxRecordsCount = 10;
+int maxRecordsCount = 25;
 
 /// Дата окончания работы демонстрационной версии
-DateTime dateDeadline = DateTime(2025, 5, 12);
+DateTime dateDeadline = DateTime(2025, 5, 14);
