@@ -25,9 +25,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late TextEditingController _textTimeRec;
   bool _isReady = false;
 
-  int _timeWait = 4;
-  int _timeCalibr = 1;
-  int _timeRec = 20;
+  int _timeWait = durationStageWait;
+  int _timeCalibr = durationStageCalibr;
+  int _timeRec = durationStageRec;
 
   ///< Разделитель целой и дробной частей числа
   DecimalSeparator _ds = DecimalSeparator.dsComma;

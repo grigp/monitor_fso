@@ -29,7 +29,7 @@ class AccelDriver extends AbstractDriver {
   final double _min = -diap;
   final double _max = diap;
   bool _isCalibratng = false;
-  int _timeCalibration = 1;
+  int _timeCalibration = durationStageCalibr;
   bool _isFilter = true;
   late StreamSubscription<AccelerometerEvent> _streamAccel;
   late StreamSubscription<GyroscopeEvent> _streamGyro;

@@ -56,8 +56,8 @@ class _RecordScreenState extends State<RecordScreen> {
   int _freq = 50;
   double _min = -10;
   double _max = -10;
-  int _timeWait = 4;
-  int _timeRec = 20;
+  int _timeWait = durationStageWait;
+  int _timeRec = durationStageRec;
   RecordStages _stage = RecordStages.stgNone;
 
 //  final _database = GetIt.I<AbstractDatabaseRepository>();

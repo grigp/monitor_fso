@@ -48,4 +48,9 @@ bool isDemoVersion = true;
 int maxRecordsCount = 25;
 
 /// Дата окончания работы демонстрационной версии
-DateTime dateDeadline = DateTime(2025, 5, 14);
+DateTime dateDeadline = DateTime(2025, 7, 1);
+
+const int durationStageWait = 15;
+const int durationStageCalibr = 2;
+const int durationStageRec = 30;
+
