@@ -42,7 +42,7 @@ enum RunTestEntrance {rteInvitation, rteTestsNew, rteTestsOpen}
 int screenCounter = 0;
 
 /// Признак того, что программа является демо версией
-bool isDemoVersion = true;
+bool isDemoVersion = false;
 
 /// Кол-во записей в демонстрационной версии
 int maxRecordsCount = 25;
