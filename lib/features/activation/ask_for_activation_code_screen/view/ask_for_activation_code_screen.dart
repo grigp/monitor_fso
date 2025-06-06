@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../../../../repositories/protect_manager/protect_manager.dart';
 
 class AskForActivationCodeScreen extends StatefulWidget {
   const AskForActivationCodeScreen({super.key, required this.title});
@@ -13,6 +19,8 @@ class AskForActivationCodeScreen extends StatefulWidget {
 class _AskForActivationCodeScreenState
     extends State<AskForActivationCodeScreen> {
   late TextEditingController _textActivateKey;
+
+  String _name = '';
 
   @override
   void initState() {
@@ -63,6 +71,7 @@ class _AskForActivationCodeScreenState
                 style: Theme.of(context).textTheme.headlineSmall,
                 onChanged: (String value) {
                   if (value != '') {
+                    _name = value;
 //                    _timeCalibr = int.tryParse(value)!;
                   }
                 },
@@ -70,7 +79,7 @@ class _AskForActivationCodeScreenState
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-//                  _openInvitationScreen();
+                  _askForActivationCode();
                 },
                 child: const Text(
                   'Запросить код активации',
@@ -85,5 +94,11 @@ class _AskForActivationCodeScreenState
         ),
       ),
     );
+  }
+
+  void _askForActivationCode() async {
+    var sRequest = await GetIt.I<ProtectManager>().encodeACRequestString(_name);
+    await Share.share(sRequest);
+    exit(0);
   }
 }

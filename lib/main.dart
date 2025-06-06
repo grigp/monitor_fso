@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
 import 'package:monitor_fso/repositories/logger/app_errors.dart';
+import 'package:monitor_fso/repositories/protect_manager/protect_manager.dart';
 import 'package:monitor_fso/repositories/source/abstract_driver.dart';
 import 'package:monitor_fso/repositories/source/accel_driver.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -23,6 +24,7 @@ void main() {
 
     GetIt.I.registerLazySingleton<Talker>(() => TalkerFlutter.init());
     GetIt.I<Talker>().info('Monitor FSO started ...');
+    GetIt.I.registerLazySingleton<ProtectManager>(() => ProtectManager());
 
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setPreferredOrientations(
