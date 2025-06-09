@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_device_imei/flutter_device_imei.dart';
 
 class ProtectManager {
@@ -16,6 +17,62 @@ class ProtectManager {
       dst = '$dst$sCode';
     }
     return dst;
+  }
+
+  /// Получает код imei, используя ключ активации,
+  /// сравнивает его с imei устройства и
+  /// Возвращает true. если совпадают
+  Future<bool> isActivationKeyCorrect(String key) async {
+    /// Преобразование ключа активации в imei
+    List<int> r = [0, 0, 0, 0];
+    List<int> code = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    Set<int> idxR = {0, 6, 12, 18};
+    Set<int> idxDef = {5, 11, 17};
+
+    int nc = 0;
+    int nr = 0;
+    for (int i = 0; i < key.length; ++i) {
+      /// случайные опорные числа
+      if (idxR.contains(i)) {
+        r[nr] = int.parse(key[i], radix: 16);
+        ++nr;
+      } else
+      /// Основные числа ключа
+      if (!idxDef.contains(i)) {
+        if (nc < 16) {
+          code[nc] = int.parse(key[i], radix: 16);
+        }
+        ++nc;
+      }
+    }
+    if (kDebugMode) {
+      print('-------------  $r    $code');
+    }
+
+    /// Преобразование
+    String imeiFromKey = '';
+    for (int i = 0; i < code.length; ++i) {
+      int c = code[i];
+      if (code[i] >= r[i % 4]) {
+        code[i] -= r[i % 4];
+      } else {
+        code[i] = code[i] - r[i % 4] + 16;
+      }
+      if (kDebugMode) {
+        print('----- $i: ${c}  ${r[i % 4]}    ${code[i].toRadixString(16)}');
+      }
+      imeiFromKey = imeiFromKey + code[i].toRadixString(16);
+    }
+
+    /// Код imei устройства
+    String? imeiFromDevice = await getDeviceIMEI();
+    if (kDebugMode) {
+      print('-------------  $r    $code');
+      print('-------------  $imeiFromKey');
+      print('-------------  $imeiFromDevice');
+    }
+
+    return imeiFromKey == imeiFromDevice;
   }
 
   /// Возвращает код символа из таблицы

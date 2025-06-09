@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/activation/ask_for_activation_code_screen/view/ask_for_activation_code_screen.dart';
 import 'package:monitor_fso/features/invitation_screen/view/invitation_screen.dart';
 import 'package:number_text_input_formatter/number_text_input_formatter.dart';
+
+import '../../../../repositories/protect_manager/protect_manager.dart';
 
 class EnterActivationCodeScreen extends StatefulWidget {
   const EnterActivationCodeScreen({super.key, required this.title});
@@ -15,6 +18,7 @@ class EnterActivationCodeScreen extends StatefulWidget {
 
 class _EnterActivationCodeScreenState extends State<EnterActivationCodeScreen> {
   late TextEditingController _textActivateKey;
+  String _activationKey = "";
 
   @override
   void initState() {
@@ -63,15 +67,20 @@ class _EnterActivationCodeScreenState extends State<EnterActivationCodeScreen> {
                 // ],
                 onChanged: (String value) {
                   if (value != '') {
-//                    _timeCalibr = int.tryParse(value)!;
+                    _activationKey = value;
                   }
                 },
 //                keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  _openInvitationScreen();
+                onPressed: () async {
+                  var isOK = await GetIt.I<ProtectManager>().isActivationKeyCorrect(_activationKey);
+                  if (isOK) {
+                    _openInvitationScreen();
+                  } else {
+
+                  }
                 },
                 child: const Text(
                   'Активировать',
