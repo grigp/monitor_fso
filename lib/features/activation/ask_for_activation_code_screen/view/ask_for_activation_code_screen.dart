@@ -45,7 +45,7 @@ class _AskForActivationCodeScreenState
             children: [
               const SizedBox(height: 60),
               const Text(
-                'Запрос кода активации',
+                'Запрос ключа активации',
                 textAlign: TextAlign.center,
                 textScaler: TextScaler.linear(1.0),
                 style: TextStyle(
@@ -82,7 +82,7 @@ class _AskForActivationCodeScreenState
                   _askForActivationCode();
                 },
                 child: const Text(
-                  'Запросить код активации',
+                  'Запросить ключ активации',
                   style: TextStyle(
                     fontSize: 20,
                   ),

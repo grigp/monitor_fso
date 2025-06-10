@@ -5,6 +5,7 @@ import 'package:monitor_fso/features/invitation_screen/view/invitation_screen.da
 import 'package:number_text_input_formatter/number_text_input_formatter.dart';
 
 import '../../../../repositories/protect_manager/protect_manager.dart';
+import '../../../../uikit/monfso_button.dart';
 
 class EnterActivationCodeScreen extends StatefulWidget {
   const EnterActivationCodeScreen({super.key, required this.title});
@@ -23,6 +24,7 @@ class _EnterActivationCodeScreenState extends State<EnterActivationCodeScreen> {
   @override
   void initState() {
     super.initState();
+    _getActivationCode();
     _textActivateKey = TextEditingController(text: '');
   }
 
@@ -43,7 +45,7 @@ class _EnterActivationCodeScreenState extends State<EnterActivationCodeScreen> {
             children: [
               const SizedBox(height: 60),
               const Text(
-                'Программа не активирована.\nВведите код активации',
+                'Программа не активирована.\nВведите ключ активации',
                 textAlign: TextAlign.center,
                 textScaler: TextScaler.linear(1.0),
                 style: TextStyle(
@@ -75,11 +77,15 @@ class _EnterActivationCodeScreenState extends State<EnterActivationCodeScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  var isOK = await GetIt.I<ProtectManager>().isActivationKeyCorrect(_activationKey);
+                  FocusScope.of(context).unfocus();
+                  var isOK = await GetIt.I<ProtectManager>()
+                      .isActivationKeyCorrect(_activationKey);
                   if (isOK) {
+                    await GetIt.I<ProtectManager>()
+                        .saveActivationKey(_activationKey);
                     _openInvitationScreen();
                   } else {
-
+                    _msgActivationCodeIsNotCorrect();
                   }
                 },
                 child: const Text(
@@ -92,7 +98,7 @@ class _EnterActivationCodeScreenState extends State<EnterActivationCodeScreen> {
               const Spacer(),
               GestureDetector(
                 child: const Text(
-                  'Запросить код активации',
+                  'Запросить ключ активации',
                   textAlign: TextAlign.center,
                   textScaler: TextScaler.linear(1.0),
                   style: TextStyle(
@@ -113,6 +119,14 @@ class _EnterActivationCodeScreenState extends State<EnterActivationCodeScreen> {
     );
   }
 
+  void _getActivationCode() async {
+    var key = await GetIt.I<ProtectManager>().getActivationKey();
+    var ok = await GetIt.I<ProtectManager>().isActivationKeyCorrect(key);
+    if (ok) {
+      _openInvitationScreen();
+    }
+  }
+
   void _openInvitationScreen() {
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => const InvitationScreen(
@@ -126,10 +140,30 @@ class _EnterActivationCodeScreenState extends State<EnterActivationCodeScreen> {
   void _openAskForActivationCodeScreen() {
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => const AskForActivationCodeScreen(
-        title: 'Запрос кода активации',
+        title: 'Запрос ключа активации',
       ),
       settings: const RouteSettings(name: '/ask_activation_code'),
     );
     Navigator.of(context).push(route);
+  }
+
+  void _msgActivationCodeIsNotCorrect() {
+    showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text(
+          'Неправильный ключ активации',
+          textScaler: TextScaler.linear(1.0),
+        ),
+        actions: <Widget>[
+          MonfsoButton.accent(
+            onPressed: () => Navigator.pop(context, 'Close'),
+            text: 'Закрыть',
+            width: 120,
+          ),
+        ],
+      ),
+    );
   }
 }
