@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/activation/enter_activation_code_screen/view/enter_activation_code_screen.dart';
 import 'package:monitor_fso/features/invitation_screen/view/invitation_screen.dart';
+import 'package:monitor_fso/repositories/defines.dart';
 import 'package:monitor_fso/router/routes.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -16,6 +17,9 @@ class MonitorFsoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget screen = const EnterActivationCodeScreen(title: 'Введите код активации');
+    if (isDemoVersion) {
+      screen = const InvitationScreen(title: 'Мониторинг ФСО');
+    }
 //    Widget screen = const InvitationScreen(title: 'Мониторинг ФСО');
     // Widget screen = _adapterState == BluetoothAdapterState.on
     //     ? const InvitationToConnectScreen(title: 'Электростимуляторы texel')

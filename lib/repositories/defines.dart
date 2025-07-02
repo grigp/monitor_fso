@@ -42,13 +42,13 @@ enum RunTestEntrance {rteInvitation, rteTestsNew, rteTestsOpen}
 int screenCounter = 0;
 
 /// Признак того, что программа является демо версией
-bool isDemoVersion = false;
+bool isDemoVersion = true;
 
 /// Кол-во записей в демонстрационной версии
 int maxRecordsCount = 25;
 
 /// Дата окончания работы демонстрационной версии
-DateTime dateDeadline = DateTime(2025, 7, 1);
+DateTime dateDeadline = DateTime(2025, 9, 1);
 
 const int durationStageWait = 15;
 const int durationStageCalibr = 2;
