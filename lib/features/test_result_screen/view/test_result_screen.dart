@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -146,33 +147,34 @@ class _TestResultScreenState extends State<TestResultScreen> {
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            FloatingActionButton(
-              onPressed: () async {
-                final dir = Platform.isAndroid
-                    ? await getExternalStorageDirectory()
-                    : await getApplicationSupportDirectory();
+            if (kDebugMode)
+              FloatingActionButton(
+                onPressed: () async {
+                  final dir = Platform.isAndroid
+                      ? await getExternalStorageDirectory()
+                      : await getApplicationSupportDirectory();
 
-                var dt = widget.testData.dateTime();
-                String fn =
-                    'accel_${pdt(dt.day)}_${pdt(dt.month)}_${pdt(dt.year)}_${pdt(dt.hour)}_${pdt(dt.minute)}_${pdt(dt.second)}.sig';
-                var f = File('${dir?.path}/$fn');
-                if (await f.exists()) {
-                  await f.delete();
-                }
-                await f.writeAsString(_dataToString(widget.testData.data()));
-                print('--- ${dir?.path}/$fn');
-                Share.shareXFiles([XFile('${dir?.path}/$fn')],
-                    text: 'Сигналы акселерограммы по x, y и z');
+                  var dt = widget.testData.dateTime();
+                  String fn =
+                      'accel_${pdt(dt.day)}_${pdt(dt.month)}_${pdt(dt.year)}_${pdt(dt.hour)}_${pdt(dt.minute)}_${pdt(dt.second)}.sig';
+                  var f = File('${dir?.path}/$fn');
+                  if (await f.exists()) {
+                    await f.delete();
+                  }
+                  await f.writeAsString(_dataToString(widget.testData.data()));
+                  print('--- ${dir?.path}/$fn');
+                  Share.shareXFiles([XFile('${dir?.path}/$fn')],
+                      text: 'Сигналы акселерограммы по x, y и z');
 
-                GetIt.I<Talker>().info('Export signal: ${dt}');
-                //Share.share(dataToString(data));
-              },
-              heroTag: 'Share',
-              tooltip: 'Поделиться',
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              child: Image.asset('lib/assets/icons/share48_flat.png'),
-            ),
+                  GetIt.I<Talker>().info('Export signal: ${dt}');
+                  //Share.share(dataToString(data));
+                },
+                heroTag: 'Share',
+                tooltip: 'Поделиться',
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                child: Image.asset('lib/assets/icons/share48_flat.png'),
+              ),
             // if (!widget.testData.isSaved()) const SizedBox(width: 20),
             // if (!widget.testData.isSaved())
             if (!_isSaved) const SizedBox(width: 20),
@@ -217,8 +219,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   Future _onSaveTest() async {
     await _getTestsCount();
-    if (isDemoVersion && (_testCnt < maxRecordsCount) ||
-        (!isDemoVersion)) {
+    if (isDemoVersion && (_testCnt < maxRecordsCount) || (!isDemoVersion)) {
       await _doSaveUpdate();
 
       var rec = RecordTest(
@@ -252,49 +253,48 @@ class _TestResultScreenState extends State<TestResultScreen> {
             ),
           ],
         ),
-      );    }
+      );
+    }
   }
 
   void _closeScreen() async {
     await _getTestsCount();
-    if (isDemoVersion && (_testCnt < maxRecordsCount) ||
-        (!isDemoVersion)) {
+    if (isDemoVersion && (_testCnt < maxRecordsCount) || (!isDemoVersion)) {
       int? dr = -1;
       if (!widget.testData.isSaved()) {
         dr = await showDialog<int>(
           barrierDismissible: false,
           context: context,
-          builder: (BuildContext context) =>
-              AlertDialog(
-                title: const Text(
-                  'Результаты не сохранены \nСохранить?',
-                  textScaler: TextScaler.linear(1.0),
-                  style: TextStyle(fontSize: 20),
-                ),
-                actions: <Widget>[
-                  MonfsoButton.accent(
-                    onPressed: () {
-                      Navigator.pop(context, 1);
-                    },
-                    text: 'Да',
-                    width: 140,
-                  ),
-                  MonfsoButton.secondary(
-                    onPressed: () {
-                      Navigator.pop(context, -1);
-                    },
-                    text: 'Нет',
-                    width: 140,
-                  ),
-                  MonfsoButton.secondary(
-                    onPressed: () {
-                      Navigator.pop(context, 0);
-                    },
-                    text: 'Отмена',
-                    width: 140,
-                  ),
-                ],
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text(
+              'Результаты не сохранены \nСохранить?',
+              textScaler: TextScaler.linear(1.0),
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: <Widget>[
+              MonfsoButton.accent(
+                onPressed: () {
+                  Navigator.pop(context, 1);
+                },
+                text: 'Да',
+                width: 140,
               ),
+              MonfsoButton.secondary(
+                onPressed: () {
+                  Navigator.pop(context, -1);
+                },
+                text: 'Нет',
+                width: 140,
+              ),
+              MonfsoButton.secondary(
+                onPressed: () {
+                  Navigator.pop(context, 0);
+                },
+                text: 'Отмена',
+                width: 140,
+              ),
+            ],
+          ),
         );
       }
 
@@ -313,8 +313,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
   void _doClose() {
     if (widget.entrence == RunTestEntrance.rteInvitation) {
       MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) =>
-        const ResultsScreen(
+        builder: (context) => const ResultsScreen(
           title: 'Результаты тестов',
         ),
         settings: const RouteSettings(name: '/results'),

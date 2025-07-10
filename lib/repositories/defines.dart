@@ -42,7 +42,16 @@ enum RunTestEntrance {rteInvitation, rteTestsNew, rteTestsOpen}
 int screenCounter = 0;
 
 /// Признак того, что программа является демо версией
-bool isDemoVersion = true;
+bool isDemoVersion = false;
+
+///< Версия программы
+///< uvHome         - домашняя, индивидуальная
+///< uvProfessional - профессиональная
+enum UserVersion {uvHome, uvProfessional}
+
+/// Версия программы. Если нужна другая, перекомментировать, пересобрать
+UserVersion userVersion = UserVersion.uvProfessional;
+//UserVersion userVersion = UserVersion.uvHome;
 
 /// Кол-во записей в демонстрационной версии
 int maxRecordsCount = 25;
