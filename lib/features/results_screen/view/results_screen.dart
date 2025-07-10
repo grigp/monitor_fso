@@ -233,6 +233,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
             RecordTest(
               uid: '',
               dt: _tests[i].dt,
+              patientUid: '',
               methodicUid: '',
               kfr: 0,
               freq: 0,

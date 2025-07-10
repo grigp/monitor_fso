@@ -58,7 +58,7 @@ class DbProvider {
       _db = await openDatabase(_dbPath, version: 1,
           onCreate: (Database db, int version) async {
         await db.execute(
-            'CREATE TABLE Tests (uid STRING PRIMARY KEY, dt STRING, methodicUid STRING, kfr REAL, freq REAL, data BLOB NOT NULL)');
+            'CREATE TABLE Tests (uid STRING PRIMARY KEY, dt STRING, patientUid STRING, methodicUid STRING, kfr REAL, freq REAL, data BLOB NOT NULL)');
       });
     }
   }
@@ -71,6 +71,7 @@ class DbProvider {
     await _db.insert('Tests', {
       'uid': rec.uid,
       'dt': rec.dt.toString(),
+      'patientUid': rec.patientUid,
       'methodicUid': rec.methodicUid,
       'kfr': rec.kfr,
       'freq': rec.freq,
@@ -94,13 +95,14 @@ class DbProvider {
   Future<List<RecordTest>> getListTests() async {
     await _openDB();
     List<Map> list =
-        await _db.rawQuery('SELECT uid, dt, methodicUid, kfr, freq FROM Tests');
+        await _db.rawQuery('SELECT uid, dt, patientUid, methodicUid, kfr, freq FROM Tests');
     List<RecordTest> retval = [];
     for (int i = 0; i < list.length; ++i) {
       retval.add(
         RecordTest(
           uid: list[i]['uid'],
           dt: DateTime.parse(list[i]['dt']),
+          patientUid: list[i]['patientUid'],
           methodicUid: list[i]['methodicUid'],
           kfr: list[i]['kfr'],
           freq: list[i]['freq'],

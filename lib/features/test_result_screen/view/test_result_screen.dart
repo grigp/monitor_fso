@@ -225,6 +225,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
       var rec = RecordTest(
         uid: widget.testData.uid(),
         dt: widget.testData.dateTime(),
+        patientUid: '',  ///TODO: add really patientUid
         methodicUid: uidMethodicRec,
         kfr: widget.testData.kfr(),
         freq: widget.testData.freq(),

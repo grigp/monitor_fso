@@ -4,6 +4,7 @@ import 'package:monitor_fso/repositories/defines.dart';
 class RecordTest {
   String uid;
   DateTime dt;
+  String patientUid;
   String methodicUid;
   double kfr;
   double freq;
@@ -12,6 +13,7 @@ class RecordTest {
   RecordTest({
     required this.uid,
     required this.dt,
+    required this.patientUid,
     required this.methodicUid,
     required this.kfr,
     required this.freq,
