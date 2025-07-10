@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/info_screen/view/info_screen.dart';
+import 'package:monitor_fso/features/patients_screen/view/patients_screen.dart';
 import 'package:monitor_fso/features/record_screen/view/record_screen.dart';
 import 'package:monitor_fso/uikit/monfso_button.dart';
 
@@ -26,16 +27,16 @@ class _InvitationScreenState extends State<InvitationScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (bool didPop, Object? result) async {
-          if (didPop) {
-            return;
-          }
-          Future.delayed(Duration.zero, () {
-            if (!context.mounted) return;
-            exit(0);
-          });
-        },
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) {
+          return;
+        }
+        Future.delayed(Duration.zero, () {
+          if (!context.mounted) return;
+          exit(0);
+        });
+      },
       child: Scaffold(
         body: Center(
           child: Padding(
@@ -59,6 +60,25 @@ class _InvitationScreenState extends State<InvitationScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: Text(
+                    userVersion == UserVersion.uvHome
+                        ? 'Версия \"Домашняя\"'
+                        : 'Версия \"Профессиональная\"',
+                    textAlign: TextAlign.center,
+                    textScaler: const TextScaler.linear(1.0),
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 0, 100, 0),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 const Spacer(),
                 if (isDemoVersion)
                   Container(
@@ -71,8 +91,8 @@ class _InvitationScreenState extends State<InvitationScreen> {
                         Center(
                           child: Text(
                             'Демонстрационная версия программы\n'
-                                'Срок действия прекращается ${pdt(dateDeadline.day)}.${pdt(dateDeadline.month)}.${dateDeadline.year}.\n'
-                                'Количество записей не может превышать $maxRecordsCount.',
+                            'Срок действия прекращается ${pdt(dateDeadline.day)}.${pdt(dateDeadline.month)}.${dateDeadline.year}.\n'
+                            'Количество записей не может превышать $maxRecordsCount.',
                             textAlign: TextAlign.center,
                             textScaler: const TextScaler.linear(1.0),
                             style: const TextStyle(
@@ -93,7 +113,8 @@ class _InvitationScreenState extends State<InvitationScreen> {
                     children: [
                       const SizedBox(height: 10),
                       Center(
-                        child: Image.asset('lib/assets/icons/screen_preview.png'),
+                        child:
+                            Image.asset('lib/assets/icons/screen_preview.png'),
                       ),
                     ],
                   ),
@@ -135,56 +156,97 @@ class _InvitationScreenState extends State<InvitationScreen> {
                   ],
                 ),
                 const Spacer(),
-                Row(
-                  children: [
-                    const Spacer(),
-                    if ((isDemoVersion &&
-                        DateTime.now().isBefore(dateDeadline)) ||
-                        (!isDemoVersion))
-                      GestureDetector(
-                        onTap: () {
+                if (userVersion == UserVersion.uvHome)
+                  Row(
+                    children: [
+                      const Spacer(),
+                      if ((isDemoVersion &&
+                              DateTime.now().isBefore(dateDeadline)) ||
+                          (!isDemoVersion))
+                        GestureDetector(
+                          onTap: () {
 //                            Navigator.of(context).pushNamed('/record');
-                          MaterialPageRoute route = MaterialPageRoute(
-                            builder: (context) => const RecordScreen(
-                              title: 'Запись',
-                              entrence: RunTestEntrance.rteInvitation,
-                            ),
-                            settings: const RouteSettings(name: '/record'),
-                          );
-                          Navigator.of(context).push(route);
-                        },
-                        child: SizedBox(
-                          width: 140,
-                          height: 140,
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Image.asset('lib/assets/icons/plus100_flat.png'),
-                                const Text(
-                                  'Провести тест',
-                                  textAlign: TextAlign.center,
-                                  textScaler: TextScaler.linear(1.0),
-                                  style: TextStyle(
-                                    color: tealDarkColor,
-                                    fontSize: 20,
+                            MaterialPageRoute route = MaterialPageRoute(
+                              builder: (context) => const RecordScreen(
+                                title: 'Запись',
+                                entrence: RunTestEntrance.rteInvitation,
+                              ),
+                              settings: const RouteSettings(name: '/record'),
+                            );
+                            Navigator.of(context).push(route);
+                          },
+                          child: SizedBox(
+                            width: 140,
+                            height: 140,
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                      'lib/assets/icons/plus100_flat.png'),
+                                  const Text(
+                                    'Провести тест',
+                                    textAlign: TextAlign.center,
+                                    textScaler: TextScaler.linear(1.0),
+                                    style: TextStyle(
+                                      color: tealDarkColor,
+                                      fontSize: 20,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    const Spacer(),
-                    if ((isDemoVersion &&
-                        DateTime.now().isBefore(dateDeadline)) ||
-                        (!isDemoVersion))
+                      const Spacer(),
+                      if ((isDemoVersion &&
+                              DateTime.now().isBefore(dateDeadline)) ||
+                          (!isDemoVersion))
+                        GestureDetector(
+                          onTap: () {
+                            MaterialPageRoute route = MaterialPageRoute(
+                              builder: (context) => const ResultsScreen(
+                                title: 'Результаты тестов',
+                              ),
+                              settings: const RouteSettings(name: '/results'),
+                            );
+                            Navigator.of(context).push(route);
+                          },
+                          child: SizedBox(
+                            width: 140,
+                            height: 140,
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                      'lib/assets/icons/results100_flat.png'),
+                                  const Text(
+                                    'Результаты',
+                                    textAlign: TextAlign.center,
+                                    textScaler: TextScaler.linear(1.0),
+                                    style: TextStyle(
+                                      color: tealDarkColor,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      const Spacer(),
+                    ],
+                  ),
+                if (userVersion == UserVersion.uvProfessional)
+                  Row(
+                    children: [
+                      const Spacer(),
                       GestureDetector(
                         onTap: () {
                           MaterialPageRoute route = MaterialPageRoute(
-                            builder: (context) => const ResultsScreen(
-                              title: 'Результаты тестов',
+                            builder: (context) => const PatientsScreen(
+                              title: 'Пациенты',
                             ),
-                            settings: const RouteSettings(name: '/results'),
+                            settings: const RouteSettings(name: '/patients'),
                           );
                           Navigator.of(context).push(route);
                         },
@@ -195,9 +257,9 @@ class _InvitationScreenState extends State<InvitationScreen> {
                             child: Column(
                               children: [
                                 Image.asset(
-                                    'lib/assets/icons/results100_flat.png'),
+                                    'lib/assets/icons/man.png'),
                                 const Text(
-                                  'Результаты',
+                                  'Пациенты',
                                   textAlign: TextAlign.center,
                                   textScaler: TextScaler.linear(1.0),
                                   style: TextStyle(
@@ -210,9 +272,9 @@ class _InvitationScreenState extends State<InvitationScreen> {
                           ),
                         ),
                       ),
-                    const Spacer(),
-                  ],
-                ),
+                      const Spacer(),
+                    ],
+                  )
               ],
             ),
           ),
