@@ -59,9 +59,66 @@ class DbProvider {
           onCreate: (Database db, int version) async {
         await db.execute(
             'CREATE TABLE Tests (uid STRING PRIMARY KEY, dt STRING, patientUid STRING, methodicUid STRING, kfr REAL, freq REAL, data BLOB NOT NULL)');
+        await db.execute(
+            'CREATE TABLE Patients (uid STRING PRIMARY KEY, fio STRING, born STRING, sex STRING, comment STRING)');
       });
     }
   }
+
+  /// Записывает информацию о тесте в базу данных
+  Future addPatient(RecordPatient rec) async {
+    await _openDB();
+    await _db.insert('Patients', {
+      'uid': rec.uid,
+      'fio': rec.fio,
+      'born': rec.born.toString(),
+      'sex': rec.sex,
+      'comment': rec.comment,
+    });
+
+    /// Известим интересующихся о появлении пациента
+    for (int i = 0; i < _handlers.length; ++i) {
+      _handlers[i].func(DBEvents.dbeAddPatient, rec.uid);
+    }
+  }
+
+  /// Возвращает кол-во тестов
+  Future<int?> patientsCount() async {
+    await _openDB();
+    return Sqflite.firstIntValue(
+        await _db.rawQuery('SELECT COUNT(*) FROM Patients'));
+  }
+
+  /// Возвращает список тестов. Все, кроме данных (BLOB)
+  Future<List<RecordPatient>> getListPatients() async {
+    await _openDB();
+    List<Map> list =
+    await _db.rawQuery('SELECT uid, fio, born, sex, comment FROM Patients');
+    List<RecordPatient> retval = [];
+    for (int i = 0; i < list.length; ++i) {
+      retval.add(
+        RecordPatient(
+          uid: list[i]['uid'],
+          fio: list[i]['fio'],
+          born: DateTime.parse(list[i]['born']),
+          sex: list[i]['sex'],
+          comment: list[i]['comment'],
+        ),
+      );
+    }
+    return retval;
+  }
+
+  Future deletePatient(String patientUid) async {
+    await _openDB();
+    await _db.rawQuery('DELETE FROM Patients WHERE uid = \'$patientUid\'');
+
+    /// Известим интересующихся об удалении теста
+    for (int i = 0; i < _handlers.length; ++i) {
+      _handlers[i].func(DBEvents.dbeDeletePatient, patientUid);
+    }
+  }
+
 
   /// Записывает информацию о тесте в базу данных
   Future addTest(RecordTest rec) async {
@@ -229,4 +286,4 @@ class DbProvider {
 }
 
 
-enum DBEvents { dbeAddTest, dbeDeleteTest }
+enum DBEvents { dbeAddTest, dbeDeleteTest, dbeAddPatient, dbeDeletePatient }

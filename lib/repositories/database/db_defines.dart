@@ -1,5 +1,25 @@
 import 'package:monitor_fso/repositories/defines.dart';
 
+/// Тип пол человека
+enum Sex { male, female }
+
+/// Класс данных о записи пациента
+class RecordPatient {
+  String uid;
+  String fio;
+  DateTime born;
+  Sex sex;
+  String comment;
+
+  RecordPatient({
+    required this.uid,
+    required this.fio,
+    required this.born,
+    required this.sex,
+    required this.comment,
+  });
+}
+
 /// Класс данных о записи теста
 class RecordTest {
   String uid;
