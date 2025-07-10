@@ -217,7 +217,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
   void _readTestList() async {
     /// Прочитаем
-    _tests = await GetIt.I<DbProvider>().getListTests();
+    _tests = await GetIt.I<DbProvider>().getListTests('');
 
     /// Вставим элементы, соотвествующие смене дат
     if (_tests.isNotEmpty) {

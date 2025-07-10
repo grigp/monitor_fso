@@ -149,10 +149,18 @@ class DbProvider {
   }
 
   /// Возвращает список тестов. Все, кроме данных (BLOB)
-  Future<List<RecordTest>> getListTests() async {
+  /// Если patientUid задан, не равен '', то возвращается список тестов пациента с указанным uid
+  /// Иначе - все тесты
+  Future<List<RecordTest>> getListTests(String patientUid) async {
     await _openDB();
+
+    String request = 'SELECT uid, dt, patientUid, methodicUid, kfr, freq FROM Tests';
+    if (patientUid != '') {
+      request = '$request WHERE patientUid = \'$patientUid\'';
+    }
+
     List<Map> list =
-        await _db.rawQuery('SELECT uid, dt, patientUid, methodicUid, kfr, freq FROM Tests');
+        await _db.rawQuery(request);
     List<RecordTest> retval = [];
     for (int i = 0; i < list.length; ++i) {
       retval.add(
