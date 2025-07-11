@@ -72,7 +72,7 @@ class DbProvider {
       'uid': rec.uid,
       'fio': rec.fio,
       'born': rec.born.toString(),
-      'sex': rec.sex,
+      'sex': _sexToString(rec.sex),
       'comment': rec.comment,
     });
 
@@ -93,7 +93,7 @@ class DbProvider {
   Future<List<RecordPatient>> getListPatients() async {
     await _openDB();
     List<Map> list =
-    await _db.rawQuery('SELECT uid, fio, born, sex, comment FROM Patients');
+        await _db.rawQuery('SELECT uid, fio, born, sex, comment FROM Patients');
     List<RecordPatient> retval = [];
     for (int i = 0; i < list.length; ++i) {
       retval.add(
@@ -101,7 +101,7 @@ class DbProvider {
           uid: list[i]['uid'],
           fio: list[i]['fio'],
           born: DateTime.parse(list[i]['born']),
-          sex: list[i]['sex'],
+          sex: _stringToSex(list[i]['sex']),
           comment: list[i]['comment'],
         ),
       );
@@ -119,6 +119,28 @@ class DbProvider {
     }
   }
 
+  /// Обновляет значение КФР для теста
+  Future editPatient(RecordPatient patient) async {
+    await _openDB();
+
+    await _db.update(
+      'Patients',
+      {
+        'fio': patient.fio,
+        'born': patient.born.toString(),
+        'sex': _sexToString(patient.sex),
+        'comment': patient.comment,
+      },
+      where: 'uid = \'${patient.uid}\'',
+    );
+
+    // await _db.rawQuery(
+    //     'UPDATE Patients SET fio = ${p.fio} born ${p.born.toString()} sex = ${_sexToString(p.sex)} comment = ${p.comment} WHERE uid = \'${p.uid}\'');
+    /// Известим интересующихся о появлении пациента
+    for (int i = 0; i < _handlers.length; ++i) {
+      _handlers[i].func(DBEvents.dbeEditPatient, patient.uid);
+    }
+  }
 
   /// Записывает информацию о тесте в базу данных
   Future addTest(RecordTest rec) async {
@@ -154,13 +176,13 @@ class DbProvider {
   Future<List<RecordTest>> getListTests(String patientUid) async {
     await _openDB();
 
-    String request = 'SELECT uid, dt, patientUid, methodicUid, kfr, freq FROM Tests';
+    String request =
+        'SELECT uid, dt, patientUid, methodicUid, kfr, freq FROM Tests';
     if (patientUid != '') {
       request = '$request WHERE patientUid = \'$patientUid\'';
     }
 
-    List<Map> list =
-        await _db.rawQuery(request);
+    List<Map> list = await _db.rawQuery(request);
     List<RecordTest> retval = [];
     for (int i = 0; i < list.length; ++i) {
       retval.add(
@@ -235,7 +257,7 @@ class DbProvider {
     ByteData bd = ByteData(8);
     bd.setFloat64(0, value);
     var vBt = bd.buffer.asUint8List();
-    for (int j = 0; j < 8; ++j){
+    for (int j = 0; j < 8; ++j) {
       list[idx + j] = vBt[j];
     }
   }
@@ -244,7 +266,7 @@ class DbProvider {
   /// формат для сохранения в базе данных (BLOB)
   Future<Uint8List> _dataEncode(List<DataBlock> data) async {
     List<int> li = List.filled(data.length * 48, 0);
-    
+
     for (int i = 0; i < data.length; ++i) {
       _addValueToIntList(li, i * 48, data[i].ax);
       _addValueToIntList(li, i * 48 + 8, data[i].ay);
@@ -291,7 +313,22 @@ class DbProvider {
     }
     return retval;
   }
+
+  String _sexToString(Sex sex) {
+    if (sex == Sex.male) {
+      return 'male';
+    } else {
+      return 'female';
+    }
+  }
+
+  Sex _stringToSex(String ssex) {
+    if (ssex == 'male') {
+      return Sex.male;
+    } else {
+      return Sex.female;
+    }
+  }
 }
 
-
-enum DBEvents { dbeAddTest, dbeDeleteTest, dbeAddPatient, dbeDeletePatient }
+enum DBEvents { dbeAddTest, dbeDeleteTest, dbeAddPatient, dbeEditPatient, dbeDeletePatient }

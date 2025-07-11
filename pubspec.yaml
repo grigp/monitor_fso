@@ -88,6 +88,7 @@ flutter:
     - lib/assets/icons/res_test48.png
     - lib/assets/icons/new_test48.png
     - lib/assets/icons/delete48.png
+    - lib/assets/icons/delete48_01.png
     - lib/assets/icons/run_test48.png
     - lib/assets/icons/info48_flat.png
     - lib/assets/icons/pause48_flat.png
@@ -105,6 +106,7 @@ flutter:
     - lib/assets/icons/new_test100.png
     - lib/assets/icons/man.png
     - lib/assets/icons/kard_file48.png
+    - lib/assets/icons/kard_file48_01.png
 
     - assets/sounds/ok.mp3
     - assets/sounds/ok.wav

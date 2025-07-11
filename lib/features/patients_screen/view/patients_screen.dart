@@ -1,8 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/patient_card_file/view/patient_card_file_screen.dart';
+import 'package:monitor_fso/features/patients_screen/widgets/patient_title.dart';
 import 'package:monitor_fso/repositories/database/db_defines.dart';
 
 import '../../../assets/colors/colors.dart';
@@ -94,8 +93,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
                     SliverList.builder(
                       itemCount: _patients.length,
                       itemBuilder: (context, index) {
-                        return _buildPatientTitle(
-                            context, _patients.length - index - 1);
+                        return _buildPatientTitle(context, index);
                       },
                     ),
                   ],
@@ -115,30 +113,11 @@ class _PatientsScreenState extends State<PatientsScreen> {
               backgroundColor: Theme.of(context).colorScheme.surface,
               child: Image.asset('lib/assets/icons/plus48_flat.png'),
             ),
-            const SizedBox(width: 20),
-            FloatingActionButton(
-              onPressed: _onEditPatient,
-              heroTag: 'EditPatient',
-              tooltip: 'Редактировать запись о пациенте',
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              child: Image.asset('lib/assets/icons/kard_file48.png'),
-            ),
-            const SizedBox(width: 20),
-            FloatingActionButton(
-              onPressed: _onRemovePatient,
-              heroTag: 'RemovePatient',
-              tooltip: 'Удалить запись о пациенте',
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              child: Image.asset('lib/assets/icons/delete48.png'),
-            ),
           ],
         ),
       ),
     );
   }
-
 
   @override
   void initState() {
@@ -150,7 +129,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
     _uidHandler = GetIt.I<DbProvider>().addHandler(onDbChange);
   }
 
-
   @override
   void dispose() {
     GetIt.I<DbProvider>().removeHandler(_uidHandler);
@@ -159,25 +137,60 @@ class _PatientsScreenState extends State<PatientsScreen> {
 
   void _onNewPatient() {
     MaterialPageRoute route = MaterialPageRoute(
-      builder: (context) => const PatientCardFileScreen(
+      builder: (context) => PatientCardFileScreen(
         title: 'Пациент',
+        data: RecordPatient(
+          uid: '',
+          fio: '',
+          born: DateTime(2001, 1, 1),
+          sex: Sex.male,
+          comment: '',
+        ),
+        assignValues: _onAddRecordPatient,
       ),
       settings: const RouteSettings(name: '/patient'),
     );
     Navigator.of(context).push(route);
   }
 
-  void _onEditPatient() {
-
-  }
-
-  void _onRemovePatient() {
-
+  void _onEditPatient(RecordPatient patient) {
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => PatientCardFileScreen(
+        title: 'Пациент',
+        data: RecordPatient(
+          uid: patient.uid,
+          fio: patient.fio,
+          born: patient.born,
+          sex: patient.sex,
+          comment: patient.comment,
+        ),
+        assignValues: _onEditRecordPatient,
+      ),
+      settings: const RouteSettings(name: '/patient'),
+    );
+    Navigator.of(context).push(route);
   }
 
   /// Возврвщает тест для списка тестов
   Widget _buildPatientTitle(BuildContext context, int index) {
-    return Text('Пациент');
+    return PatientTitle(
+      patient: _patients[index],
+      isLast: false,
+      //index == _tests.length - 1,
+      onSelect: (RecordPatient patient) async {
+//        _openTest(context, test);
+      },
+      onEdit: (RecordPatient patient) async {
+        _onEditPatient(patient);
+      },
+      onDelete: (RecordPatient patient) async {
+        // final bool? isDelete = await _askDeleteTest(test.dt);
+        // if (isDelete!) {
+        //   GetIt.I<DbProvider>().deleteTest(test.uid);
+        //   GetIt.I<Talker>().info('Delete test: ${test.dt}');
+        // }
+      },
+    );
   }
 
   void _readPatientsList() async {
@@ -195,4 +208,15 @@ class _PatientsScreenState extends State<PatientsScreen> {
     _readPatientsList();
   }
 
+  /// Добавление записи о пациенте
+  void _onAddRecordPatient(RecordPatient data) async {
+    await GetIt.I<DbProvider>().addPatient(data);
+  }
+
+  /// Редактирование записи о пациенте
+  void _onEditRecordPatient(RecordPatient data) async {
+    await GetIt.I<DbProvider>().editPatient(data);
+  }
+
+  void _onRemovePatient(RecordPatient data) async {}
 }
