@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/patient_card_file/view/patient_card_file_screen.dart';
 import 'package:monitor_fso/features/patients_screen/widgets/patient_title.dart';
+import 'package:monitor_fso/features/results_screen/view/results_screen.dart';
 import 'package:monitor_fso/repositories/database/db_defines.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_provider.dart';
@@ -178,7 +180,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
       isLast: false,
       //index == _tests.length - 1,
       onSelect: (RecordPatient patient) async {
-//        _openTest(context, test);
+        _openTestsScreen(context, patient);
       },
       onEdit: (RecordPatient patient) async {
         _onEditPatient(patient);
@@ -219,4 +221,17 @@ class _PatientsScreenState extends State<PatientsScreen> {
   }
 
   void _onRemovePatient(RecordPatient data) async {}
+
+  void _openTestsScreen(BuildContext context, RecordPatient patient) async {
+    GetIt.I<Talker>().info('Open tests for patient: ${patient.fio}');
+
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => ResultsScreen(
+        title: 'Результаты тестов',
+      ),
+      settings: const RouteSettings(name: '/results'),
+    );
+    Navigator.of(context).push(route);
+  }
+
 }
