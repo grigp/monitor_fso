@@ -9,6 +9,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_provider.dart';
 import '../../../repositories/defines.dart';
+import '../../../uikit/monfso_button.dart';
 import '../../../uikit/widgets/back_screen_button.dart';
 import '../../../uikit/widgets/exit_program_dialog.dart';
 
@@ -173,6 +174,14 @@ class _PatientsScreenState extends State<PatientsScreen> {
     Navigator.of(context).push(route);
   }
 
+  void _onRemovePatient(RecordPatient patient) async {
+    final bool? isDelete = await _askDeletePatient(patient);
+    if (isDelete!) {
+      GetIt.I<DbProvider>().deletePatient(patient.uid);
+      GetIt.I<Talker>().info('Delete patient: ${patient.uid}: ${patient.fio}');
+    }
+  }
+
   /// Возврвщает тест для списка тестов
   Widget _buildPatientTitle(BuildContext context, int index) {
     return PatientTitle(
@@ -186,11 +195,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
         _onEditPatient(patient);
       },
       onDelete: (RecordPatient patient) async {
-        // final bool? isDelete = await _askDeleteTest(test.dt);
-        // if (isDelete!) {
-        //   GetIt.I<DbProvider>().deleteTest(test.uid);
-        //   GetIt.I<Talker>().info('Delete test: ${test.dt}');
-        // }
+        _onRemovePatient(patient);
       },
     );
   }
@@ -220,18 +225,45 @@ class _PatientsScreenState extends State<PatientsScreen> {
     await GetIt.I<DbProvider>().editPatient(data);
   }
 
-  void _onRemovePatient(RecordPatient data) async {}
-
   void _openTestsScreen(BuildContext context, RecordPatient patient) async {
     GetIt.I<Talker>().info('Open tests for patient: ${patient.fio}');
 
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => ResultsScreen(
         title: 'Результаты тестов',
+        patient: patient,
       ),
       settings: const RouteSettings(name: '/results'),
     );
     Navigator.of(context).push(route);
   }
 
+  Future<bool?> _askDeletePatient(RecordPatient patient) async {
+    return await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(
+          'Удалить пациента\n${patient.fio}?',
+          textScaler: const TextScaler.linear(1.0),
+        ),
+        actions: <Widget>[
+          MonfsoButton.accent(
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+            text: 'Нет',
+            width: 120,
+          ),
+          MonfsoButton.secondary(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            text: 'Да',
+            width: 120,
+          ),
+        ],
+      ),
+    );
+  }
 }

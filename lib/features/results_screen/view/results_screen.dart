@@ -17,9 +17,14 @@ import '../../test_result_screen/view/test_result_screen.dart';
 import '../result_utils.dart';
 
 class ResultsScreen extends StatefulWidget {
-  const ResultsScreen({super.key, required this.title});
+  const ResultsScreen({
+    super.key,
+    required this.title,
+    required this.patient,
+  });
 
   final String title;
+  final RecordPatient patient;
 
   @override
   State<StatefulWidget> createState() => _ResultsScreenState();
@@ -43,7 +48,11 @@ class _ResultsScreenState extends State<ResultsScreen> {
         }
         Future.delayed(Duration.zero, () {
           if (!context.mounted) return;
-          showExitProgramDialog(context);
+          if (userVersion == UserVersion.uvHome) {
+            showExitProgramDialog(context);
+          } else {
+            Navigator.pop(context, 0);
+          }
         });
       },
       child: Scaffold(
@@ -61,10 +70,14 @@ class _ResultsScreenState extends State<ResultsScreen> {
                       const SizedBox(width: 10),
                       BackScreenButton(
                         onBack: () {
-                          showExitProgramDialog(context);
+                          if (userVersion == UserVersion.uvHome) {
+                            showExitProgramDialog(context);
+                          } else {
+                            Navigator.pop(context, 0);
+                          }
                         },
                         hasBackground: false,
-                        isClose: true,
+                        isClose: userVersion == UserVersion.uvHome,
                       ),
                       // const SizedBox(width: 10),
                       SizedBox(
@@ -225,9 +238,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
       for (int i = _tests.length - 1; i >= 0; --i) {
         var dt = _tests[i].dt;
-        if (dt.day != dtc.day ||
-            dt.month != dtc.month ||
-            dt.year != dtc.year) {
+        if (dt.day != dtc.day || dt.month != dtc.month || dt.year != dtc.year) {
           _tests.insert(
             i + 1,
             RecordTest(
@@ -252,9 +263,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
   void _onNewTest() {
     MaterialPageRoute route = MaterialPageRoute(
-      builder: (context) => const RecordScreen(
+      builder: (context) => RecordScreen(
         title: 'Запись',
         entrence: RunTestEntrance.rteTestsNew,
+        patient: widget.patient,
       ),
       settings: const RouteSettings(name: '/record'),
     );

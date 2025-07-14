@@ -113,6 +113,8 @@ class DbProvider {
     await _openDB();
     await _db.rawQuery('DELETE FROM Patients WHERE uid = \'$patientUid\'');
 
+    ///TODO: Необходимо удалить все тесты для этого пациента
+
     /// Известим интересующихся об удалении теста
     for (int i = 0; i < _handlers.length; ++i) {
       _handlers[i].func(DBEvents.dbeDeletePatient, patientUid);

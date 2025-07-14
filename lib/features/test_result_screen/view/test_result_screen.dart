@@ -314,8 +314,15 @@ class _TestResultScreenState extends State<TestResultScreen> {
   void _doClose() {
     if (widget.entrence == RunTestEntrance.rteInvitation) {
       MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => const ResultsScreen(
+        builder: (context) => ResultsScreen(
           title: 'Результаты тестов',
+          patient: RecordPatient(
+            uid: '',
+            fio: '',
+            born: DateTime(2000),
+            sex: Sex.male,
+            comment: '',
+          ),
         ),
         settings: const RouteSettings(name: '/results'),
       );

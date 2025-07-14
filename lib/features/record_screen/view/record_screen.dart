@@ -9,6 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/features/info_method_screen/view/info_method_screen.dart';
 import 'package:monitor_fso/features/test_result_screen/view/test_result_screen.dart';
+import 'package:monitor_fso/repositories/database/db_defines.dart';
 import 'package:monitor_fso/repositories/database/db_provider.dart';
 import 'package:monitor_fso/repositories/database/test_data.dart';
 import 'package:monitor_fso/repositories/logger/app_errors.dart';
@@ -31,11 +32,12 @@ class RecordScreen extends StatefulWidget {
   const RecordScreen({
     super.key,
     required this.title,
-    required this.entrence,
+    required this.entrence, required this.patient,
   });
 
   final String title;
   final RunTestEntrance entrence;
+  final RecordPatient patient;
 
   @override
   State<RecordScreen> createState() => _RecordScreenState();
@@ -492,8 +494,9 @@ class _RecordScreenState extends State<RecordScreen> {
               _pcBloc.add(StopEvent());
               if (screenCounter == 1) {
                 MaterialPageRoute route = MaterialPageRoute(
-                  builder: (context) => const ResultsScreen(
+                  builder: (context) => ResultsScreen(
                     title: 'Результаты тестов',
+                    patient: widget.patient,
                   ),
                   settings: const RouteSettings(name: '/results'),
                 );
@@ -533,8 +536,9 @@ class _RecordScreenState extends State<RecordScreen> {
               _pcBloc.add(StopEvent());
               if (screenCounter == 1) {
                 MaterialPageRoute route = MaterialPageRoute(
-                  builder: (context) => const ResultsScreen(
+                  builder: (context) => ResultsScreen(
                     title: 'Результаты тестов',
+                    patient: widget.patient,
                   ),
                   settings: const RouteSettings(name: '/results'),
                 );

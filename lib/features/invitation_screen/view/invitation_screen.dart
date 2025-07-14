@@ -8,6 +8,7 @@ import 'package:monitor_fso/features/record_screen/view/record_screen.dart';
 import 'package:monitor_fso/uikit/monfso_button.dart';
 
 import '../../../assets/colors/colors.dart';
+import '../../../repositories/database/db_defines.dart';
 import '../../../repositories/database/db_provider.dart';
 import '../../../repositories/defines.dart';
 import '../../results_screen/result_utils.dart';
@@ -167,9 +168,16 @@ class _InvitationScreenState extends State<InvitationScreen> {
                           onTap: () {
 //                            Navigator.of(context).pushNamed('/record');
                             MaterialPageRoute route = MaterialPageRoute(
-                              builder: (context) => const RecordScreen(
+                              builder: (context) => RecordScreen(
                                 title: 'Запись',
                                 entrence: RunTestEntrance.rteInvitation,
+                                patient: RecordPatient(
+                                  uid: '',
+                                  fio: '',
+                                  born: DateTime(2000),
+                                  sex: Sex.male,
+                                  comment: '',
+                                ),
                               ),
                               settings: const RouteSettings(name: '/record'),
                             );
@@ -204,8 +212,15 @@ class _InvitationScreenState extends State<InvitationScreen> {
                         GestureDetector(
                           onTap: () {
                             MaterialPageRoute route = MaterialPageRoute(
-                              builder: (context) => const ResultsScreen(
+                              builder: (context) => ResultsScreen(
                                 title: 'Результаты тестов',
+                                patient: RecordPatient(
+                                  uid: '',
+                                  fio: '',
+                                  born: DateTime(2000),
+                                  sex: Sex.male,
+                                  comment: '',
+                                ),
                               ),
                               settings: const RouteSettings(name: '/results'),
                             );
@@ -256,8 +271,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                           child: Center(
                             child: Column(
                               children: [
-                                Image.asset(
-                                    'lib/assets/icons/man.png'),
+                                Image.asset('lib/assets/icons/man.png'),
                                 const Text(
                                   'Пациенты',
                                   textAlign: TextAlign.center,
