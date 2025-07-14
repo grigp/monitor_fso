@@ -77,7 +77,6 @@ class _PatientTitleState extends State<PatientTitle> {
                 onTap: () {
                   widget.onEdit(widget.patient);
                 },
-//                child: Icon(Icons.close),
                 child: Image.asset('lib/assets/icons/kard_file48_01.png'),
               ),
               /// Удаление записи о пациенте
@@ -86,7 +85,8 @@ class _PatientTitleState extends State<PatientTitle> {
                 onTap: () {
                   widget.onDelete(widget.patient);
                 },
-                child: Image.asset('lib/assets/icons/delete48_01.png'), //Icon(Icons.close),
+                child: const Icon(Icons.close),
+//                child: Image.asset('lib/assets/icons/delete48_01.png'),
               ),
             ],
           ),

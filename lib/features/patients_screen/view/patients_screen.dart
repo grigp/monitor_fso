@@ -244,7 +244,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) => AlertDialog(
         title: Text(
-          'Удалить пациента\n${patient.fio}?',
+          'Удалить запись о пациенте\n\"${patient.fio}\"\n и все проведенные тесты этого пациента?',
           textScaler: const TextScaler.linear(1.0),
         ),
         actions: <Widget>[
