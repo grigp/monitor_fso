@@ -42,10 +42,9 @@ class _PatientCardFileScreenState extends State<PatientCardFileScreen> {
               Container(
                 color: tealBackgroundColor,
                 width: double.infinity,
-                height: 120,
+                height: 70,
                 child: Column(
                   children: [
-                    const SizedBox(height: 50),
                     Row(
                       children: [
                         BackScreenButton(
@@ -58,7 +57,7 @@ class _PatientCardFileScreenState extends State<PatientCardFileScreen> {
                         SizedBox(
                           width: 70,
                           height: 70,
-                          child: Image.asset('lib/assets/icons/settings60.png'),
+                          child: Image.asset('lib/assets/icons/man.png'),
                         ),
                         const SizedBox(width: 10),
                         const Expanded(
@@ -163,10 +162,9 @@ class _PatientCardFileScreenState extends State<PatientCardFileScreen> {
                           ),
                           style: Theme.of(context).textTheme.headlineSmall,
                           onChanged: (String value) {
-//                    print("${_textComment.text}");
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 50),
                         Row(
                           children: [
                             const Spacer(),
