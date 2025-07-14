@@ -111,9 +111,12 @@ class DbProvider {
 
   Future deletePatient(String patientUid) async {
     await _openDB();
+
+    /// Удалить запись для этого пациента
     await _db.rawQuery('DELETE FROM Patients WHERE uid = \'$patientUid\'');
 
-    ///TODO: Необходимо удалить все тесты для этого пациента
+    /// Удалить все записи тестов для этого пациента
+    await _db.rawQuery('DELETE FROM Tests WHERE patientUid = \'$patientUid\'');
 
     /// Известим интересующихся об удалении теста
     for (int i = 0; i < _handlers.length; ++i) {

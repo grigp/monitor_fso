@@ -230,7 +230,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
 
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => ResultsScreen(
-        title: 'Результаты тестов',
+        title: 'Результаты тестов \n${patient.fio}',
         patient: patient,
       ),
       settings: const RouteSettings(name: '/results'),
