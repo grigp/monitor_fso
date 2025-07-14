@@ -27,11 +27,13 @@ class TestResultScreen extends StatefulWidget {
     required this.title,
     required this.testData,
     required this.entrence,
+    required this.patientUid,
   });
 
   final String title;
   final TestData testData;
   final RunTestEntrance entrence;
+  final String patientUid;
 
   @override
   State<StatefulWidget> createState() => _TestResultScreenState();
@@ -102,7 +104,8 @@ class _TestResultScreenState extends State<TestResultScreen> {
               ),
             ),
             Text(
-              'Проведен ${pdt(dt.day)}.${pdt(dt.month)}.${pdt(dt.year)} ${pdt(dt.hour)}:${pdt(dt.minute)}:${pdt(dt.second)}',
+              'Проведен ${pdt(dt.day)}.${pdt(dt.month)}.${pdt(dt.year)} ${pdt(
+                  dt.hour)}:${pdt(dt.minute)}:${pdt(dt.second)}',
               textScaler: const TextScaler.linear(1.0),
               textAlign: TextAlign.left,
               style: const TextStyle(
@@ -156,7 +159,9 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
                   var dt = widget.testData.dateTime();
                   String fn =
-                      'accel_${pdt(dt.day)}_${pdt(dt.month)}_${pdt(dt.year)}_${pdt(dt.hour)}_${pdt(dt.minute)}_${pdt(dt.second)}.sig';
+                      'accel_${pdt(dt.day)}_${pdt(dt.month)}_${pdt(
+                      dt.year)}_${pdt(dt.hour)}_${pdt(dt.minute)}_${pdt(
+                      dt.second)}.sig';
                   var f = File('${dir?.path}/$fn');
                   if (await f.exists()) {
                     await f.delete();
@@ -171,8 +176,14 @@ class _TestResultScreenState extends State<TestResultScreen> {
                 },
                 heroTag: 'Share',
                 tooltip: 'Поделиться',
-                foregroundColor: Theme.of(context).colorScheme.primary,
-                backgroundColor: Theme.of(context).colorScheme.surface,
+                foregroundColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
+                backgroundColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .surface,
                 child: Image.asset('lib/assets/icons/share48_flat.png'),
               ),
             // if (!widget.testData.isSaved()) const SizedBox(width: 20),
@@ -183,8 +194,14 @@ class _TestResultScreenState extends State<TestResultScreen> {
                 onPressed: _doSaveTest,
                 heroTag: 'Save',
                 tooltip: 'Сохранить',
-                foregroundColor: Theme.of(context).colorScheme.primary,
-                backgroundColor: Theme.of(context).colorScheme.surface,
+                foregroundColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
+                backgroundColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .surface,
                 child: Image.asset('lib/assets/icons/save48_flat.png'),
               ),
           ],
@@ -225,7 +242,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
       var rec = RecordTest(
         uid: widget.testData.uid(),
         dt: widget.testData.dateTime(),
-        patientUid: '',  ///TODO: add really patientUid
+        patientUid: widget.patientUid,
         methodicUid: uidMethodicRec,
         kfr: widget.testData.kfr(),
         freq: widget.testData.freq(),
@@ -238,22 +255,23 @@ class _TestResultScreenState extends State<TestResultScreen> {
       await showDialog<int>(
         barrierDismissible: false,
         context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text(
-            'Количество тестов больше $maxRecordsCount\nРезультаты нельзя сохранить',
-            textScaler: const TextScaler.linear(1.0),
-            style: const TextStyle(fontSize: 20),
-          ),
-          actions: <Widget>[
-            MonfsoButton.accent(
-              onPressed: () {
-                Navigator.pop(context, 1);
-              },
-              text: 'Закрыть',
-              width: 140,
+        builder: (BuildContext context) =>
+            AlertDialog(
+              title: Text(
+                'Количество тестов больше $maxRecordsCount\nРезультаты нельзя сохранить',
+                textScaler: const TextScaler.linear(1.0),
+                style: const TextStyle(fontSize: 20),
+              ),
+              actions: <Widget>[
+                MonfsoButton.accent(
+                  onPressed: () {
+                    Navigator.pop(context, 1);
+                  },
+                  text: 'Закрыть',
+                  width: 140,
+                ),
+              ],
             ),
-          ],
-        ),
       );
     }
   }
@@ -266,36 +284,37 @@ class _TestResultScreenState extends State<TestResultScreen> {
         dr = await showDialog<int>(
           barrierDismissible: false,
           context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text(
-              'Результаты не сохранены \nСохранить?',
-              textScaler: TextScaler.linear(1.0),
-              style: TextStyle(fontSize: 20),
-            ),
-            actions: <Widget>[
-              MonfsoButton.accent(
-                onPressed: () {
-                  Navigator.pop(context, 1);
-                },
-                text: 'Да',
-                width: 140,
+          builder: (BuildContext context) =>
+              AlertDialog(
+                title: const Text(
+                  'Результаты не сохранены \nСохранить?',
+                  textScaler: TextScaler.linear(1.0),
+                  style: TextStyle(fontSize: 20),
+                ),
+                actions: <Widget>[
+                  MonfsoButton.accent(
+                    onPressed: () {
+                      Navigator.pop(context, 1);
+                    },
+                    text: 'Да',
+                    width: 140,
+                  ),
+                  MonfsoButton.secondary(
+                    onPressed: () {
+                      Navigator.pop(context, -1);
+                    },
+                    text: 'Нет',
+                    width: 140,
+                  ),
+                  MonfsoButton.secondary(
+                    onPressed: () {
+                      Navigator.pop(context, 0);
+                    },
+                    text: 'Отмена',
+                    width: 140,
+                  ),
+                ],
               ),
-              MonfsoButton.secondary(
-                onPressed: () {
-                  Navigator.pop(context, -1);
-                },
-                text: 'Нет',
-                width: 140,
-              ),
-              MonfsoButton.secondary(
-                onPressed: () {
-                  Navigator.pop(context, 0);
-                },
-                text: 'Отмена',
-                width: 140,
-              ),
-            ],
-          ),
         );
       }
 
@@ -314,16 +333,17 @@ class _TestResultScreenState extends State<TestResultScreen> {
   void _doClose() {
     if (widget.entrence == RunTestEntrance.rteInvitation) {
       MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => ResultsScreen(
-          title: 'Результаты тестов',
-          patient: RecordPatient(
-            uid: '',
-            fio: '',
-            born: DateTime(2000),
-            sex: Sex.male,
-            comment: '',
-          ),
-        ),
+        builder: (context) =>
+            ResultsScreen(
+              title: 'Результаты тестов',
+              patient: RecordPatient(
+                uid: '',
+                fio: '',
+                born: DateTime(2000),
+                sex: Sex.male,
+                comment: '',
+              ),
+            ),
         settings: const RouteSettings(name: '/results'),
       );
       Navigator.of(context).push(route);
@@ -359,7 +379,8 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
     for (int i = 0; i < data.length; ++i) {
       retval =
-          '$retval${v2s(data[i].ax)}\t${v2s(data[i].ay)}\t${v2s(data[i].az)}\t${v2s(data[i].gx)}\t${v2s(data[i].gy)}\t${v2s(data[i].gz)}\n';
+      '$retval${v2s(data[i].ax)}\t${v2s(data[i].ay)}\t${v2s(data[i].az)}\t${v2s(
+          data[i].gx)}\t${v2s(data[i].gy)}\t${v2s(data[i].gz)}\n';
       //     print('--------------------$i : $_ds ---- $retval');
     }
     return retval;

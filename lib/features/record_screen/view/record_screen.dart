@@ -32,7 +32,8 @@ class RecordScreen extends StatefulWidget {
   const RecordScreen({
     super.key,
     required this.title,
-    required this.entrence, required this.patient,
+    required this.entrence,
+    required this.patient,
   });
 
   final String title;
@@ -454,6 +455,7 @@ class _RecordScreenState extends State<RecordScreen> {
         title: 'Результаты теста',
         entrence: widget.entrence,
         testData: _testData,
+        patientUid: widget.patient.uid,
       ),
       settings: const RouteSettings(name: '/test_result'),
     );

@@ -230,7 +230,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
   void _readTestList() async {
     /// Прочитаем
-    _tests = await GetIt.I<DbProvider>().getListTests('');
+    _tests = await GetIt.I<DbProvider>().getListTests(widget.patient.uid);
 
     /// Вставим элементы, соотвествующие смене дат
     if (_tests.isNotEmpty) {
@@ -284,6 +284,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
         title: 'Результаты теста',
         entrence: RunTestEntrance.rteTestsOpen,
         testData: testData,
+        patientUid: test.patientUid,
       ),
       settings: const RouteSettings(name: '/test_result'),
     );

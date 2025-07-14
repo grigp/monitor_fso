@@ -105,6 +105,7 @@ flutter:
     - lib/assets/icons/play100.png
     - lib/assets/icons/new_test100.png
     - lib/assets/icons/man.png
+    - lib/assets/icons/mans.png
     - lib/assets/icons/kard_file48.png
     - lib/assets/icons/kard_file48_01.png
 

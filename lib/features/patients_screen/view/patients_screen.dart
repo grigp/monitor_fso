@@ -64,7 +64,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
                       SizedBox(
                         width: 70,
                         height: 70,
-                        child: Image.asset('lib/assets/icons/hist60.png'),
+                        child: Image.asset('lib/assets/icons/mans.png'),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
