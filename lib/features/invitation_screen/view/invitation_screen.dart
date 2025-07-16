@@ -271,7 +271,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                           child: Center(
                             child: Column(
                               children: [
-                                Image.asset('lib/assets/icons/mans.png'),
+                                Image.asset('lib/assets/icons/mans_01.png'),
                                 const Text(
                                   'Пациенты',
                                   textAlign: TextAlign.center,

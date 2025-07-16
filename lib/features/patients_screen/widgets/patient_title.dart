@@ -77,7 +77,7 @@ class _PatientTitleState extends State<PatientTitle> {
                 onTap: () {
                   widget.onEdit(widget.patient);
                 },
-                child: Image.asset('lib/assets/icons/kard_file48_01.png'),
+                child: Image.asset('lib/assets/icons/kard_file48_02.png'),
               ),
               /// Удаление записи о пациенте
               const SizedBox(width: 20),

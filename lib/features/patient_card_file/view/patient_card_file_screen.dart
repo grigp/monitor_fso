@@ -57,7 +57,7 @@ class _PatientCardFileScreenState extends State<PatientCardFileScreen> {
                         SizedBox(
                           width: 70,
                           height: 70,
-                          child: Image.asset('lib/assets/icons/man.png'),
+                          child: Image.asset('lib/assets/icons/man_01.png'),
                         ),
                         const SizedBox(width: 10),
                         const Expanded(

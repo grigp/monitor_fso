@@ -50,8 +50,8 @@ bool isDemoVersion = false;
 enum UserVersion {uvHome, uvProfessional}
 
 /// Версия программы. Если нужна другая, перекомментировать, пересобрать
-UserVersion userVersion = UserVersion.uvProfessional;
-//UserVersion userVersion = UserVersion.uvHome;
+//UserVersion userVersion = UserVersion.uvProfessional;
+UserVersion userVersion = UserVersion.uvHome;
 
 /// Кол-во записей в демонстрационной версии
 int maxRecordsCount = 25;
