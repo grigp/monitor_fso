@@ -51,13 +51,14 @@ enum UserVersion {uvHome, uvProfessional}
 
 /// Версия программы. Если нужна другая, перекомментировать, пересобрать
 //UserVersion userVersion = UserVersion.uvProfessional;
-UserVersion userVersion = UserVersion.uvHome;
+UserVersion userVersion = UserVersion.uvProfessional;
 
 /// Кол-во записей в демонстрационной версии
+/// -1 - без ограничения записей
 int maxRecordsCount = 25;
 
 /// Дата окончания работы демонстрационной версии
-DateTime dateDeadline = DateTime(2025, 9, 1);
+DateTime dateDeadline = DateTime(2025, 10, 2);
 
 const int durationStageWait = 15;
 const int durationStageCalibr = 2;

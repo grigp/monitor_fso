@@ -236,7 +236,12 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   Future _onSaveTest() async {
     await _getTestsCount();
-    if (isDemoVersion && (_testCnt < maxRecordsCount) || (!isDemoVersion)) {
+    bool isMaxRecordEnabled = _testCnt < maxRecordsCount;
+    if (maxRecordsCount == -1) {
+      isMaxRecordEnabled = true;
+    }
+
+    if (isDemoVersion && isMaxRecordEnabled || (!isDemoVersion)) {
       await _doSaveUpdate();
 
       var rec = RecordTest(
@@ -278,7 +283,11 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   void _closeScreen() async {
     await _getTestsCount();
-    if (isDemoVersion && (_testCnt < maxRecordsCount) || (!isDemoVersion)) {
+    bool isMaxRecordEnabled = _testCnt < maxRecordsCount;
+    if (maxRecordsCount == -1) {
+      isMaxRecordEnabled = true;
+    }
+    if (isDemoVersion && isMaxRecordEnabled || (!isDemoVersion)) {
       int? dr = -1;
       if (!widget.testData.isSaved()) {
         dr = await showDialog<int>(

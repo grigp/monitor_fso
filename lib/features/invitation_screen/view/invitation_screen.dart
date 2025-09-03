@@ -27,6 +27,13 @@ class _InvitationScreenState extends State<InvitationScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    String DemoMessage =
+        'Демонстрационная версия программы\n'
+        'Срок действия прекращается ${pdt(dateDeadline.day)}.${pdt(dateDeadline.month)}.${dateDeadline.year}.';
+    if (maxRecordsCount > 0) {
+      DemoMessage = '$DemoMessage\nКоличество записей не может превышать $maxRecordsCount.';
+    }
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -90,10 +97,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       children: [
                         const SizedBox(height: 5),
                         Center(
-                          child: Text(
-                            'Демонстрационная версия программы\n'
-                            'Срок действия прекращается ${pdt(dateDeadline.day)}.${pdt(dateDeadline.month)}.${dateDeadline.year}.\n'
-                            'Количество записей не может превышать $maxRecordsCount.',
+                          child: Text( DemoMessage,
                             textAlign: TextAlign.center,
                             textScaler: const TextScaler.linear(1.0),
                             style: const TextStyle(
