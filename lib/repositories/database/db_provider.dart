@@ -95,14 +95,15 @@ class DbProvider {
     List<Map> list =
         await _db.rawQuery('SELECT uid, fio, born, sex, comment FROM Patients');
     List<RecordPatient> retval = [];
+    print(list);
     for (int i = 0; i < list.length; ++i) {
       retval.add(
         RecordPatient(
-          uid: list[i]['uid'],
-          fio: list[i]['fio'],
+          uid: list[i]['uid'].toString(),
+          fio: list[i]['fio'].toString(),
           born: DateTime.parse(list[i]['born']),
           sex: _stringToSex(list[i]['sex']),
-          comment: list[i]['comment'],
+          comment: list[i]['comment'].toString(),
         ),
       );
     }

@@ -79,6 +79,22 @@ class _PatientsScreenState extends State<PatientsScreen> {
                           ),
                         ),
                       ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => TalkerScreen(
+                                talker: GetIt.I<Talker>(),
+                                appBarTitle: 'Лог',
+                              ),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.book,
+                          color: Colors.teal.shade200,
+                        ),
+                      ),
                     ],
                   ),
                 ],

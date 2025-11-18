@@ -42,7 +42,7 @@ enum RunTestEntrance {rteInvitation, rteTestsNew, rteTestsOpen}
 int screenCounter = 0;
 
 /// Признак того, что программа является демо версией
-bool isDemoVersion = false;
+bool isDemoVersion = true;
 
 ///< Версия программы
 ///< uvHome         - домашняя, индивидуальная
@@ -55,10 +55,10 @@ UserVersion userVersion = UserVersion.uvProfessional;
 
 /// Кол-во записей в демонстрационной версии
 /// -1 - без ограничения записей
-int maxRecordsCount = 25;
+int maxRecordsCount = -1;
 
 /// Дата окончания работы демонстрационной версии
-DateTime dateDeadline = DateTime(2025, 10, 2);
+DateTime dateDeadline = DateTime(2026, 1, 1);
 
 const int durationStageWait = 15;
 const int durationStageCalibr = 2;
