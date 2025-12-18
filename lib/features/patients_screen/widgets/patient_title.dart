@@ -53,7 +53,7 @@ class _PatientTitleState extends State<PatientTitle> {
           Row(
             children: [
               SizedBox(
-                width: 250,
+                width: 200,
                 child: Column(
                   children: [
                     Text(
@@ -72,22 +72,32 @@ class _PatientTitleState extends State<PatientTitle> {
                 ),
               ),
               const Spacer(),
+
               /// Редактирование записи о пациенте
               GestureDetector(
                 onTap: () {
                   widget.onEdit(widget.patient);
                 },
-                child: Image.asset('lib/assets/icons/kard_file48_02.png'),
+                child: Image.asset(
+                  'lib/assets/icons/kard_file48_02.png',
+                  width: 50,
+                ),
               ),
+
               /// Удаление записи о пациенте
-              const SizedBox(width: 20),
+              const SizedBox(width: 2),
               GestureDetector(
-                onTap: () {
-                  widget.onDelete(widget.patient);
-                },
-                child: const Icon(Icons.close),
+                  onTap: () {
+                    widget.onDelete(widget.patient);
+                  },
+                  child: const SizedBox(
+                    width: 20,
+                    child: Icon(Icons.close),
+                  )
+
 //                child: Image.asset('lib/assets/icons/delete48_01.png'),
-              ),
+                  ),
+              const SizedBox(width: 6),
             ],
           ),
           const SizedBox(height: 12),

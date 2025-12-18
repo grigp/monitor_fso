@@ -185,7 +185,7 @@ class _PatientCardFileScreenState extends State<PatientCardFileScreen> {
                               child: Text(
                                 'Сохранить',
                                 textScaler: const TextScaler.linear(1.0),
-                                style: Theme.of(context).textTheme.headlineSmall,
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
                             ),
                             const SizedBox(width: 20),
@@ -195,7 +195,7 @@ class _PatientCardFileScreenState extends State<PatientCardFileScreen> {
                               },
                               child: Text('Отмена',
                                   textScaler: const TextScaler.linear(1.0),
-                                  style: Theme.of(context).textTheme.headlineSmall),
+                                  style: Theme.of(context).textTheme.titleLarge),
                             ),
                             const Spacer(),
                           ],

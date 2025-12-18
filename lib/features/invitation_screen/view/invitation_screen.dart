@@ -27,11 +27,11 @@ class _InvitationScreenState extends State<InvitationScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    String DemoMessage =
-        'Демонстрационная версия программы\n'
+    String DemoMessage = 'Демонстрационная версия программы\n'
         'Срок действия прекращается ${pdt(dateDeadline.day)}.${pdt(dateDeadline.month)}.${dateDeadline.year}.';
     if (maxRecordsCount > 0) {
-      DemoMessage = '$DemoMessage\nКоличество записей не может превышать $maxRecordsCount.';
+      DemoMessage =
+          '$DemoMessage\nКоличество записей не может превышать $maxRecordsCount.';
     }
 
     return PopScope(
@@ -92,12 +92,13 @@ class _InvitationScreenState extends State<InvitationScreen> {
                   Container(
                     color: Colors.yellow,
                     width: double.infinity,
-                    height: 75,
+                    height: 50,
                     child: Column(
                       children: [
                         const SizedBox(height: 5),
                         Center(
-                          child: Text( DemoMessage,
+                          child: Text(
+                            DemoMessage,
                             textAlign: TextAlign.center,
                             textScaler: const TextScaler.linear(1.0),
                             style: const TextStyle(
@@ -113,13 +114,16 @@ class _InvitationScreenState extends State<InvitationScreen> {
                 Container(
                   color: Colors.black12,
                   width: double.infinity,
-                  height: 270,
+                  height: 200,
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
                       Center(
-                        child:
-                            Image.asset('lib/assets/icons/screen_preview.png'),
+                        child: Image.asset(
+                          'lib/assets/icons/screen_preview.png',
+                          height: 180,
+                          width: 180,
+                        ),
                       ),
                     ],
                   ),
