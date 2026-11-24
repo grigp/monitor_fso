@@ -21,7 +21,11 @@ class FactorInfo {
 
 abstract class AbstractCalculator {
   AbstractCalculator(this._data) {
-    calculate();
+     _calc();
+  }
+
+  Future<void> _calc() async{
+    await calculate();
   }
 
   Future<void> calculate();

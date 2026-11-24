@@ -1,6 +1,5 @@
 
 import 'dart:math';
-import 'package:vector_math/vector_math.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -17,7 +16,7 @@ class KfrCalculator extends AbstractCalculator{
   final List<double> _diagV = [];
   final List<double> _diagH = [];
 
-  void getValues() async {
+  Future<void> getValues() async {
     const storage = FlutterSecureStorage();
     String? sdk = await storage.read(key: 'diaps_koef');
     if (sdk != null) {
@@ -31,7 +30,7 @@ class KfrCalculator extends AbstractCalculator{
 
   @override
   Future<void> calculate() async {
-    getValues();
+    await getValues();
 
     for (int j = 0; j < _ndiaps; ++j) {
       _diag.add(0);
@@ -57,9 +56,9 @@ class KfrCalculator extends AbstractCalculator{
       // double ax = val.ax + 9.8 * sin(radians(val.gy));  Поисследовать поворот
       // double ay = val.ay + 9.8 * sin(radians(val.gx));
       // double az = val.az + 9.8 * sin(radians(val.gz));
-      double ax = val.ax * cos(radians(val.gx));
-      double ay = val.ay * cos(radians(val.gy));
-      double az = val.az * cos(radians(val.gz));
+      double ax = val.ax * cos(val.gx * pi / 180);
+      double ay = val.ay * cos(val.gy * pi / 180);
+      double az = val.az * cos(val.gz * pi / 180);
       if (_cdm == CalculateDirectionMode.cdm3D) {
         vct = sqrt(pow(ax, 2) + pow(ay, 2) + pow(az, 2));
       } else

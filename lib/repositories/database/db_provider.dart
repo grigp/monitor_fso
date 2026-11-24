@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:get_it/get_it.dart';
 import 'package:monitor_fso/repositories/database/db_defines.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 import '../defines.dart';
@@ -113,11 +115,12 @@ class DbProvider {
   Future deletePatient(String patientUid) async {
     await _openDB();
 
-    /// Удалить запись для этого пациента
-    await _db.rawQuery('DELETE FROM Patients WHERE uid = \'$patientUid\'');
-
-    /// Удалить все записи тестов для этого пациента
-    await _db.rawQuery('DELETE FROM Tests WHERE patientUid = \'$patientUid\'');
+    await _db.transaction((txn) async {
+      /// Удалить запись для этого пациента
+      await txn.delete('Patients', where: 'uid = ?', whereArgs: [patientUid]);
+      /// Удалить все записи тестов для этого пациента
+      await txn.delete('Tests', where: 'patientUid = ?', whereArgs: [patientUid]);
+    });
 
     /// Известим интересующихся об удалении теста
     for (int i = 0; i < _handlers.length; ++i) {
@@ -182,6 +185,11 @@ class DbProvider {
   Future<List<RecordTest>> getListTests(String patientUid) async {
     await _openDB();
 
+    // final rows = patientUid.isEmpty
+    //     ? await _db.query('Tests', columns: ['uid', 'dt', 'patientUid', 'methodicUid', 'kfr', 'freq'])
+    //     : await _db.query('Tests', columns: ['uid', 'dt', 'patientUid', 'methodicUid', 'kfr', 'freq'],
+    //                                 where: 'patientUid = ?', whereArgs: [patientUid]);
+
     String request =
         'SELECT uid, dt, patientUid, methodicUid, kfr, freq FROM Tests';
     if (patientUid != '') {
@@ -219,12 +227,21 @@ class DbProvider {
   /// Обновляет значение КФР для теста
   Future setKfr(String testUid, double kfr) async {
     await _openDB();
-    await _db.rawQuery('UPDATE Tests SET kfr = $kfr WHERE uid = \'$testUid\'');
+
+    final changed = await _db.update(
+      'Tests',
+      {'kfr': kfr},
+      where: 'uid = ?',
+      whereArgs: [testUid],
+    );
+    if (changed != 1) {
+      GetIt.I<Talker>().warning('setKfr: изменено $changed строк для $testUid');
+    }
   }
 
   Future deleteTest(String testUid) async {
     await _openDB();
-    await _db.rawQuery('DELETE FROM Tests WHERE uid = \'$testUid\'');
+    await _db.delete('Tests', where: 'uid = ?', whereArgs: [testUid]);
 
     /// Известим интересующихся об удалении теста
     for (int i = 0; i < _handlers.length; ++i) {
