@@ -42,6 +42,9 @@ class AccelDriver extends AbstractDriver {
   final int _fc = 15;
   final List<double> _koefs = [0.08, 0.23, 0.5, 0.8, 1.1, 1.4, 1.9, 2, 1.9, 1.4, 1.1, 0.8, 0.5, 0.23, 0.08];
 
+  int _lastEmitUs = 0;
+  final _clock = Stopwatch()..start();
+
   AccelDriver(){
     getSettings();
   }
@@ -105,6 +108,11 @@ class AccelDriver extends AbstractDriver {
   void _startProcess() {
     Duration sensorInterval = SensorInterval.gameInterval;
     _streamAccel = accelerometerEventStream(samplingPeriod: sensorInterval).listen((AccelerometerEvent event){
+      final nowUs = _clock.elapsedMicroseconds;
+      if (nowUs - _lastEmitUs < 20000) return;  // не чаще 50 Гц
+      _lastEmitUs = nowUs;
+
+
       _ax = event.x - _midAX;
       _ay = event.y - _midAY;
       _az = event.z - _midAZ;

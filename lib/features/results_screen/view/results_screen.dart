@@ -277,6 +277,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
     test.data = await GetIt.I<DbProvider>().getTestData(test.uid);
     var testData = TestData.fromDb(test);
 
+    /// Дожидаемся расчета, иначе экран результатов откроется с пустой диаграммой
+    await testData.waitCalculation();
+    if (!context.mounted) return;
+
     GetIt.I<Talker>().info('Open test: ${test.dt}');
 
     MaterialPageRoute route = MaterialPageRoute(

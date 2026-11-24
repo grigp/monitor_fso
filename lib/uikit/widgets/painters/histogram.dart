@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 const double LeftBorder = 15;
@@ -41,5 +42,6 @@ class Histogram extends CustomPainter{
 
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant Histogram oldDelegate) =>
+      oldDelegate.max != max || !listEquals(oldDelegate.data, data);
 }

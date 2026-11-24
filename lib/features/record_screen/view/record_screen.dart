@@ -308,7 +308,6 @@ class _RecordScreenState extends State<RecordScreen> {
     setState(() {
       _blockView.add(OscillBlock(chan0: ax, chan1: ay, chan2: az));
     });
-
     if (_n % (_freq / _screenRate) == 0) {
       setState(() {
         _ax = ax;

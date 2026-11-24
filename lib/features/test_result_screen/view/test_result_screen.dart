@@ -43,6 +43,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
   DecimalSeparator _ds = DecimalSeparator.dsComma;
   String _lastError = '';
   bool _isSaved = false;
+  bool _isCalculated = false;
   int _testCnt = 0;
 
   @override
@@ -114,7 +115,9 @@ class _TestResultScreenState extends State<TestResultScreen> {
               ),
             ),
             Text(
-              'ФСО = ${num.parse(widget.testData.kfr().toStringAsFixed(0))} %',
+              _isCalculated
+                  ? 'ФСО = ${num.parse(widget.testData.kfr().toStringAsFixed(0))} %'
+                  : 'ФСО = ...',
               textScaler: const TextScaler.linear(1.0),
               style: const TextStyle(
                 color: tealDarkColor,
@@ -128,9 +131,12 @@ class _TestResultScreenState extends State<TestResultScreen> {
             SizedBox(
               height: 150,
               width: double.infinity,
-              child: CustomPaint(
-                painter: Histogram(data: widget.testData.diagram(), max: 100),
-              ),
+              child: _isCalculated
+                  ? CustomPaint(
+                      painter:
+                          Histogram(data: widget.testData.diagram(), max: 100),
+                    )
+                  : const Center(child: CircularProgressIndicator()),
             ),
             const SizedBox(height: 10),
             Expanded(
@@ -214,9 +220,21 @@ class _TestResultScreenState extends State<TestResultScreen> {
   void initState() {
     super.initState();
     _isSaved = widget.testData.isSaved();
+    _isCalculated = widget.testData.isCalculated();
     _getValues();
     ++screenCounter;
     _lastError = GetIt.I<AppErrors>().getLastError();
+    _waitCalculation();
+  }
+
+  /// Дожидается расчета показателей и перерисовывает экран
+  Future<void> _waitCalculation() async {
+    if (_isCalculated) return;
+    await widget.testData.waitCalculation();
+    if (!mounted) return;
+    setState(() {
+      _isCalculated = true;
+    });
   }
 
   Future _doSaveUpdate() async {

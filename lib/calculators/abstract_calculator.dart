@@ -21,14 +21,21 @@ class FactorInfo {
 
 abstract class AbstractCalculator {
   AbstractCalculator(this._data) {
-     _calc();
+     _calculation = _calc();
   }
+
+  /// Завершение расчёта. Позволяет дождаться, пока показатели будут готовы.
+  late final Future<void> _calculation;
+
+  Future<void> get whenCalculated => _calculation;
 
   Future<void> _calc() async{
     await calculate();
   }
 
   Future<void> calculate();
+
+  bool isCalculated();
 
   void addFactor(FactorInfo fi){
     _factors.add(fi);
@@ -39,8 +46,9 @@ abstract class AbstractCalculator {
   }
 
   FactorInfo factor(int idx) {
-    if(idx >= 0 && idx < _factors.length)
+    if(idx >= 0 && idx < _factors.length) {
       return _factors[idx];
+    }
     return FactorInfo(id: '', name: '', value: 0, shortName: '', measure: '', format: 0);
   }
 

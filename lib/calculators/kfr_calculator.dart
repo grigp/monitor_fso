@@ -16,6 +16,8 @@ class KfrCalculator extends AbstractCalculator{
   final List<double> _diagV = [];
   final List<double> _diagH = [];
 
+  bool _isCalculated = false;
+
   Future<void> getValues() async {
     const storage = FlutterSecureStorage();
     String? sdk = await storage.read(key: 'diaps_koef');
@@ -135,6 +137,8 @@ class KfrCalculator extends AbstractCalculator{
     addFactor(FactorInfo(id: 'kfr', name: 'Качество функции равновесия', value: kfr, shortName: 'KFR', measure: '%', format: 2));
     addFactor(FactorInfo(id: 'kfrV', name: 'Качество функции равновесия (V)', value: kfrV, shortName: 'KFRV', measure: '%', format: 2));
     addFactor(FactorInfo(id: 'kfrH', name: 'Качество функции равновесия (H)', value: kfrH, shortName: 'KFRH', measure: '%', format: 2));
+
+    _isCalculated = true;
   }
 
   double _computeKFR(List<double> diag, int dataSize){
@@ -157,9 +161,14 @@ class KfrCalculator extends AbstractCalculator{
 
   List<double> diagram(){
     List<double> retval = [];
-    for(int i = 0; i < _ndiaps; ++i) {
+    for(int i = 0; (i < _ndiaps) && (i < _diag.length); ++i) {
       retval.add(_diag[i]);
     }
     return retval;
+  }
+
+  @override
+  bool isCalculated() {
+    return _isCalculated;
   }
 }

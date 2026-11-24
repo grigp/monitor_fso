@@ -12,7 +12,6 @@ class TestData {
 
   late TestInfoMode _mode;
 
-  late bool _calculated = false;
   late KfrCalculator _calculator;
   bool _isSaved = false;
 
@@ -46,7 +45,6 @@ class TestData {
     /// Вызвать расчет показателей для их перерасчета
     /// Надо еще и сохранить новые значения
     obj._calculator = KfrCalculator(rt.data);
-    obj._calculated = true;
 
     return obj;
   }
@@ -73,8 +71,15 @@ class TestData {
       /// Вызвать расчет показателей
       _zeroing();
       _calculator = KfrCalculator(_data);
-      _calculated = true;
     }
+
+    /// Дожидаемся расчета, чтобы КФР и диаграмма были готовы к отображению
+    await waitCalculation();
+  }
+
+  /// Ожидает завершения расчета показателей теста
+  Future<void> waitCalculation() async {
+    await _calculator.whenCalculated;
   }
 
   // /// Сохраняет данные в БД в режиме записи Сохранять надо снаружи
@@ -99,7 +104,7 @@ class TestData {
 
   /// Возвращает КФР теста
   double kfr() {
-    if (_calculated) {
+    if (_calculator.isCalculated()) {
       return _calculator.factor(0).value;
     }
     return 0.0;
@@ -112,6 +117,11 @@ class TestData {
 
   bool isSaved () {
     return _isSaved;
+  }
+
+  /// Готовы ли результаты расчета
+  bool isCalculated() {
+    return _calculator.isCalculated();
   }
 
   void setSaved() {
@@ -134,7 +144,7 @@ class TestData {
   }
 
   List<double> diagram() {
-    if (_calculated) {
+    if (_calculator.isCalculated()) {
       return _calculator.diagram();
     }
 
