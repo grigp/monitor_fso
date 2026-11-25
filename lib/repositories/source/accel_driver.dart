@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:monitor_fso/repositories/source/abstract_driver.dart';
@@ -33,6 +34,7 @@ class AccelDriver extends AbstractDriver {
   bool _isFilter = true;
   late StreamSubscription<AccelerometerEvent> _streamAccel;
   late StreamSubscription<GyroscopeEvent> _streamGyro;
+  late Timer _sendTimer;
 
   late Function _sendData;
   late Function _endCalibration;
@@ -41,9 +43,6 @@ class AccelDriver extends AbstractDriver {
   final List<DataBlock> _dataFilter = [];
   final int _fc = 15;
   final List<double> _koefs = [0.08, 0.23, 0.5, 0.8, 1.1, 1.4, 1.9, 2, 1.9, 1.4, 1.1, 0.8, 0.5, 0.23, 0.08];
-
-  int _lastEmitUs = 0;
-  final _clock = Stopwatch()..start();
 
   AccelDriver(){
     getSettings();
@@ -101,6 +100,7 @@ class AccelDriver extends AbstractDriver {
 
   @override
   Future<void> stop() async {
+    _sendTimer.cancel();
     await _streamAccel.cancel();
     await _streamGyro.cancel();
   }
@@ -108,11 +108,6 @@ class AccelDriver extends AbstractDriver {
   void _startProcess() {
     Duration sensorInterval = SensorInterval.gameInterval;
     _streamAccel = accelerometerEventStream(samplingPeriod: sensorInterval).listen((AccelerometerEvent event){
-      final nowUs = _clock.elapsedMicroseconds;
-      if (nowUs - _lastEmitUs < 20000) return;  // не чаще 50 Гц
-      _lastEmitUs = nowUs;
-
-
       _ax = event.x - _midAX;
       _ay = event.y - _midAY;
       _az = event.z - _midAZ;
@@ -125,28 +120,6 @@ class AccelDriver extends AbstractDriver {
           _dataFilter.removeAt(0);
         }
       }
-      DataBlock cur = DataBlock(ax: _ax, ay: _ay, az: _az,
-          gx: _gx, gy: _gy, gz: _gz);
-      if (_isFilter) {
-        if (_dataFilter.length >= _fc) {
-          for (int i = 0; i < _dataFilter.length; ++i) {
-            cur.ax = cur.ax + _koefs[i] * _dataFilter[i].ax;
-            cur.ay = cur.ay + _koefs[i] * _dataFilter[i].ay;
-            cur.az = cur.az + _koefs[i] * _dataFilter[i].az;
-            cur.gx = cur.gx + _koefs[i] * _dataFilter[i].gx;
-            cur.gy = cur.gy + _koefs[i] * _dataFilter[i].gy;
-            cur.gz = cur.gz + _koefs[i] * _dataFilter[i].gz;
-          }
-          cur.ax /= _fc;
-          cur.ay /= _fc;
-          cur.az /= _fc;
-          cur.gx /= _fc;
-          cur.gy /= _fc;
-          cur.gz /= _fc;
-        }
-      }
-      _sendData(cur.ax, cur.ay, cur.az, cur.gx, cur.gy, cur.gz);
-
 
       if (_isCalibratng){
         _dataCalibrate.add(DataBlock(ax: _ax, ay: _ay, az: _az,
@@ -175,6 +148,31 @@ class AccelDriver extends AbstractDriver {
           _endCalibration();
         }
       }
+    });
+
+    /// Таймер передачи данных с частотой 50 Гц
+    _sendTimer = Timer.periodic(const Duration(microseconds: 20000), (Timer timer){
+      DataBlock cur = DataBlock(ax: _ax, ay: _ay, az: _az,
+          gx: _gx, gy: _gy, gz: _gz);
+      if (_isFilter) {
+        if (_dataFilter.length >= _fc) {
+          for (int i = 0; i < _dataFilter.length; ++i) {
+            cur.ax = cur.ax + _koefs[i] * _dataFilter[i].ax;
+            cur.ay = cur.ay + _koefs[i] * _dataFilter[i].ay;
+            cur.az = cur.az + _koefs[i] * _dataFilter[i].az;
+            cur.gx = cur.gx + _koefs[i] * _dataFilter[i].gx;
+            cur.gy = cur.gy + _koefs[i] * _dataFilter[i].gy;
+            cur.gz = cur.gz + _koefs[i] * _dataFilter[i].gz;
+          }
+          cur.ax /= _fc;
+          cur.ay /= _fc;
+          cur.az /= _fc;
+          cur.gx /= _fc;
+          cur.gy /= _fc;
+          cur.gz /= _fc;
+        }
+      }
+      _sendData(cur.ax, cur.ay, cur.az, cur.gx, cur.gy, cur.gz);
     });
 
     _streamGyro = gyroscopeEventStream(samplingPeriod: sensorInterval).listen((GyroscopeEvent event){
