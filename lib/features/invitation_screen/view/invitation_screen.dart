@@ -6,6 +6,7 @@ import 'package:monitor_fso/features/info_screen/view/info_screen.dart';
 import 'package:monitor_fso/features/patients_screen/view/patients_screen.dart';
 import 'package:monitor_fso/features/record_screen/view/record_screen.dart';
 import 'package:monitor_fso/uikit/monfso_button.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../assets/colors/colors.dart';
 import '../../../repositories/database/db_defines.dart';
@@ -24,6 +25,15 @@ class InvitationScreen extends StatefulWidget {
 }
 
 class _InvitationScreenState extends State<InvitationScreen> {
+  PackageInfo _packageInfo = PackageInfo(
+    appName: '',
+    packageName: '',
+    version: '',
+    buildNumber: '',
+    buildSignature: '',
+    installerStore: '',
+  );
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -296,7 +306,14 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       ),
                       const Spacer(),
                     ],
-                  )
+                  ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    'Версия ${_packageInfo.version}+${_packageInfo.buildNumber}   ',
+                    textAlign: TextAlign.end,
+                  ),
+                )
               ],
             ),
           ),
@@ -308,6 +325,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
   @override
   void initState() {
     super.initState();
+    _initPackageInfo();
   }
 
   void _showInfoScreen() {
@@ -318,5 +336,12 @@ class _InvitationScreenState extends State<InvitationScreen> {
       settings: const RouteSettings(name: '/info'),
     );
     Navigator.of(context).push(route);
+  }
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
   }
 }

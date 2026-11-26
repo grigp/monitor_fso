@@ -303,6 +303,8 @@ class _RecordScreenState extends State<RecordScreen> {
 
   void getData(
       double ax, double ay, double az, double gx, double gy, double gz) async {
+    if (!mounted) return;
+
     ++_n;
     _block.add(DataBlock(ax: ax, ay: ay, az: az, gx: gx, gy: gy, gz: gz));
     setState(() {
